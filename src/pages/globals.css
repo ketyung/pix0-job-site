@@ -1,0 +1,124 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+:root {
+  background:transparent;
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+  --dark-nav-bar-color: #234; 
+  --dark-bg-color: #222; 
+  --dark-text-color: #eeeeee;
+  --light-bg-color:transparent;
+  --light-text-color:#222222; 
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+
+/* Reset some default styles */
+body, h1, h2, p {
+  margin: 0;
+  padding: 0;
+}
+
+/* Define global styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: var(--light-bg-color); /* Set the initial background color to light mode */
+  color: var(--light-text-color); /* Set the initial text color to light mode */
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.container {
+  max-width: 860px;
+  margin: auto;
+  padding: 20px;
+  border-radius: 4px;
+  background-color: #dde;
+  margin-bottom: 12px;
+}
+
+
+
+header {
+  background-color: var(--light-bg-color);
+  color: var(--light-text-color); /* Set the initial text color to light mode */
+  padding: 10px 0;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+}
+
+nav li {
+  margin: 0 20px;
+}
+
+nav a {
+  text-decoration: none;
+  font-weight: bold;
+}
+
+nav .logo {
+   margin-left: 10px;
+}
+
+/* Style other sections and elements as needed */
+
+/* Footer styles */
+footer {
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 10px 0;
+}
+
+/* Add media queries for responsiveness */
+@media (max-width: 768px) {
+  nav ul {
+      flex-direction: column;
+  }
+}
+
+body.dark {
+  background-color: var(--dark-bg-color);
+  color: var(--dark-text-color);
+}
+
+/* Add styles for dark mode */
+body.dark header {
+  background-color: var(--dark-nav-bar-color);
+  color: var(--dark-text-color); /* Set the initial text color to light mode */
+  padding: 10px 0;
+}
+
+/*
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: var(--dark-bg-color); 
+    color: var(--dark-text-color); 
+  }
+
+  header {
+    background-color: var(--dark-nav-bar-color);
+    color: var(--dark-text-color); 
+    padding: 10px 0;
+  }
+}
+*/
