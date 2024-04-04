@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
+//import "./globals.css";
+import { Input, ThemeProvider } from "pix0-core-ui";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,8 +16,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
-    </html>
+    <ThemeProvider defaultTheme={{mode : "dark"}}><html lang="en">
+      <body className={inter.className}>
+        <div className="mt-2">
+          <Input/>
+        </div>
+        {children}
+      </body>
+    </html></ThemeProvider>
   );
 }
