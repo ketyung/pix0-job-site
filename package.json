@@ -13,6 +13,7 @@
     "cuid": "^3.0.0",
     "jsonwebtoken": "^9.0.2",
     "next": "14.1.4",
+    "next-auth": "^4.24.7",
     "next-transpile-modules": "^10.0.1",
     "pix0-core-ui": "^4.0.6",
     "react": "^18",
