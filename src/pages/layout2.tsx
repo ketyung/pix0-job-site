@@ -18,15 +18,15 @@ type props = {
 const DefaultMain = () =>{
 
 
-    return <div className="dark:bg-gray-900 bg-gray-100 dark:text-gray-100 text-gray-900 h-full pt-4 pb-4">
+    return <div className="dark:bg-gray-900 bg-gray-100 dark:text-gray-100 text-gray-900 h-screen pt-4 pb-4">
         <section id="home">
-            <div className="container dark:bg-gray-800 lg:flex flex-col lg:flex-row">
+            <div className="rounded bg-gray-200 mx-auto lg:w-3/5 w-4/5 dark:bg-gray-800 lg:flex flex-col lg:flex-row my-4 p-2">
                 <div className='text-left min-w-32'>
                 <h1 className='header-text'>Welcome to Pix0 Inc.</h1>
                 <p className='norm-text'>Your partner in creating innovative web and AI solutions.</p>
                 </div>
             </div>
-            <div className='container dark:bg-gray-800'>
+            <div className='rounded bg-gray-200 mx-auto lg:w-3/5 w-4/5 dark:bg-gray-800 my-4 p-2'>
                 <FieldLabel title="Job Search">
                     <Input className='lg:w-3/5 w-full'/>
                 </FieldLabel>
