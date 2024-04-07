@@ -22,7 +22,7 @@ const config: Config = {
         'dark-text': 'var(--dark-text-color)',
         'light-bg': 'var(--light-bg-color)',
         'light-text': 'var(--light-text-color)',
-        'top-bar-orange' : '#fa3',
+        'top-bar-blue' : '#03396c',
       },
     },
   },
