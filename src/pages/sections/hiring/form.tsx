@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { JobPost } from "@prisma/client";
 import { isBlank } from "@/utils";
 import { toast } from "react-toastify";
-import { createJobPost, updateJobPost, getJobPost , genProdDesc} from "@/service";
+import { createJobPost, updateJobPost, getJobPost , genJobPostDesc} from "@/service";
 import { ntb } from "@/utils";
 import { BeatLoader } from "react-spinners";
 import { BsMarkdown } from "react-icons/bs";
@@ -32,20 +32,17 @@ type props = {
 }
 
 
-export const DEFAULT_JOBPOST : any= {
+export const DEFAULT_JOBPOST : JobPost= {
 
     code : "",
-    name: "",
+    title: "",
     description: "",
-    jobpostType : JobPostType.JobPost,
-    unitPrice: 0,
+    
     createdBy: "",
     dateCreated : new Date(),
     dateUpdated : new Date(),
-    forOnlineStore: 'N',
     companyId : "",
-    qoh:0,
-
+    
 }
 
 export default function Form({ title, fromInv, isEditMode, refresh, editRowId} :props) {
@@ -68,9 +65,8 @@ export default function Form({ title, fromInv, isEditMode, refresh, editRowId} :
             
         }
 
-        //console.log("JobPost:::", jobpost);
-        if (isBlank(jobpost?.name) ){
-            toast.error(`JobPost Name Must NOT be blank!`);
+        if (isBlank(jobpost?.title) ){
+            toast.error(`Job Title Must NOT be blank!`);
             return ;
         }
         
@@ -84,7 +80,7 @@ export default function Form({ title, fromInv, isEditMode, refresh, editRowId} :
 
         setProcessing(false);
         if ( n ){
-            toast.info(isEditMode ? 'Successfully Updated' : 'New jobpost created successfully!');
+            toast.info(isEditMode ? 'Successfully Updated' : 'New job post created successfully!');
             if ( refresh) {
                 refresh();
             }
@@ -93,14 +89,14 @@ export default function Form({ title, fromInv, isEditMode, refresh, editRowId} :
         }
     }
     
-    const genProdDescNow = async () =>{
+    const genJobPostDescNow = async () =>{
 
-        if ( jobpost.name?.trim() === ""){
-            toast.error("Please enter the name of the jobpost first");
+        if ( jobpost.title?.trim() === ""){
+            toast.error("Please enter the title of the job post first");
             return; 
         }
         setGenerating(true);
-        let text = await genProdDesc(jobpost.name ?? "My First Product JobPost");
+        let text = await genJobPostDesc(jobpost.title ?? "My First Product JobPost");
         setJobPost({...jobpost, description : text});
         setGenerating(false);
     }
