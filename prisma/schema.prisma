@@ -90,6 +90,7 @@ model JobPost {
     title          String?     @db.VarChar(150)
     description    String?     @db.Text
     workType       String?     @db.VarChar(30)
+    jobCategory    String?     @db.VarChar(50)
     location       String?     @db.VarChar(30)
     salaryFrom     Float?      @db.Float
     salaryTo       Float?      @db.Float

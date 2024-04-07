@@ -1,3 +1,4 @@
+import { getAllEnumValues } from "@/utils";
 
 export interface SearchResult {
 
@@ -21,3 +22,25 @@ export interface SignInData{
 
     accountId? : string, 
 }
+
+
+
+export enum JobCategory {
+   
+    Sales = "Sales",
+
+    Admin = "Administration",
+
+    Dev = "Development",
+
+    Consulting = "Consulting",
+
+    Marketing = "Marketing",
+
+    Management = "Management",
+
+    Finance = "Finance",
+}
+
+
+export const JobCategorys = getAllEnumValues(JobCategory);

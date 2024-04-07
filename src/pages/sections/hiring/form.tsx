@@ -1,5 +1,5 @@
 import FieldLabel from "@/components/FieldLabel"
-import { JobPostTypes, JobPostType } from "@/models"
+import { JobCategorys } from "@/models"
 import { Select, Input, TextArea, Button } from "pix0-core-ui"
 import { CiCircleInfo } from "react-icons/ci";
 import { useState, useEffect } from "react";
@@ -22,8 +22,6 @@ type props = {
    
     title? : string, 
 
-    fromInv? : boolean,
-
     refresh? : () => void, 
 
     isEditMode? : boolean,
@@ -37,6 +35,8 @@ export const DEFAULT_JOBPOST : JobPost= {
     code : "",
     title: "",
     description: "",
+    workType : "",
+    jobCategory : "",
     
     createdBy: "",
     dateCreated : new Date(),
@@ -45,7 +45,7 @@ export const DEFAULT_JOBPOST : JobPost= {
     
 }
 
-export default function Form({ title, fromInv, isEditMode, refresh, editRowId} :props) {
+export default function Form({ title, isEditMode, refresh, editRowId} :props) {
 
     const mdParser = new MarkdownIt(/* Markdown-it options */);
    
@@ -89,7 +89,7 @@ export default function Form({ title, fromInv, isEditMode, refresh, editRowId} :
         }
     }
     
-    const genJobPostDescNow = async () =>{
+    const genJobDescNow = async () =>{
 
         if ( jobpost.title?.trim() === ""){
             toast.error("Please enter the title of the job post first");
@@ -131,8 +131,8 @@ export default function Form({ title, fromInv, isEditMode, refresh, editRowId} :
             </FieldLabel>
             <FieldLabel title="Name" className="lg:w-2/5 w-full mt-2 lg:mt-0 lg:ml-2">
                 <Input placeholder="Name" onChange={(e)=>{
-                    setJobPost({...jobpost, name : e.target.value});
-                }} value={ntb(jobpost.name)} className="w-full" icon={<CiCircleInfo className="mb-2"/>}/>
+                    setJobPost({...jobpost, title : e.target.value});
+                }} value={ntb(jobpost.title)} className="w-full" icon={<CiCircleInfo className="mb-2"/>}/>
                 </FieldLabel>
         </div>
         <div className="mt-2 mb-2 text-left">
@@ -140,7 +140,7 @@ export default function Form({ title, fromInv, isEditMode, refresh, editRowId} :
         <Button className="border border-gray-300 rounded p-1 ml-2 mb-1 w-32" disabled={generating}
         onClick={async (e)=>{
             e.preventDefault();
-            await genProdDescNow();
+            await genJobDescNow();
         }}>{generating ? <BeatLoader size={6} color="#888"/> : <>Generate By AI</>}</Button>
         <Button className="ml-4" onClick={(e)=>{
             e.preventDefault();
@@ -164,37 +164,20 @@ export default function Form({ title, fromInv, isEditMode, refresh, editRowId} :
         </FieldLabel>
         </div>
         <div className="mt-2 mb-2 text-left">
-            <FieldLabel title="JobPost Type" className="lg:w-3/5 w-full">
-                <Select value={ntb(jobpost.jobpostType)} options={JobPostTypes.map(i=>{
+            <FieldLabel title="Job Post Type" className="lg:w-3/5 w-full">
+                <Select value={ntb(jobpost.jobCategory)} options={JobCategorys.map(i=>{
                     return {value : i, label: i}
                 })} onChange={(e)=>{
-                    let selType = JobPostTypes.filter(i=>{
+                    let selCat = JobCategorys.filter(i=>{
                         return i === e.target.value;
                     });
 
-                    if ( setJobPost && selType.length > 0 ) setJobPost({...jobpost, jobpostType:selType[0]});    
+                    setJobPost({...jobpost, jobCategory:selCat[0]});    
                 }}/>          
             </FieldLabel>
         </div>
 
-        <div className="mt-2 mb-2 lg:flex text-left">
-            <FieldLabel title="Unit Price" className="lg:w-3/12 w-full">
-                <Input placeholder="Unit Price" type="number" onChange={(e)=>{
-                      if ( setJobPost) setJobPost({...jobpost, unitPrice :parseFloat(e.target.value)});
-                }} value={jobpost?.unitPrice?.toFixed(2)} className="w-full" icon={<CiCircleInfo className="mb-2"/>}/>
-            </FieldLabel>
-            {fromInv &&
-            <FieldLabel title="Invoice Qty" className="lg:w-3/12 w-full lg:ml-2">
-                <Input placeholder="Inv Qty" type="number" onChange={(e)=>{
-                     
-                }} className="w-full" icon={<CiCircleInfo className="mb-2"/>}/>
-            </FieldLabel>}
-            <FieldLabel title="Qty On Hand" className={`lg:w-3/12 w-full mt-2 lg:mt-0 lg:ml-2`}>
-                <Input placeholder="QOH" onChange={(e)=>{
-                    setJobPost({...jobpost, qoh :parseInt(e.target.value)});
-                }} value={jobpost.qoh !== null ? jobpost.qoh : ""} className="w-full" type="number" icon={<CiCircleInfo className="mb-2"/>}/>
-                </FieldLabel>
-        </div>
+      
 
         <div className="mt-2 mb-2 lg:flex">
             <Button disabled={processing} className="border border-gray-300 w-48 flex rounded justify-center bg-gray-300 dark:bg-gray-600 py-1"
