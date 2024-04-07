@@ -1,6 +1,6 @@
 {
   "name": "pix0-job-site",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -17,7 +17,8 @@
     "next-transpile-modules": "^10.0.1",
     "pix0-core-ui": "^4.0.7",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-icons": "^5.0.1"
   },
   "devDependencies": {
     "@types/node": "^20",
