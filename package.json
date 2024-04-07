@@ -1,6 +1,6 @@
 {
   "name": "pix0-job-site",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@prisma/client": "5.10.2",
+    "cuid": "^3.0.0",
+    "jsonwebtoken": "^9.0.2",
     "next": "14.1.4",
     "next-transpile-modules": "^10.0.1",
     "pix0-core-ui": "^4.0.6",
