@@ -1,0 +1,74 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+
+
+enum YesNo {
+  Y
+  N
+}
+
+// schema.prisma
+
+// User table to store user information
+model User {
+    id   String @db.VarChar(30) @id @default(cuid()) @unique
+    title              String   @db.VarChar(30) 
+    firstName          String   @db.VarChar(100) 
+    lastName           String   @db.VarChar(100) 
+    email              String               @unique
+    phoneNumber        String               @unique
+    hEmail             String               @unique
+    hPhoneNumber       String               @unique
+    googleId           String?              @unique
+    country            String?  @db.VarChar(3) 
+    dateCreated        DateTime             @default(now())
+    dateUpdated        DateTime             @updatedAt
+    GoogleCredential   GoogleCredential[]
+    UserCompany        UserCompany[]
+}
+
+
+// Table to store Google authentication tokens
+model GoogleCredential {
+    id                 String @db.VarChar(20)  @id @default(cuid())
+    userId             String @db.VarChar(30)
+    accountId          String @db.VarChar(150)
+    tokenId            String @db.Text
+    expiresAt          DateTime? 
+    refreshToken       String?
+    refreshTokenExpiry DateTime?
+    dateCreated        DateTime  @default(now())
+    dateUpdated        DateTime  @updatedAt
+    user               User      @relation(fields: [userId], references: [id])
+}
+
+
+
+model UserCompany {
+    id          String    @default(cuid()) @unique(map: "user_company_id_unique_constraint")
+    userId      String    @db.VarChar(30)
+    regNo       String?   @db.VarChar(50) 
+    name        String?   @db.VarChar(150) 
+    industry    String?   @db.VarChar(60) 
+    size        String?   @db.VarChar(60) 
+    dateCreated DateTime  @default(now())
+    dateUpdated DateTime  @updatedAt
+    user        User      @relation(fields: [userId], references: [id])
+    @@id([id, userId])
+}
+
+
