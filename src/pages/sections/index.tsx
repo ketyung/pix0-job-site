@@ -12,25 +12,14 @@ import { SessionProvider } from "next-auth/react";
 export default function Index({
     children, title, isLoggedIn }: PageProps) {
 
-        const menuItems : MenuItem[] = [{
-            title :<MenuItemView title="CRM" />, 
-            icon : <MdPeopleAlt className="ml-0.5 w-4 h-4 mt-0.5"/>,
-            link : "/apps/crm",
-            withHoverEffect : true, 
-        }, {
-            title :<MenuItemView title="Invoicing" />,
-            icon : <RiBillLine className="ml-0.5 w-4 h-4 mt-0.5"/>,
-            link : "/apps/inv",
-                    withHoverEffect : true, 
-            }, {
-                title :<MenuItemView title="Item Inventory" />,
-                icon : <MdOutlineInventory2 className="ml-0.5 w-4 h-4 mt-0.5"/>,
-                link : "/apps/item",
-                withHoverEffect : true, 
-        }]
+    const menuItems : MenuItem[] = [{
+        title :<MenuItemView title="Job Posts" />, 
+        icon : <MdPeopleAlt className="ml-0.5 w-4 h-4 mt-0.5"/>,
+        link : "/sestions/hiring",
+        withHoverEffect : true, 
+    }]
 
-    //console.log("process.env.GOOGLE_CLIENT_ID::", process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID);
-
+   
     return <SessionProvider>
             <React.StrictMode>
                 <ThemeProvider defaultTheme={{mode : "dark"}}><Layout title={title}

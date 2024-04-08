@@ -20,7 +20,7 @@ export default function Layout({children, title, description, menuItems}: props)
     const verifySess = useMemo(() => async () =>{
 
         const checkIsSignedIn = async () =>{
-            let s = (session !== undefined && session?.user !== undefined && status === 'authenticated');
+            let s = ( session !== undefined && session?.user !== undefined && status === 'authenticated');
             
             if (s) {
     
@@ -82,7 +82,4 @@ export default function Layout({children, title, description, menuItems}: props)
         pauseOnHover
         theme={theme.mode}/>
     </> ;
-
-
-    //return <AuthLayout title={title} description={description} menuItems={menuItems}>{children}</AuthLayout> ;
 };
