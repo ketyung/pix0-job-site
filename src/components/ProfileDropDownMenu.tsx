@@ -60,7 +60,7 @@ const ProfileDropdownMenu = ({className} :props) => {
 
         const session = await getSession();
 
-        if (session!== null && session !== undefined /*&& status === 'authenticated'*/) {
+        if (session!== null && session !== undefined /*&& status === 'authenticated'*/ && session.user !== undefined ) {
             signOut();
             let s = await userSignOutByGid(onError);
             
