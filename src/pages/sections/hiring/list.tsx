@@ -1,6 +1,6 @@
 import { SearchResult } from "@/models"
 import { useEffect, useState, useCallback, useMemo} from "react"
-import { getItems } from "@/service";
+import { getJobPosts } from "@/service";
 import { Pagination, Input } from "pix0-core-ui";
 import { STANDARD_RES_ROWS_PER_PAGE } from "@/models";
 import { CiSearch } from "react-icons/ci";
@@ -28,7 +28,7 @@ export default function List({reloadCount, onEdit} :props) {
 
     const refreshResult =  useMemo(() => async (searchString? : string, pageNum? : number ) => {
         setLoading(true);
-        let s = await getItems(searchString ?? searchStr, '-', '-', pageNum ?? page , rowsPerPage);
+        let s = await getJobPosts(searchString ?? searchStr, '-', '-', pageNum ?? page , rowsPerPage);
         setSearchResult(s);
         setLoading(false);
     }, [searchStr, page, rowsPerPage]);
@@ -62,9 +62,8 @@ export default function List({reloadCount, onEdit} :props) {
         <tr className="dark:bg-gray-800 bg-gray-100 border-b border-gray-300 text-xs font-bold dark:text-gray-100 text-gray-500 uppercase">
           <th className="hidden lg:inline-block text-center py-2 px-2" style={{maxWidth:"15%"}}>No.</th>
           <th className="hidden lg:inline-block px-1 text-left py-2" style={{maxWidth:"10%"}}>Code</th>
-          <th className="px-6 text-left py-2" style={{maxWidth:"35%"}}>Name</th>
-          <th className="hidden lg:inline-block px-1 text-left py-2">Type</th>
-          <th className="px-6 text-left py-2">QOH</th>
+          <th className="px-6 text-left py-2" style={{maxWidth:"35%"}}>Title</th>
+          <th className="hidden lg:inline-block px-1 text-left py-2">Category</th>
           <th className="px-6 text-left py-2 text-center">Action</th>
         </tr>
       </thead>
@@ -76,7 +75,7 @@ export default function List({reloadCount, onEdit} :props) {
       }
       { (searchResult.results.length ?? 0) > 0 &&
       <tr>
-          <th colSpan={6}>
+          <th colSpan={5}>
             <Pagination currentPage={page} totalPages={searchResult.totalPages ?? 0}
             onPageChange={async (p)=>{
                 setPage(p);

@@ -44,3 +44,6 @@ export enum JobCategory {
 
 
 export const JobCategorys = getAllEnumValues(JobCategory);
+
+
+export const STANDARD_RES_ROWS_PER_PAGE  = 10;

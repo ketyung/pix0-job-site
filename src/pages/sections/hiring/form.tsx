@@ -32,13 +32,16 @@ type props = {
 
 export const DEFAULT_JOBPOST : JobPost= {
 
+    id: "", 
     code : "",
     title: "",
     description: "",
     workType : "",
     jobCategory : "",
-    
+    location:"",
     createdBy: "",
+    salaryFrom : null,
+    salaryTo : null,
     dateCreated : new Date(),
     dateUpdated : new Date(),
     companyId : "",

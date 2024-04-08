@@ -91,7 +91,7 @@ model JobPost {
     description    String?     @db.Text
     workType       String?     @db.VarChar(30)
     jobCategory    String?     @db.VarChar(50)
-    location       String?     @db.VarChar(30)
+    location       String?     @db.VarChar(100)
     salaryFrom     Float?      @db.Float
     salaryTo       Float?      @db.Float
     createdBy      String?     @db.VarChar(30)

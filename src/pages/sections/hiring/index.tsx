@@ -1,7 +1,7 @@
 import MainIndex  from "..";
 import { Button, Drawer } from "pix0-core-ui";
 import { FiPlusCircle } from "react-icons/fi";
-import { useState } from "react";
+import { useState , useEffect, useMemo} from "react";
 import Form from "./form";
 import List from "./list";
 
@@ -12,7 +12,14 @@ export enum ViewType {
     SETTINGS = 1, 
 }
 
-export default function Index( ) {
+
+interface IndexProps {
+
+    openForm? : string, 
+}
+
+
+export default function Index({openForm }:IndexProps ) {
 
     const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -38,11 +45,24 @@ export default function Index( ) {
                 }} />
         }
     }
+
+    const setOpenFormIfNeeded =  useMemo(() => () => {
+       
+        if (openForm && openForm==='1') {
+            setDrawerOpen(true);
+        }else {
+            setDrawerOpen(false);
+        }
+    }, [openForm,setDrawerOpen]);
     
+
+    useEffect(()=>{
+        setOpenFormIfNeeded();
+    },[setOpenFormIfNeeded]);
     
     return <MainIndex title="e-Invoicing - Pix0 Application">
         <div className="text-left">
-            <h2 className="ml-2 mb-10 font-bold">Invoicing</h2>
+            <h2 className="ml-2 mb-10 font-bold">Job Posts</h2>
             <div className="mb-4 flex">
                 <Button className="mx-2 w-48 justify-center flex border pt-1 border-gray-400 rounded p-1"
                 onClick={(e)=>{
@@ -55,7 +75,7 @@ export default function Index( ) {
 
                 }}>
                     <FiPlusCircle className="mr-2 w-5 w-5 inline"/>
-                    <span className="mt-2 text-xs pt-2">Issue An Invoice</span>
+                    <span className="mt-2 text-xs pt-2">Post A Job</span>
                 </Button>
             </div>
             {switchView()}

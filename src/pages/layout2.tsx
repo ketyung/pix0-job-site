@@ -3,7 +3,7 @@ import './globals.css'
 import './fonts.css';
 import { Input, ThemeToggle } from 'pix0-core-ui';
 import FieldLabel from '@/components/FieldLabel';
-import { useSession } from "next-auth/react";
+import Link from 'next/link';
 
 type props = {
 
@@ -43,7 +43,7 @@ export default function Layout({ title, description, children} : props) {
 
     return <><header className='dark:bg-gray-800 bg-top-bar-blue dark:text-gray-100 text-gray-800 shadow-xl 
         border-width:1px dark:border-0 border border-gray-300 dark:border-gray-800 flex'>
-            <div className='bg-gray-700 rounded-full text-gray-100 py-1 px-4 text-sm font-bold m-2 hover:bg-green-900 cursor-pointer'>Post A JOB</div>
+            <Link href="/sections/hiring" className='bg-gray-700 rounded-full text-gray-100 py-1 px-4 text-sm font-bold m-2 hover:bg-green-900 cursor-pointer'>Post A JOB</Link>
             <ThemeToggle iconLightTextColor='#ffa'/>
 
         </header>

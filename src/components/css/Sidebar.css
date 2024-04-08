@@ -1,0 +1,69 @@
+.sidebar {
+    @apply w-52 h-full bg-transparent dark:text-white text-gray-700 transform transition-transform ease-in-out duration-700;
+}
+
+.sidebar-closed {
+    @apply w-0 h-full bg-transparent dark:text-white text-gray-700 transform transition-transform ease-in-out duration-700;
+}
+
+.layout.sidebar-closed .sidebar {
+    transform: translateX(-100%);
+}
+  
+.menu {
+    @apply list-none p-4 m-1;
+}
+
+.menu .menu-text {
+    @apply inline-block
+}
+
+.menu-closed {
+    @apply list-none mt-5 pt-4;
+}
+
+.menu-closed .menu-text {
+    @apply hidden
+}
+
+.menu li {
+    @apply mb-1 text-sm m-1 pl-2;
+}
+
+.menu-closed li {
+    @apply mb-4 text-sm mt-1 pr-2;
+}
+
+.sub-menu {
+    @apply list-none ml-1 p-1 mb-2;
+}
+  
+.sub-menu li {
+    @apply mb-1 text-sm p-1 pl-2;
+}
+
+.sub-menu li:hover {
+    background-color: #888;
+    color:white;
+}
+
+.sub-menu-closed {
+    @apply list-none ml-4 p-0;
+}
+  
+.sub-menu-closed li {
+    @apply mb-2 text-sm;
+}
+
+.menu .icon.rotate{
+    -moz-transition: all 0.15s linear;
+    -webkit-transition: all 0.15s linear;
+    transition: all 0.15s linear;
+}
+
+.menu .icon.rotate.down{
+    -ms-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
