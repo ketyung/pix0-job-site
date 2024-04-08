@@ -3,7 +3,7 @@ import { useThemeContext } from 'pix0-core-ui';
 import { PiSignOut } from "react-icons/pi";
 import { CgProfile } from "react-icons/cg";
 import { toast } from 'react-toastify';
-import { useSession, signOut } from 'next-auth/react';
+import { getSession, signOut } from 'next-auth/react';
 import {  userSignOutByGid } from '@/service';
 
 type props = {
@@ -13,7 +13,7 @@ type props = {
 
 const ProfileDropdownMenu = ({className} :props) => {
 
-    const { data: session, status } = useSession();
+    //const { data: session, status } = useSession();
 
     const {theme} = useThemeContext();
 
@@ -58,7 +58,9 @@ const ProfileDropdownMenu = ({className} :props) => {
   
     const logOut = async (onError?:(e : Error)=> void) =>{
 
-        if (session!== null && session !== undefined && status === 'authenticated') {
+        const session = await getSession();
+
+        if (session!== null && session !== undefined /*&& status === 'authenticated'*/) {
             signOut();
             let s = await userSignOutByGid(onError);
             

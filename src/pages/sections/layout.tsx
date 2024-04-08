@@ -4,7 +4,7 @@ import { props } from "./AuthLayout";
 import {ToastContainer} from 'react-toastify';
 import { useThemeContext } from "pix0-core-ui";
 import { useEffect, useState, useMemo } from "react";
-import { useSession } from "next-auth/react";
+import { getSession } from "next-auth/react";
 import { userSignInByGid, verifyLogin } from "@/service";
 import { JWTStorage } from "@/utils/local-storage";
 
@@ -12,15 +12,24 @@ export default function Layout({children, title, description, menuItems}: props)
         
     const {theme} = useThemeContext();
 
-    const { data: session, status } = useSession();
+    //const { data: session, status } = useSession();
 
     const [isLoggedIn, setIsLoggedIn] = useState(true);
 
  
     const verifySess = useMemo(() => async () =>{
 
+        const session = await getSession();
+
+        const hasSignedIn = () =>{
+
+            //return (session !== undefined && session?.user !== undefined && status === 'authenticated');
+            return (session !== undefined && session?.user !== undefined);
+        }
+ 
+
         const checkIsSignedIn = async () =>{
-            let s = ( session !== undefined && session?.user !== undefined && status === 'authenticated');
+            let s = hasSignedIn();
             
             if (s) {
     
@@ -42,7 +51,7 @@ export default function Layout({children, title, description, menuItems}: props)
 
         }else {
 
-             if ( session !== undefined && session !== null  && status === 'authenticated') {
+             if ( hasSignedIn()) {
             
                 let s = await checkIsSignedIn();
                     
@@ -57,7 +66,7 @@ export default function Layout({children, title, description, menuItems}: props)
             }
             
         }
-    },[setIsLoggedIn, session, status]);
+    },[setIsLoggedIn]);
 
     useEffect(()=>{
        
