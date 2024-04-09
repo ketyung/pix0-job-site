@@ -2,7 +2,7 @@ import {ToastContainer} from 'react-toastify';
 import { useThemeContext } from "pix0-core-ui";
 import 'react-toastify/dist/ReactToastify.css';
 
-export function CommonToastContainer () {
+export default function CommonToastContainer () {
     const {theme} = useThemeContext();
 
     return  <ToastContainer
