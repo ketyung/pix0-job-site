@@ -4,6 +4,7 @@ import { FiPlusCircle } from "react-icons/fi";
 import { useState , useEffect, useMemo} from "react";
 import Form from "./form";
 import List from "./list";
+import { CommonToastContainer } from "../common/CommonToastContainer";
 
 export enum ViewType {
 
@@ -91,6 +92,7 @@ export default function Index({openForm }:IndexProps ) {
                 }} isEditMode={isEditMode}/>
             </div>    
         </Drawer>
+       
     </MainIndex>
 
 }

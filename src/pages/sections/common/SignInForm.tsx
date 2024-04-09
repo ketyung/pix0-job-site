@@ -1,7 +1,7 @@
 import { Button } from "pix0-core-ui";
-import { useState } from "react";
 import { signIn } from 'next-auth/react';
 import { FaGoogle, FaLinkedin } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 export default function SignInForm() {
 
@@ -23,7 +23,8 @@ export default function SignInForm() {
         <Button className="p-1 rounded-3xl text-sm bg-blue-500 text-gray-100 w-full mx-auto"
                 onClick={async (e)=>{
                     e.preventDefault();
-                    await signIn('linkedin');
+                    //await signIn('linkedin');
+                    toast.error('Not Available Yet! Coming soon....');
                 }}>{<div className="flex p-1"><FaLinkedin className="mr-2 w-5 h-5"/>
                 Sign In With LinkedIn</div>}</Button>
         </div>
