@@ -20,7 +20,7 @@ export default NextAuth({
         
         async signIn({ account, profile }) {
           if (account !== null && account.provider === "google") {
-             //console.log("profile.is:::", profile);
+             console.log("profile.is:::", profile);
              let stat = await createGC(profile, account);
 
              return stat.status;
