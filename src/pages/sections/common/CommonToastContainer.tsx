@@ -15,5 +15,6 @@ export function CommonToastContainer () {
         pauseOnFocusLoss
         draggable
         pauseOnHover
+        style={{minWidth:"360px"}}
         theme={theme.mode}/>
 }
