@@ -132,8 +132,8 @@ export default function Form({ title, isEditMode, refresh, editRowId} :props) {
                     setJobPost({...jobpost, code: e.target.value});
                 }} value={ntb(jobpost.code)} className="w-full" icon={<CiCircleInfo className="mb-2"/>}/>
             </FieldLabel>
-            <FieldLabel title="Name" className="lg:w-2/5 w-full mt-2 lg:mt-0 lg:ml-2">
-                <Input placeholder="Name" onChange={(e)=>{
+            <FieldLabel title="Title" className="lg:w-2/5 w-full mt-2 lg:mt-0 lg:ml-2">
+                <Input placeholder="Job Title" onChange={(e)=>{
                     setJobPost({...jobpost, title : e.target.value});
                 }} value={ntb(jobpost.title)} className="w-full" icon={<CiCircleInfo className="mb-2"/>}/>
                 </FieldLabel>
@@ -167,7 +167,7 @@ export default function Form({ title, isEditMode, refresh, editRowId} :props) {
         </FieldLabel>
         </div>
         <div className="mt-2 mb-2 text-left">
-            <FieldLabel title="Job Post Type" className="lg:w-3/5 w-full">
+            <FieldLabel title="Job Category" className="lg:w-3/5 w-full">
                 <Select value={ntb(jobpost.jobCategory)} options={JobCategorys.map(i=>{
                     return {value : i, label: i}
                 })} onChange={(e)=>{

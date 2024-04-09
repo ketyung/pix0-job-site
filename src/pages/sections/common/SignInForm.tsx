@@ -6,7 +6,7 @@ import { FaGoogle, FaLinkedin } from "react-icons/fa";
 export default function SignInForm() {
 
 
-     return <div className="mx-auto p-2 min-w-60">
+     return <div className="mx-auto p-2 min-w-80">
      
 
         <div className="mt-10 mb-6">
