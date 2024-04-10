@@ -393,7 +393,7 @@ export async function genJobPostDesc (jobpostTitle : string ){
 
       try {
 
-            let data = await fetchRemote ("gai", "genJobPostDesc", jobpostTitle);
+            let data = await fetchRemote ("gai", "genJobDesc", jobpostTitle);
 
             return ( data.text );
 
