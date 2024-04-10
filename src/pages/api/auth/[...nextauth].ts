@@ -45,7 +45,7 @@ export default NextAuth({
             return newSession
         },
     },
-
+    
     pages: {
         signIn: '/api/auth/google', // Redirect to Google sign-in
     },

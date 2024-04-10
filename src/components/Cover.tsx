@@ -14,7 +14,7 @@ const Cover: React.FC<Props> = ({ visible }) => {
 
   return (
     <div className="cover">
-        <div className="loading-indicator"><BeatLoader size={10}/></div>
+        <div className="loading-indicator"><BeatLoader size={10} color="#333"/></div>
     </div>
   );
 };
