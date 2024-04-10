@@ -6,6 +6,7 @@ import { getSession } from "next-auth/react";
 import { userSignInByGid, verifyLogin } from "@/service";
 import { JWTStorage } from "@/utils/local-storage";
 import CommonToastContainer  from "./common/CommonToastContainer";
+import Cover from "@/components/Cover";
 
 export default function Layout({children, title, description, menuItems}: props) {
         
@@ -14,8 +15,11 @@ export default function Layout({children, title, description, menuItems}: props)
     const [isLoggedIn, setIsLoggedIn] = useState(true);
 
  
+    const [verifying, setVerifying] = useState(false);
+
     const verifySess = useMemo(() => async () =>{
 
+        setVerifying(true);
         const session = await getSession();
 
         const hasSignedIn = () =>{
@@ -63,7 +67,9 @@ export default function Layout({children, title, description, menuItems}: props)
             }
             
         }
-    },[setIsLoggedIn]);
+
+        setVerifying(false);
+    },[setIsLoggedIn, setVerifying]);
 
     useEffect(()=>{
        
@@ -76,6 +82,7 @@ export default function Layout({children, title, description, menuItems}: props)
     return <>{ isLoggedIn ?  
         <AuthLayout title={title} description={description} menuItems={menuItems}>{children}</AuthLayout>
         : <NonAuthLayout title={title} description={description}/>}
+        <Cover visible={verifying}/>
     <CommonToastContainer/>
     </> ;
 };
