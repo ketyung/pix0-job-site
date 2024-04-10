@@ -99,7 +99,7 @@ export default function Form({ title, isEditMode, refresh, editRowId} :props) {
             return; 
         }
         setGenerating(true);
-        let text = await genJobPostDesc(jobpost.title ?? "My First Product JobPost");
+        let text = await genJobPostDesc(jobpost.title ?? "My First Job Post Description");
         setJobPost({...jobpost, description : text});
         setGenerating(false);
     }
@@ -127,16 +127,16 @@ export default function Form({ title, isEditMode, refresh, editRowId} :props) {
         {title ?? (isEditMode ? "Edit JobPost" : "Add New JobPost")}        
         </div>
         <div className="mt-2 mb-2 lg:flex text-left">
-            <FieldLabel title="JobPost Code" className="lg:w-1/5 w-full">
-                <Input placeholder="Code" onChange={(e)=>{
-                    setJobPost({...jobpost, code: e.target.value});
-                }} value={ntb(jobpost.code)} className="w-full" icon={<CiCircleInfo className="mb-2"/>}/>
-            </FieldLabel>
-            <FieldLabel title="Title" className="lg:w-2/5 w-full mt-2 lg:mt-0 lg:ml-2">
+            <FieldLabel title="Title" className="lg:w-5/12 w-full mt-2">
                 <Input placeholder="Job Title" onChange={(e)=>{
                     setJobPost({...jobpost, title : e.target.value});
                 }} value={ntb(jobpost.title)} className="w-full" icon={<CiCircleInfo className="mb-2"/>}/>
-                </FieldLabel>
+            </FieldLabel>
+            <FieldLabel title="Job Code" className="lg:w-2/12 w-full lg:mt-2 lg:ml-2">
+                <Input placeholder="Job Code If Any" onChange={(e)=>{
+                    setJobPost({...jobpost, code: e.target.value});
+                }} value={ntb(jobpost.code)} className="w-full" icon={<CiCircleInfo className="mb-2"/>}/>
+            </FieldLabel>
         </div>
         <div className="mt-2 mb-2 text-left">
         <FieldLabel title={<div className="flex"><div className="mt-1">Description</div> 
