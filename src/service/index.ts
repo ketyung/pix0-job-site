@@ -1,6 +1,6 @@
 import { JWTStorage } from "@/utils/local-storage";
 import { SignInData, SearchResult } from "@/models";
-import { JobPost } from "@prisma/client";
+import { JobPost, UserCompany } from "@prisma/client";
 
 
 const axios = require('axios');
@@ -251,7 +251,7 @@ export async function createJobPost (jobpost : JobPost, onError? : (e : Error)=>
 
       try {
 
-            let data = await postToRemote(jobpost, "jobpost", "create");
+            let data = await postToRemote(jobpost, "jobPost", "create");
 
             return ( data.status === 1);
 
@@ -277,7 +277,7 @@ export async function updateJobPost (jobpost : JobPost, onError? : (e : Error)=>
 
       try {
 
-            let data = await postToRemote(jobpost, "jobpost", "update");
+            let data = await postToRemote(jobpost, "jobPost", "update");
 
             return ( data.status === 1);
 
@@ -310,7 +310,7 @@ export async function getJobPosts(
       try {
 
             let searchString = searchStr === '' ? '-' : searchStr;
-            let data = await fetchRemote("jobpost","search", searchString,
+            let data = await fetchRemote("jobPost","search", searchString,
             orderBy, ascOrDesc, 
             page ? `${page}` : undefined, 
             rowsPerPage ? `${rowsPerPage}` : undefined);
@@ -338,7 +338,7 @@ export async function getJobPost(id : string, onError? : (e : Error)=>void ) : P
 
       try {
 
-            let res = await fetchRemote("jobpost",id);
+            let res = await fetchRemote("jobPost",id);
 
             if( res.status === 1){
                   return res.data;
@@ -368,7 +368,7 @@ export async function deleteJobPost(id: string, onError? : (e : Error)=>void ) {
 
       try {
 
-            let data = await deleteRemote("jobpost",id);
+            let data = await deleteRemote("jobPost",id);
 
             return ( data.status === 1 && data.deleted);
 
@@ -394,6 +394,76 @@ export async function genJobPostDesc (jobpostTitle : string ){
       try {
 
             let data = await fetchRemote ("gai", "genJobDesc", jobpostTitle);
+
+            return ( data.text );
+
+      }catch(err : any) {
+            return undefined; 
+
+      }
+}
+
+
+
+
+export async function createCompany (company : UserCompany, onError? : (e : Error)=>void ){
+
+      try {
+
+            let data = await postToRemote(company, "company", "create");
+
+            return ( data.status === 1);
+
+      }catch(err : any) {
+
+            if(err.response && err.response.status === 401){
+
+                  if ( onError) {
+                        onError(new Error(`Unauthorized : ${err.response.data.error}`));
+                  }
+            }
+
+            if ( onError) {
+                  onError(new Error(`${err.response.data.error}`));
+            }
+            return false; 
+
+      }
+}
+
+
+export async function updateCompany (company : UserCompany, onError? : (e : Error)=>void ){
+
+      try {
+
+            let data = await postToRemote(company, "company", "update");
+
+            return ( data.status === 1);
+
+      }catch(err : any) {
+
+            if(err.response && err.response.status === 401){
+
+                  if ( onError) {
+                        onError(new Error(`Unauthorized : ${err.response.data.error}`));
+                  }
+            }
+
+            if ( onError) {
+                  onError(new Error(`${err.response.data.error}`));
+            }
+            return false; 
+
+      }
+}
+
+
+
+export async function genCompanyDesc (description : string ){
+
+      try {
+
+            let data = await fetchRemote ("gai", "genCompDesc", description);
 
             return ( data.text );
 

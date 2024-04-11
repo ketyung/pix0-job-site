@@ -43,6 +43,31 @@ export enum JobCategory {
 }
 
 
+enum Industry {
+    InformationTechnology = "Information Technology (IT)",
+    Healthcare = "Healthcare",
+    FinanceAndBanking = "Finance and Banking",
+    Manufacturing = "Manufacturing",
+    Retail = "Retail",
+    Automotive = "Automotive",
+    Telecommunications = "Telecommunications",
+    Education = "Education",
+    HospitalityAndTourism = "Hospitality and Tourism",
+    RealEstate = "Real Estate",
+    TransportationAndLogistics = "Transportation and Logistics",
+    Entertainment = "Entertainment",
+    EnergyAndUtilities = "Energy and Utilities",
+    Agriculture = "Agriculture",
+    Construction = "Construction",
+    Aerospace = "Aerospace",
+    Biotechnology = "Biotechnology",
+    FoodAndBeverage = "Food and Beverage",
+    MediaAndCommunications = "Media and Communications",
+    Pharmaceutical = "Pharmaceutical",
+}
+
+export const Industries = getAllEnumValues(Industry);
+
 export const JobCategorys = getAllEnumValues(JobCategory);
 
 
