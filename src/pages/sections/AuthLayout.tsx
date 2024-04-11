@@ -2,13 +2,14 @@ import Sidebar, { MenuItem } from '@/components/Sidebar';
 import '../globals.css'
 import '../fonts.css';
 import Head from 'next/head';
-import { ReactNode, useState, useEffect } from "react";
+import { ReactNode, useState, useEffect, useMemo } from "react";
 import {AiOutlineMenu} from 'react-icons/ai';
 import { ThemeProvider, ThemeToggle} from 'pix0-core-ui';
 import Logo from '@/components/Logo';
-import {Button, Drawer} from 'pix0-core-ui';
+import {Button, Drawer, Modal} from 'pix0-core-ui';
 import ProfileDropdownMenu from '@/components/ProfileDropDownMenu';
-
+import CompanyForm from "./company/form";
+import { hasCompany } from '@/service';
 
 export type props = {
 
@@ -23,10 +24,6 @@ export type props = {
   isSignedIn? : boolean, 
 
 }
-
-
-
-
 
 
 const DefaultMain = () =>{
@@ -46,12 +43,29 @@ export default function AuthLayout({children, title, description, menuItems}: pr
    
     const [drawerOpen, setDrawerOpen] = useState(false);
 
+     const [ verifyingCompany, setVerifyingCompany] = useState(false);
+
+    const [hasCreatedCompany, setHasCreatedCompany] = useState(true);
+
+
+    const verifyingHasCompany = useMemo(() => async () =>{
+        setVerifyingCompany(true);
+        let hasC = await hasCompany();
+        setHasCreatedCompany(hasC);
+        setVerifyingCompany(false);
+    },[setVerifyingCompany]); 
+
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
     };
 
 
     useEffect(() => {
+
+        setTimeout(()=>{
+            verifyingHasCompany();
+        },300);
+        
         const handleResize = () => {
           setIsSidebarOpen(window.innerWidth >= 1024);
         };
@@ -66,7 +80,9 @@ export default function AuthLayout({children, title, description, menuItems}: pr
         return () => {
             window.removeEventListener('resize', handleResize);
         };
-    }, []);
+
+     
+    }, [verifyingHasCompany]);
 
 
     return (<><Head><title>{title ?? "Pix0 Application Suite"}</title>
@@ -116,6 +132,9 @@ export default function AuthLayout({children, title, description, menuItems}: pr
                 <Sidebar menuItems={menuItems ?? []} isClose={!drawerOpen}/>
             </>}
         </Drawer>
+        <Modal maxHeight="600px" maxWidth="800px" isOpen={!hasCreatedCompany} onClose={()=>{
+            setHasCreatedCompany(true);
+        }}><CompanyForm title="Please Create A Company Profile First" minWidth="720px"/></Modal>
        
     </main>
     </ThemeProvider>
