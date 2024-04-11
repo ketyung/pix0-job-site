@@ -26,6 +26,7 @@ async function handleGet (req: NextApiRequest,  res: NextApiResponse, userId? : 
 
         const param1 = path[1];
 
+     
         if (param1!== undefined && param1 !== null ){
         
             if ( param1 === 'search'){
@@ -42,6 +43,7 @@ async function handleGet (req: NextApiRequest,  res: NextApiResponse, userId? : 
 
             }
             else if ( param1 === 'hasCompany'){
+
                 await handleUserHasCompany(res, userId);
             }
             else {
@@ -96,7 +98,7 @@ async function handleGetUserCompany ( res: NextApiResponse, id : string,  userId
         if ( ndata !== undefined && ndata !== null ){
             res.status(200).json({  data : ndata, status : 1});   
         }else {
-            res.status(404).json({  message : "Contact NOT found", status : -1});      
+            res.status(404).json({  message : "Company NOT found", status : -1});      
         }
     }
     catch(e: any){

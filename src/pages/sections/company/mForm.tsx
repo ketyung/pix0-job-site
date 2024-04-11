@@ -98,7 +98,7 @@ export default function Form({ title, refresh, minWidth} :props) {
         setGenerating(false);
     }
 
-    const moveStage = (prev? : boolean) =>{
+    const moveStage = async (prev? : boolean) =>{
 
         if ( prev) {
 
@@ -115,12 +115,15 @@ export default function Form({ title, refresh, minWidth} :props) {
                 }
             }
 
-            if ( stage === 1 ){
+            if ( stage === 2 ){
 
                 if ( isBlank(company.description)) {
                     toast.error(`Error! Please Provide Some Description Of Your Company!`);
                     return;
                 }
+
+                await saveCompanyNow();
+                return; 
             }
 
             if ( stage < 2) {
@@ -151,7 +154,47 @@ export default function Form({ title, refresh, minWidth} :props) {
                 }} value={ntb(company.regNo)} className="w-full" icon={<CiCircleInfo className="mb-2"/>}/>
             </FieldLabel>
         </div></>}
+
         {stage=== 1 && 
+        <><div className="mt-2 mb-2 text-left">
+            <FieldLabel title="Company Size">
+                <Select className="w-96" defaultValue={company.size ?? ''}
+                onChange={(e)=>{
+                    setCompany({...company, size: e.target.value});
+                }}
+                    options={[{value:"1-3",
+                        label : "1-3 Employees"},
+                        {value:"4-10",
+                        label : "4-10 Employees"},
+                        {value:"11-15",
+                        label : "11-50 Employees"},
+                        {value:"51-100",
+                        label : "51-100 Employees"},
+                        {value:"101-500",
+                        label : "101-500 Employees"},
+                        {value:"501-1000",
+                        label : "501-1000 Employees"},
+                        {value:"> 1000",
+                        label : "More Than 1000 Employees"},
+                    ]}
+                />
+            </FieldLabel>   
+        </div>
+        <div className="mt-2 mb-2 text-left">
+            <FieldLabel title="Industry" className="lg:w-3/5 w-full">
+                <Select value={ntb(company.industry)} options={Industries.map(i=>{
+                    return {value : i, label: i}
+                })} onChange={(e)=>{
+                    let selInd = Industries.filter(i=>{
+                        return i === e.target.value;
+                    });
+
+                    setCompany({...company, industry:selInd[0]});    
+                }}/>          
+            </FieldLabel>
+        </div></>
+        }
+        {stage=== 2 && 
         <div className="mt-2 mb-2 text-left">
         <FieldLabel title={<div className="flex"><div className="mt-1">Description</div> 
         <Button className="border border-gray-300 rounded p-1 ml-2 mb-1 w-32" disabled={generating}
@@ -180,63 +223,23 @@ export default function Form({ title, refresh, minWidth} :props) {
             }}/>}
         </FieldLabel>
         </div>}
-        {stage=== 2 && 
-        <><div className="mt-2 mb-2 text-left">
-            <FieldLabel title="Industry" className="lg:w-3/5 w-full">
-            <FieldLabel title="Company Size">
-                <Select className="w-96" defaultValue={company.size ?? ''}
-                onChange={(e)=>{
-                    setCompany({...company, size: e.target.value});
-                }}
-                    options={[{value:"1-3",
-                        label : "1-3 Employees"},
-                        {value:"4-10",
-                        label : "4-10 Employees"},
-                        {value:"11-15",
-                        label : "11-50 Employees"},
-                        {value:"51-100",
-                        label : "51-100 Employees"},
-                        {value:"101-500",
-                        label : "101-500 Employees"},
-                        {value:"501-1000",
-                        label : "501-1000 Employees"},
-                        {value:"> 1000",
-                        label : "More Than 1000 Employees"},
-                    ]}
-                />
-            </FieldLabel>   
-            </FieldLabel>
-        </div>
-        <div className="mt-2 mb-2 text-left">
-            <FieldLabel title="Industry" className="lg:w-3/5 w-full">
-                <Select value={ntb(company.industry)} options={Industries.map(i=>{
-                    return {value : i, label: i}
-                })} onChange={(e)=>{
-                    let selInd = Industries.filter(i=>{
-                        return i === e.target.value;
-                    });
-
-                    setCompany({...company, industry:selInd[0]});    
-                }}/>          
-            </FieldLabel>
-        </div></>
-        }
+      
 
       
 
         <div className="mt-2 mb-2 lg:flex">
 
-        { stage > 0 && <Button disabled={processing} className="p-1 rounded bg-gray-500 text-gray-100 mr-2 w-40"
-                onClick={(e)=>{
+        { stage > 0 && <Button disabled={processing} className="p-1 rounded bg-gray-500 text-gray-100 mr-2 w-64"
+                onClick={async (e)=>{
                     e.preventDefault();
                     moveStage(true);
                 }}><GrPrevious className="mr-4 inline"/> Prev</Button>}
 
-                <Button disabled={processing} className="p-1 rounded bg-gray-500 text-gray-100 w-40"
+                <Button disabled={processing} className="p-1 rounded bg-gray-500 text-gray-100 w-64"
                 onClick={async (e)=>{
                     e.preventDefault();
-                    moveStage();
-                }}>{(stage=== 2 && processing) ? <BeatLoader size={8} color="#eee"/> : <>{stage === 2 ? 'Sign Up Now' : 'Next'} 
+                    await moveStage();
+                }}>{(stage=== 2 && processing) ? <BeatLoader size={8} color="#eee"/> : <>{stage === 2 ? 'Create Company Profile' : 'Next'} 
                 <GrNext className="ml-2 inline"/></>}</Button>
           
         </div>

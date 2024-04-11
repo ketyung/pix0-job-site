@@ -43,7 +43,7 @@ export default function AuthLayout({children, title, description, menuItems}: pr
    
     const [drawerOpen, setDrawerOpen] = useState(false);
 
-     const [ verifyingCompany, setVerifyingCompany] = useState(false);
+    const [ verifyingCompany, setVerifyingCompany] = useState(false);
 
     const [hasCreatedCompany, setHasCreatedCompany] = useState(true);
 

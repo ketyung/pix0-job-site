@@ -1,9 +1,11 @@
 import MainIndex  from "..";
-import { Button, Drawer } from "pix0-core-ui";
+import { Button, Drawer, Modal } from "pix0-core-ui";
 import { FiPlusCircle } from "react-icons/fi";
 import { useState , useEffect, useMemo} from "react";
 import Form from "./form";
 import List from "./list";
+import { hasCompany } from '@/service';
+import CompanyForm from "../company/mForm";
 
 export enum ViewType {
 
@@ -31,6 +33,15 @@ export default function Index({openForm }:IndexProps ) {
 
     const [viewType, setViewType] = useState<ViewType>(ViewType.LIST);
 
+
+    const [hasCreatedCompany, setHasCreatedCompany] = useState(true);
+
+
+    const verifyingHasCompany = useMemo(() => async () =>{
+        let hasC = await hasCompany();
+        setHasCreatedCompany(hasC);
+        return hasC;
+    },[setHasCreatedCompany]); 
 
     const switchView = () =>{
 
@@ -65,14 +76,19 @@ export default function Index({openForm }:IndexProps ) {
             <h2 className="ml-2 mb-10 font-bold">Job Posts</h2>
             <div className="mb-4 flex">
                 <Button className="mx-2 w-48 justify-center flex border pt-1 border-gray-400 rounded p-1"
-                onClick={(e)=>{
+                onClick={async (e)=>{
                     e.preventDefault();
-                    setDrawerOpen(true);
-                    setIsEditMode(false);
-                    setEditRowId(undefined);
-                    if ( viewType !== ViewType.LIST)
-                        setViewType(ViewType.LIST);
 
+                    if (await verifyingHasCompany() ){
+
+                        setDrawerOpen(true);
+                        setIsEditMode(false);
+                        setEditRowId(undefined);
+                        if ( viewType !== ViewType.LIST)
+                            setViewType(ViewType.LIST);
+    
+                    }
+              
                 }}>
                     <FiPlusCircle className="mr-2 w-5 w-5 inline"/>
                     <span className="mt-2 text-xs pt-2">Post A Job</span>
@@ -91,6 +107,10 @@ export default function Index({openForm }:IndexProps ) {
                 }} isEditMode={isEditMode}/>
             </div>    
         </Drawer>
+
+        <Modal maxHeight="600px" maxWidth="800px" isOpen={!hasCreatedCompany} onClose={()=>{
+            setHasCreatedCompany(true);
+        }}><CompanyForm title="Please Create A Company Profile First" minWidth="720px"/></Modal>
        
     </MainIndex>
 

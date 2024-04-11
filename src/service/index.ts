@@ -515,6 +515,7 @@ export async function hasCompany(onError? : (e : Error)=>void ) : Promise<boolea
                   }
             }
 
+            //console.log("err::", err.response.data);
             return false; 
 
       }
