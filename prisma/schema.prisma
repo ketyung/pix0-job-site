@@ -75,6 +75,7 @@ model UserCompany {
     industry    String?   @db.VarChar(60) 
     size        String?   @db.VarChar(60) 
     logoUrl     String?   @db.VarChar(255) 
+    description String?   @db.Text 
     dateCreated DateTime  @default(now())
     dateUpdated DateTime  @updatedAt
     user        User      @relation(fields: [userId], references: [id])

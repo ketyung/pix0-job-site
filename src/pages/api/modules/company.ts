@@ -41,6 +41,9 @@ async function handleGet (req: NextApiRequest,  res: NextApiResponse, userId? : 
                     isNaN(pageNum) ? 1 : pageNum, isNaN(rowsPerPage) ? 10 : rowsPerPage);
 
             }
+            else if ( param1 === 'hasCompany'){
+                await handleUserHasCompany(res, userId);
+            }
             else {
                 await handleGetUserCompany(res,  param1, userId);
             }
@@ -88,7 +91,7 @@ async function handleGetUserCompany ( res: NextApiResponse, id : string,  userId
 
     try {
 
-        let ndata = await getUserCompany(userId ?? "");
+        let ndata = await getUserCompany(userId ?? "", id );
 
         if ( ndata !== undefined && ndata !== null ){
             res.status(200).json({  data : ndata, status : 1});   
@@ -103,6 +106,25 @@ async function handleGetUserCompany ( res: NextApiResponse, id : string,  userId
 }
 
 
+
+
+async function handleUserHasCompany ( res: NextApiResponse, userId? : string  ){
+
+    try {
+
+        let ndata = await getUserCompany(userId ?? "" );
+
+        if ( ndata !== undefined && ndata !== null ){
+            res.status(200).json({  hasCompany : true , status : 1});   
+        }else {
+            res.status(404).json({  message : "Company NOT found", status : -1});      
+        }
+    }
+    catch(e: any){
+        console.log("e::",e);
+        res.status(422).send({error: e.message, status: -1});
+    }
+}
 
 
 async function handlePost (req: NextApiRequest,  res: NextApiResponse, userId? : string) {

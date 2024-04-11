@@ -3,16 +3,21 @@ import prisma from '../db';
 import { isBlank } from "@/utils";
 import { SearchResult } from "@/models";
 
-export async function getUserCompany(userId : string ) :Promise<UserCompany|null> {
+export async function getUserCompany(userId : string, companyId? : string  ) :Promise<UserCompany|null> {
     try {
   
-        const userCompany = await prisma.userCompany.findFirst({
-          where: {
+
+        let wh : any = {
             userId : userId,
-          },
+        };
+
+        if ( companyId) {
+            wh = {...wh, id: companyId};
+        }
+        const userCompany = await prisma.userCompany.findFirst({
+          where: wh,
         });
     
-        
         return userCompany ;
     } 
     catch (error) {
