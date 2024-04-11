@@ -459,6 +459,67 @@ export async function updateCompany (company : UserCompany, onError? : (e : Erro
 
 
 
+export async function getCompany(id : string, onError? : (e : Error)=>void ) : Promise<UserCompany|undefined>{
+
+      try {
+
+            let res = await fetchRemote("company",id);
+
+            if( res.status === 1){
+                  return res.data;
+            }else {
+                  if ( onError) {
+                        onError(new Error('Contact NOT found!'));
+                  }
+                  return undefined;
+            }
+
+      }catch(err : any) {
+
+            if(err.response && err.response.status === 401){
+
+                  if ( onError) {
+                        onError(new Error(`Unauthorized : ${err.message}`));
+                  }
+            }
+
+            return undefined; 
+
+      }
+
+}
+
+
+
+export async function hasCompany(onError? : (e : Error)=>void ) : Promise<boolean>{
+
+      try {
+
+            let res = await fetchRemote("company","hasCompany");
+
+            if( res.status === 1){
+                  return res.hasCompany === 'true';
+            }else {
+                  if ( onError) {
+                        onError(new Error('Company NOT found!'));
+                  }
+                  return false;
+            }
+
+      }catch(err : any) {
+
+            if(err.response && err.response.status === 401){
+
+                  if ( onError) {
+                        onError(new Error(`Unauthorized : ${err.message}`));
+                  }
+            }
+
+            return false; 
+
+      }
+
+}
 export async function genCompanyDesc (description : string ){
 
       try {

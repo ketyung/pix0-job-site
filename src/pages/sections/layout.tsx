@@ -3,8 +3,10 @@ import NonAuthLayout from "./NonAuthLayout";
 import { props } from "./AuthLayout";
 import { useEffect, useState, useMemo } from "react";
 import { getSession } from "next-auth/react";
-import { userSignInByGid, verifyLogin } from "@/service";
+import { userSignInByGid, verifyLogin, hasCompany } from "@/service";
 import { JWTStorage } from "@/utils/local-storage";
+import { Modal } from "pix0-core-ui";
+import CompanyForm from "./company/form";
 import CommonToastContainer  from "./common/CommonToastContainer";
 import Cover from "@/components/Cover";
 
@@ -16,6 +18,18 @@ export default function Layout({children, title, description, menuItems}: props)
 
  
     const [verifying, setVerifying] = useState(false);
+
+    const [ verifyingCompany, setVerifyingCompany] = useState(false);
+
+    const [hasCreatedCompany, setHasCreatedCompany] = useState(true);
+
+    const verifyingHasCompany = useMemo(() => async () =>{
+        setVerifyingCompany(true);
+        let hasC = await hasCompany();
+        setHasCreatedCompany(hasC);
+        setVerifyingCompany(false);
+    },[setVerifyingCompany]); 
+
 
     const verifySess = useMemo(() => async () =>{
 
@@ -76,13 +90,19 @@ export default function Layout({children, title, description, menuItems}: props)
         //setTimeout(()=>{
         verifySess();
         //}, 2000);
+        setTimeout(()=>{
+            verifyingHasCompany();
+        }, 300);
                 
-    },[verifySess]);
+    },[verifySess, verifyingHasCompany]);
 
     return <>{ isLoggedIn ?  
         <AuthLayout title={title} description={description} menuItems={menuItems}>{children}</AuthLayout>
         : <NonAuthLayout title={title} description={description}/>}
         <Cover visible={verifying}/>
+        <Modal maxHeight="600px" maxWidth="800px" isOpen={!hasCreatedCompany} onClose={()=>{
+            setHasCreatedCompany(true);
+        }}><CompanyForm title="Please Create A Company Profile First" minWidth="720px"/></Modal>
     <CommonToastContainer/>
     </> ;
 };

@@ -1,5 +1,5 @@
 import FieldLabel from "@/components/FieldLabel"
-import { JobCategorys } from "@/models"
+import { Industries } from "@/models"
 import { Select, Input, TextArea, Button } from "pix0-core-ui"
 import { CiCircleInfo } from "react-icons/ci";
 import { useState, useEffect } from "react";
@@ -14,7 +14,7 @@ import MdEditor from 'react-markdown-editor-lite';
 // import style manually
 import 'react-markdown-editor-lite/lib/index.css';
 import MarkdownIt from 'markdown-it';
-import { createCompany, updateCompany, genCompanyDesc } from "@/service";
+import { createCompany, updateCompany, genCompanyDesc, getCompany } from "@/service";
 
 
 type props = {
@@ -27,6 +27,8 @@ type props = {
     isEditMode? : boolean,
 
     editRowId? : string, 
+
+    minWidth? : string, 
 }
 
 
@@ -45,7 +47,7 @@ export const DEFAULT_COMPANY :  UserCompany = {
 
 }
 
-export default function Form({ title, isEditMode, refresh, editRowId} :props) {
+export default function Form({ title, isEditMode, refresh, editRowId, minWidth} :props) {
 
     const mdParser = new MarkdownIt(/* Markdown-it options */);
    
@@ -107,9 +109,9 @@ export default function Form({ title, isEditMode, refresh, editRowId} :props) {
 
             getCompany(editRowId, (e)=>{
                 toast.error(e.message);
-            } ).then (i=>{
-                if ( i ){
-                    setCompany(i);
+            } ).then (c=>{
+                if ( c ){
+                    setCompany(c);
                 }
             });
         }else {
@@ -119,20 +121,21 @@ export default function Form({ title, isEditMode, refresh, editRowId} :props) {
     },[editRowId,isEditMode]);
 
 
-    return <div className="mt-2 border border-gray-300 rounded p-2 w-full lg:mb-2 mb-20">
+    return <div style={minWidth? {minWidth: minWidth} : undefined} 
+    className="mt-2 border border-gray-300 rounded p-2 w-full lg:mb-2 mb-20">
         <div className="mt-2 mb-2 text-left p-1 font-bold">
         {title ?? (isEditMode ? "Edit Company" : "Add New Company")}        
         </div>
         <div className="mt-2 mb-2 lg:flex text-left">
-            <FieldLabel title="Title" className="lg:w-5/12 w-full mt-2">
-                <Input placeholder="Job Title" onChange={(e)=>{
-                    setCompany({...company, title : e.target.value});
-                }} value={ntb(company.title)} className="w-full" icon={<CiCircleInfo className="mb-2"/>}/>
+            <FieldLabel title="Name" className="lg:w-7/12 w-full mt-2">
+                <Input placeholder="Company Name" onChange={(e)=>{
+                    setCompany({...company, name : e.target.value});
+                }} value={ntb(company.name)} className="w-full" icon={<CiCircleInfo className="mb-2"/>}/>
             </FieldLabel>
-            <FieldLabel title="Job Code" className="lg:w-2/12 w-full lg:mt-2 lg:ml-2">
-                <Input placeholder="Job Code If Any" onChange={(e)=>{
-                    setCompany({...company, code: e.target.value});
-                }} value={ntb(company.code)} className="w-full" icon={<CiCircleInfo className="mb-2"/>}/>
+            <FieldLabel title="Reg. No" className="lg:w-4/12 w-full lg:mt-2 lg:ml-2">
+                <Input placeholder="Company Reg No If Any" onChange={(e)=>{
+                    setCompany({...company, regNo: e.target.value});
+                }} value={ntb(company.regNo)} className="w-full" icon={<CiCircleInfo className="mb-2"/>}/>
             </FieldLabel>
         </div>
         <div className="mt-2 mb-2 text-left">
@@ -140,16 +143,16 @@ export default function Form({ title, isEditMode, refresh, editRowId} :props) {
         <Button className="border border-gray-300 rounded p-1 ml-2 mb-1 w-32" disabled={generating}
         onClick={async (e)=>{
             e.preventDefault();
-            await genJobDescNow();
+            await genCompanyDescNow();
         }}>{generating ? <BeatLoader size={6} color="#888"/> : <>Generate By AI</>}</Button>
         <Button className="ml-4" onClick={(e)=>{
             e.preventDefault();
             setViewMarkDown(!viewMarkDown);  
-        }}>{viewMarkDown ? <CiText  title="Change Back To Plain Text Editor" className="w-5 h-5"/> 
-        : <BsMarkdown title="Edit In Mark Down Editor" className="w-5 h-5"/>}</Button>
+        }}>{viewMarkDown ? <CiText  name="Change Back To Plain Text Editor" className="w-5 h-5"/> 
+        : <BsMarkdown name="Edit In Mark Down Editor" className="w-5 h-5"/>}</Button>
         
         </div>} className="lg:w-4/5 w-full">
-            { viewMarkDown ? <MdEditor value={ntb(company.description)} style={{ height: '200px' }} 
+            { viewMarkDown ? <MdEditor value={ntb(company.description)} style={{ height: '300px' }} 
             renderHTML={text => mdParser.render(text)} onChange={(e)=>{
                 setCompany({...company, description : e.text});
             }} view={{
@@ -164,15 +167,15 @@ export default function Form({ title, isEditMode, refresh, editRowId} :props) {
         </FieldLabel>
         </div>
         <div className="mt-2 mb-2 text-left">
-            <FieldLabel title="Job Category" className="lg:w-3/5 w-full">
-                <Select value={ntb(company.jobCategory)} options={JobCategorys.map(i=>{
+            <FieldLabel title="Industry" className="lg:w-3/5 w-full">
+                <Select value={ntb(company.industry)} options={Industries.map(i=>{
                     return {value : i, label: i}
                 })} onChange={(e)=>{
-                    let selCat = JobCategorys.filter(i=>{
+                    let selInd = Industries.filter(i=>{
                         return i === e.target.value;
                     });
 
-                    setCompany({...company, jobCategory:selCat[0]});    
+                    setCompany({...company, industry:selInd[0]});    
                 }}/>          
             </FieldLabel>
         </div>
