@@ -8,7 +8,7 @@ import { ThemeProvider, ThemeToggle} from 'pix0-core-ui';
 import Logo from '@/components/Logo';
 import {Button, Drawer, Modal} from 'pix0-core-ui';
 import ProfileDropdownMenu from '@/components/ProfileDropDownMenu';
-import CompanyForm from "./company/form";
+import CompanyForm from "./company/mForm";
 import { hasCompany } from '@/service';
 
 export type props = {
@@ -65,7 +65,7 @@ export default function AuthLayout({children, title, description, menuItems}: pr
         setTimeout(()=>{
             verifyingHasCompany();
         },300);
-        
+
         const handleResize = () => {
           setIsSidebarOpen(window.innerWidth >= 1024);
         };

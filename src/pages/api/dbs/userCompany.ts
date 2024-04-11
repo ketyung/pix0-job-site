@@ -2,6 +2,7 @@ import { UserCompany } from "@prisma/client";
 import prisma from '../db';
 import { isBlank } from "@/utils";
 import { SearchResult } from "@/models";
+import cuid from "cuid";
 
 export async function getUserCompany(userId : string, companyId? : string  ) :Promise<UserCompany|null> {
     try {
@@ -37,13 +38,15 @@ export async function createCompany(userId: string,company  : UserCompany) {
 
     try {
 
-        let nComp : any = {...company, userId : userId, dateCreated : new Date()};
+        const nid = cuid();
+
+        let nComp : any = {...company, id: nid, userId : userId, dateCreated : new Date()};
 
         let newCompany = await prisma.userCompany.create({data: nComp});
 
-        const cuid = newCompany.id;
+        const nCid = newCompany.id;
 
-        return {cuid : cuid, status : 1}; 
+        return {cuid : nCid, status : 1}; 
 
     }
     catch(e : any){
