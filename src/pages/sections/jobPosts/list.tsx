@@ -73,15 +73,22 @@ export default function List({reloadCount, onEdit} :props) {
                     return <Row row={r} key={`ItemRow_${i}`} index={(i+1) + ((page -1) * rowsPerPage) } refresh={refreshResult} onEdit={onEdit}/>
             })
       }
+      { (searchResult.results.length ?? 0) === 0 &&
+      <tr>
+        <td colSpan={5} className="text-center">
+          <div className="mt-2 text-gray-400 p-2">You Have NOT Posted Any Job Yet</div>
+        </td>
+      </tr>
+      }
       { (searchResult.results.length ?? 0) > 0 &&
       <tr>
-          <th colSpan={5}>
+          <td colSpan={5}>
             <Pagination currentPage={page} totalPages={searchResult.totalPages ?? 0}
             onPageChange={async (p)=>{
                 setPage(p);
                 await refreshResult(searchStr, p);
             }} total={searchResult.total}/>
-          </th>
+          </td>
       </tr>}
       </tbody>
     </table>
