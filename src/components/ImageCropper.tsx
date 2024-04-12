@@ -24,7 +24,7 @@ interface ImageCropperProps {
 
 const ImageCropper = ({ imageSrc, aspectRatio = 1 / 1, setCroppedImage,onClose, cropShape = 'round' } : ImageCropperProps) => {
   
-  const [image, setImage] = useState(imageSrc); // The image source
+  const [image] = useState(imageSrc); // The image source
 
   const [crop, setCrop] = useState({ x: 0, y: 0 }); // Initial crop position
   
