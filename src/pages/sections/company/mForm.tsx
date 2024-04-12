@@ -20,7 +20,8 @@ import { GrNext, GrPrevious } from "react-icons/gr";
 import ProfileImage from "@/components/ProfileImage";
 import DndUploader from "@/components/DndUploader";
 import ImageCropper from "@/components/ImageCropper";
-
+import { getSession } from "next-auth/react";
+import { sha256 } from "@/utils/enc";
 
 type props = {
 
@@ -76,6 +77,7 @@ export default function Form({ title, refresh, minWidth} :props) {
             
         }
 
+      
         if (isBlank(company?.name) ){
             toast.error(`Company Name Must NOT be blank!`);
             return ;
@@ -88,7 +90,9 @@ export default function Form({ title, refresh, minWidth} :props) {
         if ( logoImageChanged && company.logoUrl!== undefined && company.logoUrl !== null) {
 
             //console.log("logoUrl::", company.logoUrl);
-            let upe= await singleUpload(company.logoUrl, "test");
+            let sess = await getSession();
+
+            let upe= await singleUpload(company.logoUrl, `${sha256(sess?.user?.name ?? "-test-")}-`, "logos");
             if ( upe instanceof Error){
                 let eMesg = `Error uploading logo: ${upe.message}`;
                 toast.error(eMesg);
@@ -106,7 +110,7 @@ export default function Form({ title, refresh, minWidth} :props) {
 
         setProcessing(false);
         if ( n ){
-            toast.info( 'New compnay profile created successfully!');
+            toast.info( 'New company profile created successfully!');
             if ( refresh) {
                 refresh();
             }

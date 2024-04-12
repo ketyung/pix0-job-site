@@ -1,5 +1,5 @@
 import { JWTStorage } from "@/utils/local-storage";
-import { SignInData, SearchResult } from "@/models";
+import { SignInData, SearchResult, CloudParam } from "@/models";
 import { JobPost, UserCompany } from "@prisma/client";
 
 
@@ -498,7 +498,7 @@ export async function hasCompany(onError? : (e : Error)=>void ) : Promise<boolea
             let res = await fetchRemote("company","hasCompany");
 
             if( res.status === 1){
-                  return res.hasCompany === 'true';
+                  return res.hasCompany ;
             }else {
                   if ( onError) {
                         onError(new Error('Company NOT found!'));
@@ -533,4 +533,36 @@ export async function genCompanyDesc (description : string ){
             return undefined; 
 
       }
+}
+
+
+
+export async function getCloudParams( onError? : (e : Error)=>void ) : Promise<CloudParam[]|undefined>{
+
+      try {
+
+            let res = await fetchRemote("cprm","getCloudParams");
+
+            if( res.status === 1){
+                  return res.data;
+            }else {
+                  if ( onError) {
+                        onError(new Error('Contact NOT found!'));
+                  }
+                  return undefined;
+            }
+
+      }catch(err : any) {
+
+            if(err.response && err.response.status === 401){
+
+                  if ( onError) {
+                        onError(new Error(`Unauthorized : ${err.message}`));
+                  }
+            }
+
+            return undefined; 
+
+      }
+
 }

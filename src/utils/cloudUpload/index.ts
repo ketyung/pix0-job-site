@@ -1,18 +1,19 @@
 import { CloudParam } from "@/models";
 import { randomInt, shortenStringTo } from "../";
+import { getCloudParams } from "@/service";
 const CryptoJS = require('crypto-js');
 
 export const singleUpload = async ( data_url : string,
-    creator : string): Promise<string|Error> =>{
+    creator : string, subFolder? : string ): Promise<string|Error> =>{
 
-    let prms = getAllCloudParams();
+    let prms =  await getCloudParamsFss(); //getAllCloudParams();
     //console.log("prms::", prms);
     if ( prms ){
 
         let prm = prms[ randomInt(0, prms.length -1)];
       
         return await singleUploadNow({data_url : data_url, cloudName : prm.name, api: prm.api_key,creator: creator,
-        upload_folder : prm.upload_folder, secret_key : prm.secret});
+        upload_folder : `${prm.upload_folder}${subFolder ? `/${subFolder}` : ''}`, secret_key : prm.secret});
     }
     else {
 
@@ -100,7 +101,19 @@ const shaSignature = ( api_key : string, folder : string ,pub_id : string, tags:
 }
 
 
+
+const getCloudParamsFss = async () : Promise<CloudParam[]|undefined> =>{
+
+    try {
+        return await getCloudParams();
+    }catch(e :any){
+
+        return undefined;
+    }
+}
+
 // refer here https://github.com/ketyung/pix0
+/*
 const getAllCloudParams = () : CloudParam[]|undefined =>{
 
     let params = process.env.NEXT_PUBLIC_CLOUDINARY_PARAMS;
@@ -109,4 +122,4 @@ const getAllCloudParams = () : CloudParam[]|undefined =>{
         let prms = JSON.parse(params) as CloudParam[];
         return prms;
     }
-}
+}*/
