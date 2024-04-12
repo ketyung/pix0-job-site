@@ -1,4 +1,17 @@
 // next.config.js
 const withTM = require('next-transpile-modules')(['pix0-core-ui']); // pass the modules you would like to see transpiled
 
-module.exports = withTM({});
+module.exports = withTM({
+
+    images: {
+        remotePatterns: [
+          {
+            protocol: 'https',
+            hostname: 'res.cloudinary.com',
+            port: '',
+            pathname: '/**',
+          },
+        ],
+      },
+
+});

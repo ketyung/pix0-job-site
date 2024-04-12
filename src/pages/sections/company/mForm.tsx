@@ -1,5 +1,5 @@
 import FieldLabel from "@/components/FieldLabel"
-import { Industries, Industry } from "@/models"
+import { Industries, Industry, CompanySizes } from "@/models"
 import { Select, Input, TextArea, Button, Drawer } from "pix0-core-ui"
 import { CiCircleInfo } from "react-icons/ci";
 import { useState } from "react";
@@ -96,7 +96,6 @@ export default function Form({ title, refresh, minWidth} :props) {
             if ( upe instanceof Error){
                 let eMesg = `Error uploading logo: ${upe.message}`;
                 toast.error(eMesg);
-                console.log(eMesg);
                 setProcessing(false);
                 return;
             }else {
@@ -208,21 +207,7 @@ export default function Form({ title, refresh, minWidth} :props) {
                 onChange={(e)=>{
                     setCompany({...company, size: e.target.value});
                 }}
-                    options={[{value:"1-3",
-                        label : "1-3 Employees"},
-                        {value:"4-10",
-                        label : "4-10 Employees"},
-                        {value:"11-15",
-                        label : "11-50 Employees"},
-                        {value:"51-100",
-                        label : "51-100 Employees"},
-                        {value:"101-500",
-                        label : "101-500 Employees"},
-                        {value:"501-1000",
-                        label : "501-1000 Employees"},
-                        {value:"> 1000",
-                        label : "More Than 1000 Employees"},
-                    ]}
+                    options={CompanySizes}
                 />
             </FieldLabel>   
         </div>

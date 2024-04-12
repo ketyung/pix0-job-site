@@ -21,15 +21,15 @@ export async function handler(req: NextApiRequest, res: NextApiResponse, userId?
 
 async function handleGet (req: NextApiRequest,  res: NextApiResponse, userId? : string ) {
     const { path } = req.query;
-
+        
     if (Array.isArray(path) && path.length > 1) {   
 
         const param1 = path[1];
 
-        //console.log("path::",path);
-
+           
         if (param1!== undefined && param1 !== null ){
-        
+            //console.log("xxxxx.get.user.company::", userId, param1);
+     
             if ( param1 === 'search'){
                 let keyword = path[2];
                 let orderBy = path[3];
@@ -47,9 +47,13 @@ async function handleGet (req: NextApiRequest,  res: NextApiResponse, userId? : 
 
                 await handleUserHasCompany(res, userId);
             }
-            else if ( param1 === 'companyProfle'){ 
-                console.log("get.user.company::", userId, param1);
+            else if ( param1 === 'companyProfile'){ 
+                
                 await handleGetUserCompany(res, userId );
+            }else {
+          
+                await handleGetUserCompany(res, userId, param1);
+          
             }
      
         }
@@ -96,7 +100,7 @@ async function handleGetUserCompany ( res: NextApiResponse,userId? : string , id
     try {
 
         let ndata = await getUserCompany(userId ?? "", id );
-        console.log("ndata:::",ndata);
+        //console.log("ndata:::",ndata);
         if ( ndata !== undefined && ndata !== null ){
             res.status(200).json({  data : ndata, status : 1});   
         }else {

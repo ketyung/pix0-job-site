@@ -462,12 +462,10 @@ export async function updateCompany (company : UserCompany, onError? : (e : Erro
 export async function getCompany(id? : string, onError? : (e : Error)=>void ) : Promise<UserCompany|undefined>{
 
       try {
-
-           
+            
             let res = await fetchRemote("company", "companyProfile", id);
 
-            console.log("get.company::",res);
-            if( res.status === 1){
+             if( res.status === 1){
                   return res.data;
             }else {
                   if ( onError) {

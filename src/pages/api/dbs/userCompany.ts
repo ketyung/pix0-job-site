@@ -70,7 +70,7 @@ export async function updateCompany(userId: string,userCompany : UserCompany) {
      
       let wh :any =  {
           userId : userId, 
-          companyId : userCompany?.id
+          id : userCompany?.id
       };
               
       const existingUserCompany = await prisma.userCompany.findFirst({
