@@ -122,10 +122,10 @@ const destroyNow = async (param : {pubId? : string, cloudName? : string, api? :s
 
         var fd = new FormData();
         fd.append("api_key", signData.api_key );
-        fd.append("folder", signData.folder);
+        //fd.append("folder", signData.folder);
         fd.append('public_id', signData.public_id);
         //fd.append('tags', signData.tags ); // Optional - add tag for image admin in Cloudinary
-        //fd.append("timestamp", signData.timestamp);
+        fd.append("timestamp", signData.timestamp);
        
         fd.append("signature", signData.signature);
        // fd.append('file', param.data_url);
@@ -187,7 +187,9 @@ const shaSignature2 = ( api_key : string, folder : string ,pub_id : string, tags
 
     //let pubid = `${pub_id}${tt}`;
 
-    let s = `folder=${folder}&public_id=${pub_id}${secret_key}`;
+    //let pubid = `${pub_id}${tt}`;
+
+    let s = `public_id=${pub_id}&timestamp=${timestamp}${secret_key}`;
 
     console.log("s::", s);
 
