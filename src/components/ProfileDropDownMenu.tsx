@@ -5,6 +5,9 @@ import { CgProfile } from "react-icons/cg";
 import { toast } from 'react-toastify';
 import { getSession, signOut } from 'next-auth/react';
 import {  userSignOutByGid } from '@/service';
+import { GoOrganization } from "react-icons/go";
+import { Modal} from 'pix0-core-ui';
+import CompanyForm from '../pages/sections/company/form';
 
 type props = {
 
@@ -18,6 +21,8 @@ const ProfileDropdownMenu = ({className} :props) => {
     const {theme} = useThemeContext();
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+    const [companyProfileOpen, setCompanyProfileOpen] = useState(false);
 
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
@@ -86,12 +91,23 @@ const ProfileDropdownMenu = ({className} :props) => {
             <CgProfile className={`w-5 h-5 mt-1 ${theme.mode === 'dark' ? 'text-gray-100' : 'text-gray-600'}`}/>
         </button>
         <ul style={menuStyles}>
-            <li style={listItemStyles} className='cursor-pointer flex w-full text-sm hover:bg-gray-300 dark:hover:bg-gray-500'><CgProfile className='inline w-4 h-4 mr-2 mt-1'/>Profile</li>
+            <li style={listItemStyles} className='cursor-pointer flex w-full text-sm hover:bg-gray-300 dark:hover:bg-gray-500'>
+                <CgProfile className='inline w-4 h-4 mr-2 mt-1'/>User Profile</li>
+            <li style={listItemStyles} className='cursor-pointer flex w-full text-sm hover:bg-gray-300 dark:hover:bg-gray-500'
+             onClick={async ()=>{
+                setCompanyProfileOpen(true);
+            }}><GoOrganization className='inline w-4 h-4 mr-2 mt-1'/>Company Profile</li>
             <li style={listItemStyles} className='cursor-pointer flex w-full text-sm hover:bg-gray-300 dark:hover:bg-gray-500'
             onClick={async ()=>{
                 await signOutNow();
             }}><PiSignOut className='inline w-4 h-4 mr-2 mt-1'/>Sign Out</li>
         </ul>
+
+        <Modal isOpen={companyProfileOpen} maxWidth='800px' maxHeight='800px' onClose={()=>{
+            setCompanyProfileOpen(false);
+        }}>
+            <CompanyForm isEditMode={companyProfileOpen} minWidth='720px'/>
+        </Modal>
        
         </div>
     );

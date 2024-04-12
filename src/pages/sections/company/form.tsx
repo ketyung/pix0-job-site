@@ -2,7 +2,7 @@ import FieldLabel from "@/components/FieldLabel"
 import { Industries } from "@/models"
 import { Select, Input, TextArea, Button, Drawer } from "pix0-core-ui"
 import { CiCircleInfo } from "react-icons/ci";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { UserCompany } from "@prisma/client";
 import { isBlank } from "@/utils";
 import { toast } from "react-toastify";
@@ -109,22 +109,33 @@ export default function Form({ title, isEditMode, refresh, editRowId, minWidth} 
         setGenerating(false);
     }
 
-    useEffect(()=>{
+    const refreshProfile =  useMemo(() => async () => {
+        
+        if ( isEditMode) {
 
-        if (isEditMode && editRowId) {
+            console.log("c::isEdm::", isEditMode);
+            try {
 
-            getCompany(editRowId, (e)=>{
-                toast.error(e.message);
-            } ).then (c=>{
-                if ( c ){
+                let c = await getCompany(editRowId);
+                console.log("c::",c, isEditMode);
+    
+                if ( c!== undefined)
                     setCompany(c);
-                }
-            });
+        
+            }
+            catch(e: any){
+                toast.error(e.message);
+            }
         }else {
             setCompany(DEFAULT_COMPANY);
         }
+      
+    }, [isEditMode, editRowId]);
 
-    },[editRowId,isEditMode]);
+
+    useEffect(()=>{
+        refreshProfile();
+    },[refreshProfile]);
 
 
     return <div style={minWidth? {minWidth: minWidth} : undefined} 

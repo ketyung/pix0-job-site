@@ -26,7 +26,8 @@ async function handleGet (req: NextApiRequest,  res: NextApiResponse, userId? : 
 
         const param1 = path[1];
 
-     
+        //console.log("path::",path);
+
         if (param1!== undefined && param1 !== null ){
         
             if ( param1 === 'search'){
@@ -46,8 +47,9 @@ async function handleGet (req: NextApiRequest,  res: NextApiResponse, userId? : 
 
                 await handleUserHasCompany(res, userId);
             }
-            else {
-                await handleGetUserCompany(res,  param1, userId);
+            else if ( param1 === 'companyProfle'){ 
+                console.log("get.user.company::", userId, param1);
+                await handleGetUserCompany(res, userId );
             }
      
         }
@@ -89,12 +91,12 @@ async function handleGetUserCompanies (
 }
 
 
-async function handleGetUserCompany ( res: NextApiResponse, id : string,  userId? : string  ){
+async function handleGetUserCompany ( res: NextApiResponse,userId? : string , id? : string ){
 
     try {
 
         let ndata = await getUserCompany(userId ?? "", id );
-
+        console.log("ndata:::",ndata);
         if ( ndata !== undefined && ndata !== null ){
             res.status(200).json({  data : ndata, status : 1});   
         }else {
