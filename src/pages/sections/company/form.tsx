@@ -207,7 +207,7 @@ export default function Form({ title, isEditMode, refresh, editRowId, minWidth} 
         : <BsMarkdown name="Edit In Mark Down Editor" className="w-5 h-5"/>}</Button>
         
         </div>} className="lg:w-4/5 w-full">
-            { viewMarkDown ? <MdEditor value={ntb(company.description)} style={{ height: '300px', width:"720px" }} 
+            { viewMarkDown ? <MdEditor value={ntb(company.description)} style={{ height: '200px', width:"720px" }} 
             renderHTML={text => mdParser.render(text)} onChange={(e)=>{
                 setCompany({...company, description : e.text});
             }} view={{
@@ -223,7 +223,7 @@ export default function Form({ title, isEditMode, refresh, editRowId, minWidth} 
         </div>
         <div className="mt-2 mb-2 text-left">
             <FieldLabel title="Company Size">
-                <Select className="w-96" defaultValue={company.size ?? ''}
+                <Select className="w-96" value={company.size ?? ''}
                 onChange={(e)=>{
                     setCompany({...company, size: e.target.value});
                 }}
@@ -254,7 +254,7 @@ export default function Form({ title, isEditMode, refresh, editRowId, minWidth} 
                 await saveCompanyNow();
 
             }}>
-             {processing ? <BeatLoader size={8} color="#ddd"/> :  <>{!isEditMode ? "Create Company" : "Update Company"}</>}
+             {processing ? <BeatLoader size={8} color="#999"/> :  <>{!isEditMode ? "Create Company" : "Update Company"}</>}
             </Button>
         </div>
 
