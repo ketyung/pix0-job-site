@@ -6,6 +6,7 @@ export const singleUpload = async ( data_url : string,
     creator : string): Promise<string|Error> =>{
 
     let prms = getAllCloudParams();
+    //console.log("prms::", prms);
     if ( prms ){
 
         let prm = prms[ randomInt(0, prms.length -1)];
@@ -33,13 +34,15 @@ const singleUploadNow = async (param : {data_url : string, cloudName? : string, 
         param.secret_key ?? "");
     
 
-        var url = process.env.CLOUD_UPLOAD_URL;
+        var url = process.env.NEXT_PUBLIC_CLOUD_UPLOAD_URL;
 
         if ( url === undefined ){
             return new Error('Undefined cloud upload URL!!');
         }
 
-        url = url.replace("cloudName",param.cloudName ?? "");
+        url = url.replace(":cloud_name",param.cloudName ?? "");
+
+        //console.log("url::", url);
 
         var fd = new FormData();
         fd.append("api_key", signData.api_key );
@@ -100,7 +103,7 @@ const shaSignature = ( api_key : string, folder : string ,pub_id : string, tags:
 // refer here https://github.com/ketyung/pix0
 const getAllCloudParams = () : CloudParam[]|undefined =>{
 
-    let params = process.env.CLOUDINARY_PARAMS;
+    let params = process.env.NEXT_PUBLIC_CLOUDINARY_PARAMS;
     if ( params ){
 
         let prms = JSON.parse(params) as CloudParam[];

@@ -3,6 +3,7 @@ import { Industries, Industry } from "@/models"
 import { Select, Input, TextArea, Button, Drawer } from "pix0-core-ui"
 import { CiCircleInfo } from "react-icons/ci";
 import { useState } from "react";
+import { singleUpload } from "@/utils/cloudUpload";
 import { UserCompany } from "@prisma/client";
 import { isBlank } from "@/utils";
 import { toast } from "react-toastify";
@@ -80,7 +81,22 @@ export default function Form({ title, refresh, minWidth} :props) {
         
         setProcessing(true);
 
-        let n = await createCompany(company, (e)=>{
+        let newComp = {...company};
+
+        if ( logoImageChanged && company.logoUrl!== undefined && company.logoUrl !== null) {
+            let upe= await singleUpload(company.logoUrl, "test");
+            if ( upe instanceof Error){
+                let eMesg = `Error uploading logo: ${upe.message}`;
+                toast.error(eMesg);
+                console.log(eMesg);
+                setProcessing(false);
+                return;
+            }else {
+                newComp = { ...newComp, logoUrl : upe};
+            }
+        }
+
+        let n = await createCompany(newComp, (e)=>{
             toast.error(e.message);
         });
 
