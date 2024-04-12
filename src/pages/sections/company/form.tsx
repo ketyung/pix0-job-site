@@ -48,6 +48,7 @@ export const DEFAULT_COMPANY :  UserCompany = {
     industry : "",
     size : "",
     logoUrl : "", 
+    logoUrlPubId: null, 
     dateCreated : new Date(),
     dateUpdated : new Date(),
 
@@ -92,15 +93,25 @@ export default function Form({ title, isEditMode, refresh, editRowId, minWidth} 
 
             let sess = await getSession();
 
-            let upe= await singleUpload(company.logoUrl, `${sha256(sess?.user?.name ?? "-test-")}-`, "logos");
-            if ( upe instanceof Error){
-                let eMesg = `Error uploading logo: ${upe.message}`;
-                toast.error(eMesg);
+            try {
+
+                let upe= await singleUpload(company.logoUrl, `${sha256(sess?.user?.name ?? "-test-")}-`, "logos", 
+                /*company.logoUrlPubId*/ );
+                if ( upe instanceof Error){
+                    let eMesg = `Error uploading logo: ${upe.message}`;
+                    toast.error(eMesg);
+                    setProcessing(false);
+                    return;
+                }else {
+                    newComp = { ...newComp, logoUrl : upe.imageUrl, logoUrlPubId: ntb(upe.imagePubId)};
+                }
+            }catch(e: any){
+                toast.error(`Error uploading image : ${e.message}`);
+                console.log(`Error uploading image : ${e.message}`);
                 setProcessing(false);
                 return;
-            }else {
-                newComp = { ...newComp, logoUrl : upe.imageUrl, logoUrlPubId: ntb(upe.imagePubId)};
             }
+            
         }
 
         let n = isEditMode ? await updateCompany(newComp, (e)=>{

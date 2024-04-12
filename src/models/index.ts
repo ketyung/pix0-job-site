@@ -84,6 +84,8 @@ export interface CloudParam {
     secret?: string, 
 
     upload_folder?: string, 
+
+    pubId? : string, 
 }
 
 

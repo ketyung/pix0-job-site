@@ -80,11 +80,11 @@ export async function updateCompany(userId: string,userCompany : UserCompany) {
       if (existingUserCompany) {
           const updatedUserCompany = await prisma.userCompany.update({
               where: wh,
-              data: userCompany
+              data: {...userCompany, userId: userId}
           });
 
           
-          return (updatedUserCompany.id === userCompany.id && updatedUserCompany.id === userCompany?.id);
+          return (updatedUserCompany.id === userCompany.id && updatedUserCompany.userId === userId);
       } else {
 
           throw Error('UserCompany NOT found!');
