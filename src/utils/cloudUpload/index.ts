@@ -102,10 +102,9 @@ const destroyNow = async (param : {pubId? : string, cloudName? : string, api? :s
 
     try {
 
-        const signData = shaSignature2( param.api ?? "",
+        const signData = shaSigForDelete( param.api ?? "",
         param.upload_folder ?? "",    
         param.pubId ?? "", 
-        //`${shortenStringTo(param.creator ?? "", 16, "")}`, 
         param.creator ?? "", 
         param.secret_key ?? "" );
     
@@ -140,7 +139,7 @@ const destroyNow = async (param : {pubId? : string, cloudName? : string, api? :s
 
             let txt = await response.json();
 
-            console.log(".dety:text,", txt );
+            //console.log(".dety:text,", txt );
           
             return  txt;
         }
@@ -180,18 +179,15 @@ const shaSignature = ( api_key : string, folder : string ,pub_id : string, tags:
 
 
 // refer here 
-const shaSignature2 = ( api_key : string, folder : string ,pub_id : string, tags: string, secret_key : string ) =>{
+const shaSigForDelete = ( api_key : string, folder : string ,pub_id : string, tags: string, secret_key : string ) =>{
 
     let tt = Date.now();
     let timestamp = Math.floor( tt / 1000);
 
-    //let pubid = `${pub_id}${tt}`;
-
-    //let pubid = `${pub_id}${tt}`;
 
     let s = `public_id=${pub_id}&timestamp=${timestamp}${secret_key}`;
 
-    console.log("s::", s);
+    //console.log("s::", s);
 
     let ss = CryptoJS.SHA1(s).toString();
 

@@ -104,6 +104,7 @@ export default function Form({ title, isEditMode, refresh, editRowId, minWidth} 
                     return;
                 }else {
                     newComp = { ...newComp, logoUrl : upe.imageUrl, logoUrlPubId: ntb(upe.imagePubId)};
+                    setCompany(newComp);
                 }
             }catch(e: any){
                 toast.error(`Error uploading image : ${e.message}`);
