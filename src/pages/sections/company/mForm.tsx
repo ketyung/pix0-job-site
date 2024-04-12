@@ -5,7 +5,7 @@ import { CiCircleInfo } from "react-icons/ci";
 import { useState } from "react";
 import { singleUpload } from "@/utils/cloudUpload";
 import { UserCompany } from "@prisma/client";
-import { isBlank } from "@/utils";
+import { blobUrlToBase64, isBlank } from "@/utils";
 import { toast } from "react-toastify";
 import { ntb } from "@/utils";
 import { BeatLoader } from "react-spinners";
@@ -66,6 +66,8 @@ export default function Form({ title, refresh, minWidth} :props) {
 
     const [logoImageChanged, setLogoImageChanged] = useState(false);
 
+   // const [logoDataUrlRaw, setLogoDataUrlRaw] = useState<string>();
+
     const saveCompanyNow = async () =>{
 
         if ( company === undefined){
@@ -84,6 +86,8 @@ export default function Form({ title, refresh, minWidth} :props) {
         let newComp = {...company};
 
         if ( logoImageChanged && company.logoUrl!== undefined && company.logoUrl !== null) {
+
+            //console.log("logoUrl::", company.logoUrl);
             let upe= await singleUpload(company.logoUrl, "test");
             if ( upe instanceof Error){
                 let eMesg = `Error uploading logo: ${upe.message}`;
@@ -182,6 +186,8 @@ export default function Form({ title, refresh, minWidth} :props) {
         <div className="mt-2 mb-2 lg:flex text-left pt-2">
             <FieldLabel title="Company Logo" className="lg:w-7/12 w-full mt-2">
                 <DndUploader title="Drag & Drop Profile Image Here" onDrop={(d)=>{
+
+                         //console.log("on.drop::",d );
                          setCompany({...company, logoUrl : d});
                          setLogoImageChanged(true);
                          setImageCropOpen(true);
@@ -285,8 +291,12 @@ export default function Form({ title, refresh, minWidth} :props) {
                 setImageCropOpen(false);
         }}>
             { imageCropOpen && <ImageCropper 
-            imageSrc={company.logoUrl ?? ""} setCroppedImage={(i)=>{
-                setCompany({...company, logoUrl : i});
+            imageSrc={company.logoUrl ?? ""} setCroppedImage={async (i)=>{
+
+                let cLogoDataUrl = await blobUrlToBase64(i);
+                //console.log("cLogoDataUrl::", cLogoDataUrl);
+
+                setCompany({...company, logoUrl : cLogoDataUrl});
             }} onClose={()=>{
                 setImageCropOpen(false);
             }}/>}

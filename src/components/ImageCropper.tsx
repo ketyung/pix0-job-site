@@ -55,6 +55,8 @@ const ImageCropper = ({ imageSrc, aspectRatio = 1 / 1, setCroppedImage,onClose, 
 
   const applyCroppedImage = async () => {
       try {
+
+            //console.log("applying crop to::", image);
             const croppedImage = await getCroppedImg(image,croppedAreaPixels);
 
             if ( setCroppedImage && croppedImage!== null ) setCroppedImage(croppedImage);

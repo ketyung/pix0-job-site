@@ -257,3 +257,18 @@ export const randomInt = (min : number, max : number) =>{
 	max = Math.floor(max);
 	return Math.floor(Math.random() * (max - min) + min); 
 }
+
+
+export async function blobUrlToBase64(blobUrl: string): Promise<string> {
+    const response = await fetch(blobUrl);
+    const blob = await response.blob();
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+            const base64DataUrl = reader.result as string;
+            resolve(base64DataUrl);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+    });
+}
