@@ -44,6 +44,7 @@ export const DEFAULT_COMPANY :  UserCompany = {
     industry : Industry.InformationTechnology,
     size : "1-3",
     logoUrl :null, 
+    logoUrlPubId: null, 
     dateCreated : new Date(),
     dateUpdated : new Date(),
 

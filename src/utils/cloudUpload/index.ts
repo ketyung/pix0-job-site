@@ -3,6 +3,9 @@ import { randomInt, shortenStringTo } from "../";
 import { getCloudParams } from "@/service";
 const CryptoJS = require('crypto-js');
 
+const axios = require('axios');
+
+
 export interface ImageUploadReturn {
 
     imageUrl: string,
@@ -15,7 +18,6 @@ export const singleUpload = async ( data_url : string,
     creator : string, subFolder? : string, toDestroyPrevPubId? : string|null ): Promise<ImageUploadReturn|Error> =>{
 
     let prms =  await getCloudParamsFss(); //getAllCloudParams();
-    //console.log("prms::", prms);
     if ( prms ){
 
         let prm = prms[ randomInt(0, prms.length -1)];
@@ -68,16 +70,15 @@ const singleUploadNow = async (param : {data_url : string, cloudName? : string, 
         fd.append('file', param.data_url);
        
        
-        let response = await fetch(url, {
+        let response =/*await axios.post(url,{fd});*/ await fetch(url, {
             method: "POST",
             body: fd
         });
 
+        //console.log("resp::", response);
         if (response.status === 200 ){
 
             let txt = await response.json();
-
-           
           
             return  {imageUrl: txt.secure_url, imagePubId : txt.public_id};
         }
@@ -117,7 +118,7 @@ const destroyNow = async (param : {pubId? : string, cloudName? : string, api? :s
 
         url = url.replace(":cloud_name",param.cloudName ?? "")+'/destroy';
 
-       // console.log("dest...url::", url, param);
+       console.log("dest...url::", url, param);
 
         var fd = new FormData();
         fd.append("api_key", signData.api_key );
@@ -130,10 +131,14 @@ const destroyNow = async (param : {pubId? : string, cloudName? : string, api? :s
        // fd.append('file', param.data_url);
        
        
-        let response = await fetch(url, {
+        //let response = 
+        
+        const response = await axios.post(url,{fd});
+        
+        /*await fetch(url, {
             method: "POST",
             body: fd
-        });
+        });*/
 
         if (response.status === 200 ){
 
@@ -146,13 +151,15 @@ const destroyNow = async (param : {pubId? : string, cloudName? : string, api? :s
         else {
 
             let err = new Error(`Error ${response.status} : ${(await response.text())}`);
+
+            console.log("errs:", err);
             throw err;
         }
     }
     catch(e : any ) {
 
         let err = new Error(`Error : ${e.message}`);
-           
+        console.log("errs:", err);
         throw err;
     }
 }

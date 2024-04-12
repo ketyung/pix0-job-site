@@ -549,7 +549,7 @@ export async function getCloudParams( onError? : (e : Error)=>void ) : Promise<C
                   return res.data;
             }else {
                   if ( onError) {
-                        onError(new Error('Contact NOT found!'));
+                        onError(new Error('Params NOT found!'));
                   }
                   return undefined;
             }
