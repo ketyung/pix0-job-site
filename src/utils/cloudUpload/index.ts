@@ -3,8 +3,16 @@ import { randomInt, shortenStringTo } from "../";
 import { getCloudParams } from "@/service";
 const CryptoJS = require('crypto-js');
 
+export interface ImageUploadReturn {
+
+    imageUrl: string,
+
+    imagePubId?: string, 
+}
+
+
 export const singleUpload = async ( data_url : string,
-    creator : string, subFolder? : string ): Promise<string|Error> =>{
+    creator : string, subFolder? : string ): Promise<ImageUploadReturn|Error> =>{
 
     let prms =  await getCloudParamsFss(); //getAllCloudParams();
     //console.log("prms::", prms);
@@ -24,7 +32,7 @@ export const singleUpload = async ( data_url : string,
 
 
 const singleUploadNow = async (param : {data_url : string, cloudName? : string, api? :string,
-    creator? : string,  upload_folder? : string, secret_key? : string }) : Promise<string|Error>=>{
+    creator? : string,  upload_folder? : string, secret_key? : string }) : Promise<ImageUploadReturn|Error>=>{
 
     try {
 
@@ -64,8 +72,10 @@ const singleUploadNow = async (param : {data_url : string, cloudName? : string, 
         if (response.status === 200 ){
 
             let txt = await response.json();
+
+           
           
-            return txt.secure_url;
+            return  {imageUrl: txt.secure_url, imagePubId : txt.public_id};
         }
         else {
 

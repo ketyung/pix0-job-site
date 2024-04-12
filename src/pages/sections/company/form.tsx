@@ -99,7 +99,7 @@ export default function Form({ title, isEditMode, refresh, editRowId, minWidth} 
                 setProcessing(false);
                 return;
             }else {
-                newComp = { ...newComp, logoUrl : upe};
+                newComp = { ...newComp, logoUrl : upe.imageUrl, logoUrlPubId: ntb(upe.imagePubId)};
             }
         }
 

@@ -75,6 +75,7 @@ model UserCompany {
     industry    String?   @db.VarChar(60) 
     size        String?   @db.VarChar(60) 
     logoUrl     String?   @db.Text
+    logoUrlPubId String?  @db.VarChar(150)
     description String?   @db.Text 
     dateCreated DateTime  @default(now())
     dateUpdated DateTime  @updatedAt
