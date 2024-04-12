@@ -162,7 +162,7 @@ export default function Form({ title, isEditMode, refresh, editRowId, minWidth} 
                          setLogoImageChanged(true);
                          setImageCropOpen(true);
                     }}>
-                    <ProfileImage width="120px" imageUrl={company.logoUrl !== null ? company.logoUrl : undefined}  
+                    <ProfileImage width="90px" imageUrl={company.logoUrl !== null ? company.logoUrl : undefined}  
                     alt={ntb(company.name)} paddingTop="12px" fontSize="34px"/>
                 </DndUploader>
             </FieldLabel>
