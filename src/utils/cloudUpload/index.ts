@@ -15,7 +15,7 @@ export interface ImageUploadReturn {
 
 
 export const singleUpload = async ( data_url : string,
-    creator : string, subFolder? : string, toDestroyPrevPubId? : string|null ): Promise<ImageUploadReturn|Error> =>{
+    creator : string, subFolder? : string, toDestroyPrevPubId? : string|null, ignoreDeleteError? : boolean ): Promise<ImageUploadReturn|Error> =>{
 
     let prms =  await getCloudParamsFss(); //getAllCloudParams();
     if ( prms ){
@@ -23,8 +23,18 @@ export const singleUpload = async ( data_url : string,
         let prm = prms[ randomInt(0, prms.length -1)];
       
         if ( toDestroyPrevPubId && toDestroyPrevPubId !== null ) {
-            await destroyNow({pubId: toDestroyPrevPubId, cloudName : prm.name, api: prm.api_key,creator: creator,
-                upload_folder : `${prm.upload_folder}${subFolder ? `/${subFolder}` : ''}`, secret_key : prm.secret});
+            try {
+
+                await destroyNow({pubId: toDestroyPrevPubId, cloudName : prm.name, api: prm.api_key,creator: creator,
+                    upload_folder : `${prm.upload_folder}${subFolder ? `/${subFolder}` : ''}`, secret_key : prm.secret});
+          
+            }catch(e:any){
+                if (!ignoreDeleteError){
+                    throw e; 
+                }else {
+                    console.log("deletePreviousImageError:",e);
+                }
+            }
         }
         return await singleUploadNow({data_url : data_url, cloudName : prm.name, api: prm.api_key,creator: creator,
         upload_folder : `${prm.upload_folder}${subFolder ? `/${subFolder}` : ''}`, secret_key : prm.secret});
@@ -69,16 +79,23 @@ const singleUploadNow = async (param : {data_url : string, cloudName? : string, 
         fd.append("signature", signData.signature);
         fd.append('file', param.data_url);
        
-       
-        let response =/*await axios.post(url,{fd});*/ await fetch(url, {
+        /*
+        let response = await fetch(url, {
             method: "POST",
             body: fd
+        });*/
+
+        const response = await axios({
+            method: "post",
+            url: url,
+            data: fd,
+            headers: { "Content-Type": "multipart/form-data" },
         });
 
         //console.log("resp::", response);
         if (response.status === 200 ){
 
-            let txt = await response.json();
+            let txt = await response.data; //response.json();
           
             return  {imageUrl: txt.secure_url, imagePubId : txt.public_id};
         }
@@ -118,7 +135,7 @@ const destroyNow = async (param : {pubId? : string, cloudName? : string, api? :s
 
         url = url.replace(":cloud_name",param.cloudName ?? "")+'/destroy';
 
-       console.log("dest...url::", url, param);
+        //console.log("dest...url::", url, param);
 
         var fd = new FormData();
         fd.append("api_key", signData.api_key );
@@ -133,7 +150,14 @@ const destroyNow = async (param : {pubId? : string, cloudName? : string, api? :s
        
         //let response = 
         
-        const response = await axios.post(url,{fd});
+        //const response = await axios.post(url,{fd});
+
+        const response = await axios({
+            method: "post",
+            url: url,
+            data: fd,
+            headers: { "Content-Type": "multipart/form-data" },
+        });
         
         /*await fetch(url, {
             method: "POST",
@@ -142,7 +166,7 @@ const destroyNow = async (param : {pubId? : string, cloudName? : string, api? :s
 
         if (response.status === 200 ){
 
-            let txt = await response.json();
+            let txt = await response.data; //await response.json();
 
             //console.log(".dety:text,", txt );
           

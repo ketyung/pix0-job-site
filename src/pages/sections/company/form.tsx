@@ -95,8 +95,9 @@ export default function Form({ title, isEditMode, refresh, editRowId, minWidth} 
 
             try {
 
-                let upe= await singleUpload(company.logoUrl, `${sha256(sess?.user?.name ?? "-test-")}-`, "logos", 
-                /*company.logoUrlPubId*/ );
+                let upe= await singleUpload(company.logoUrl, 
+                `${sha256(sess?.user?.name ?? "-test-")}-`, "logos", company.logoUrlPubId, true);
+
                 if ( upe instanceof Error){
                     let eMesg = `Error uploading logo: ${upe.message}`;
                     toast.error(eMesg);
