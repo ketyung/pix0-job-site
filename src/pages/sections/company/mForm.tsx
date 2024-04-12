@@ -1,6 +1,6 @@
 import FieldLabel from "@/components/FieldLabel"
 import { Industries } from "@/models"
-import { Select, Input, TextArea, Button, Modal } from "pix0-core-ui"
+import { Select, Input, TextArea, Button, Drawer } from "pix0-core-ui"
 import { CiCircleInfo } from "react-icons/ci";
 import { useState } from "react";
 import { UserCompany } from "@prisma/client";
@@ -41,7 +41,7 @@ export const DEFAULT_COMPANY :  UserCompany = {
     description: "",
     industry : "",
     size : "",
-    logoUrl : "", 
+    logoUrl :null, 
     dateCreated : new Date(),
     dateUpdated : new Date(),
 
@@ -62,6 +62,8 @@ export default function Form({ title, refresh, minWidth} :props) {
     const [stage, setStage] = useState(0);
 
     const [imageCropOpen, setImageCropOpen] = useState(false);
+
+    const [logoImageChanged, setLogoImageChanged] = useState(false);
 
     const saveCompanyNow = async () =>{
 
@@ -164,10 +166,12 @@ export default function Form({ title, refresh, minWidth} :props) {
         <div className="mt-2 mb-2 lg:flex text-left pt-2">
             <FieldLabel title="Company Logo" className="lg:w-7/12 w-full mt-2">
                 <DndUploader title="Drag & Drop Profile Image Here" onDrop={(d)=>{
-                    
+                         setCompany({...company, logoUrl : d});
+                         setLogoImageChanged(true);
+                         setImageCropOpen(true);
                     }}>
-                    <ProfileImage width="80px" imageUrl={company.logoUrl}  
-                    alt={ntb(company.name)} paddingTop="12px" fontSize="34px"/>
+                    <ProfileImage width="100px" imageUrl={company.logoUrl}  
+                    alt={ntb(company.name)} paddingTop="16px" fontSize="54px"/>
                 </DndUploader>
         </FieldLabel>
         </div>}
@@ -260,8 +264,8 @@ export default function Form({ title, refresh, minWidth} :props) {
           
         </div>
 
-        <Modal zIndex={3000}  groupId="ModalProfileImageCrop" 
-        isOpen={imageCropOpen} onClose={()=>{
+        <Drawer zIndex={3000} groupId="ModalProfileImageCrop" width="60%" atRight
+        open={imageCropOpen} onClose={()=>{
                 setImageCropOpen(false);
         }}>
             { imageCropOpen && <ImageCropper 
@@ -270,7 +274,7 @@ export default function Form({ title, refresh, minWidth} :props) {
             }} onClose={()=>{
                 setImageCropOpen(false);
             }}/>}
-        </Modal>
+        </Drawer>
     </div>
 
     
