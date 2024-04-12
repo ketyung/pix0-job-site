@@ -1,6 +1,6 @@
 import FieldLabel from "@/components/FieldLabel"
 import { Industries } from "@/models"
-import { Select, Input, TextArea, Button } from "pix0-core-ui"
+import { Select, Input, TextArea, Button, Modal } from "pix0-core-ui"
 import { CiCircleInfo } from "react-icons/ci";
 import { useState, useEffect } from "react";
 import { UserCompany } from "@prisma/client";
@@ -15,7 +15,9 @@ import MdEditor from 'react-markdown-editor-lite';
 import 'react-markdown-editor-lite/lib/index.css';
 import MarkdownIt from 'markdown-it';
 import { createCompany, updateCompany, genCompanyDesc, getCompany } from "@/service";
-
+import ProfileImage from "@/components/ProfileImage";
+import DndUploader from "@/components/DndUploader";
+import ImageCropper from "@/components/ImageCropper";
 
 type props = {
 
@@ -58,6 +60,9 @@ export default function Form({ title, isEditMode, refresh, editRowId, minWidth} 
     const [generating, setGenerating] = useState(false);
 
     const [viewMarkDown, setViewMarkDown] = useState(false);
+
+    const [imageCropOpen, setImageCropOpen] = useState(false);
+
 
     const saveCompanyNow = async () =>{
 
@@ -138,6 +143,16 @@ export default function Form({ title, isEditMode, refresh, editRowId, minWidth} 
                 }} value={ntb(company.regNo)} className="w-full" icon={<CiCircleInfo className="mb-2"/>}/>
             </FieldLabel>
         </div>
+        <div className="mt-2 mb-2 lg:flex text-left">
+            <FieldLabel title="Company Logo" className="lg:w-7/12 w-full mt-2">
+                <DndUploader title="Drag & Drop Profile Image Here" onDrop={(d)=>{
+                    
+                    }}>
+                    <ProfileImage width="80px" imageUrl={company.logoUrl !== null ? company.logoUrl : undefined}  
+                    alt={ntb(company.name)} paddingTop="12px" fontSize="34px"/>
+                </DndUploader>
+            </FieldLabel>
+        </div>
         <div className="mt-2 mb-2 text-left">
         <FieldLabel title={<div className="flex"><div className="mt-1">Description</div> 
         <Button className="border border-gray-300 rounded p-1 ml-2 mb-1 w-32" disabled={generating}
@@ -192,6 +207,18 @@ export default function Form({ title, isEditMode, refresh, editRowId, minWidth} 
              {processing ? <BeatLoader size={8} color="#ddd"/> :  <>{!isEditMode ? "Create Company" : "Update Company"}</>}
             </Button>
         </div>
+
+        <Modal zIndex={3000}  groupId="ModalProfileImageCrop" 
+        isOpen={imageCropOpen} onClose={()=>{
+                setImageCropOpen(false);
+        }}>
+            { imageCropOpen && <ImageCropper 
+            imageSrc={company.logoUrl ?? ""} setCroppedImage={(i)=>{
+                setCompany({...company, logoUrl : i});
+            }} onClose={()=>{
+                setImageCropOpen(false);
+            }}/>}
+        </Modal>
     </div>
 
     

@@ -1,6 +1,6 @@
 import FieldLabel from "@/components/FieldLabel"
 import { Industries } from "@/models"
-import { Select, Input, TextArea, Button } from "pix0-core-ui"
+import { Select, Input, TextArea, Button, Modal } from "pix0-core-ui"
 import { CiCircleInfo } from "react-icons/ci";
 import { useState } from "react";
 import { UserCompany } from "@prisma/client";
@@ -16,6 +16,10 @@ import 'react-markdown-editor-lite/lib/index.css';
 import MarkdownIt from 'markdown-it';
 import { createCompany, genCompanyDesc} from "@/service";
 import { GrNext, GrPrevious } from "react-icons/gr";
+import ProfileImage from "@/components/ProfileImage";
+import DndUploader from "@/components/DndUploader";
+import ImageCropper from "@/components/ImageCropper";
+
 
 type props = {
 
@@ -56,6 +60,8 @@ export default function Form({ title, refresh, minWidth} :props) {
     const [viewMarkDown, setViewMarkDown] = useState(false);
 
     const [stage, setStage] = useState(0);
+
+    const [imageCropOpen, setImageCropOpen] = useState(false);
 
     const saveCompanyNow = async () =>{
 
@@ -115,7 +121,7 @@ export default function Form({ title, refresh, minWidth} :props) {
                 }
             }
 
-            if ( stage === 2 ){
+            if ( stage === 3 ){
 
                 if ( isBlank(company.description)) {
                     toast.error(`Error! Please Provide Some Description Of Your Company!`);
@@ -126,7 +132,7 @@ export default function Form({ title, refresh, minWidth} :props) {
                 return; 
             }
 
-            if ( stage < 2) {
+            if ( stage < 3) {
                 setStage(stage + 1);
             }
         }
@@ -154,8 +160,18 @@ export default function Form({ title, refresh, minWidth} :props) {
                 }} value={ntb(company.regNo)} className="w-full" icon={<CiCircleInfo className="mb-2"/>}/>
             </FieldLabel>
         </div></>}
-
         {stage=== 1 && 
+        <div className="mt-2 mb-2 lg:flex text-left pt-2">
+            <FieldLabel title="Company Logo" className="lg:w-7/12 w-full mt-2">
+                <DndUploader title="Drag & Drop Profile Image Here" onDrop={(d)=>{
+                    
+                    }}>
+                    <ProfileImage width="80px" imageUrl={company.logoUrl}  
+                    alt={ntb(company.name)} paddingTop="12px" fontSize="34px"/>
+                </DndUploader>
+        </FieldLabel>
+        </div>}
+        {stage=== 2 && 
         <><div className="mt-2 mb-2 text-left">
             <FieldLabel title="Company Size">
                 <Select className="w-96" defaultValue={company.size ?? ''}
@@ -194,7 +210,7 @@ export default function Form({ title, refresh, minWidth} :props) {
             </FieldLabel>
         </div></>
         }
-        {stage=== 2 && 
+        {stage=== 3 && 
         <div className="mt-2 mb-2 text-left">
         <FieldLabel title={<div className="flex"><div className="mt-1">Description</div> 
         <Button className="border border-gray-300 rounded p-1 ml-2 mb-1 w-32" disabled={generating}
@@ -243,6 +259,18 @@ export default function Form({ title, refresh, minWidth} :props) {
                 <GrNext className="ml-2 inline"/></>}</Button>
           
         </div>
+
+        <Modal zIndex={3000}  groupId="ModalProfileImageCrop" 
+        isOpen={imageCropOpen} onClose={()=>{
+                setImageCropOpen(false);
+        }}>
+            { imageCropOpen && <ImageCropper 
+            imageSrc={company.logoUrl ?? ""} setCroppedImage={(i)=>{
+                setCompany({...company, logoUrl : i});
+            }} onClose={()=>{
+                setImageCropOpen(false);
+            }}/>}
+        </Modal>
     </div>
 
     

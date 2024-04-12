@@ -1,0 +1,41 @@
+
+.crop-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 80px;
+    margin-top: 0px;
+    background: #cde;
+    height:80%;
+}
+  
+.crop-title {
+    margin-bottom:4px;
+    font-weight: 600;
+    font-size: 24px;
+    background: #222;
+    color:#fff;
+    padding: 4px;
+    width: 100%;
+    z-index: 500;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.controls {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 100%;
+    transform: translateX(-50%);
+    height: 120px;
+    display: flex;
+    align-items: center;
+}
+  
+.slider {
+    padding: 22px 0px;
+}
