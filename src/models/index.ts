@@ -43,7 +43,7 @@ export enum JobCategory {
 }
 
 
-enum Industry {
+export enum Industry {
     InformationTechnology = "Information Technology (IT)",
     Healthcare = "Healthcare",
     FinanceAndBanking = "Finance and Banking",
@@ -72,3 +72,16 @@ export const JobCategorys = getAllEnumValues(JobCategory);
 
 
 export const STANDARD_RES_ROWS_PER_PAGE  = 10;
+
+
+
+export interface CloudParam {
+
+    name?: string,
+
+    api_key?: string,
+
+    secret?: string, 
+
+    upload_folder?: string, 
+}

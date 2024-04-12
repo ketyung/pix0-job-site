@@ -220,6 +220,23 @@ export function shortenString(input: string, maxLength: number = 20): string {
     return `${prefix}...${suffix}`;
 }
 
+
+
+export const shortenStringTo = (str : string, length : number = 32, strInBetween : string = "...") => {
+
+    if ( str.length <= length){
+        return str ;
+    }
+
+    const halfLen = length / 2;
+
+	return (
+		str.substring(0, halfLen) + (strInBetween ? strInBetween : "") + 
+		str.substring(str.length - halfLen, str.length)
+	);
+};
+
+
 export function formatBytes(bytes: number, decimals = 2): string {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
@@ -232,4 +249,11 @@ export function formatBytes(bytes: number, decimals = 2): string {
 
 export function padNum(num : number, numOfPads = 4) {
     return `${num}`.padStart(numOfPads, "0");
+}
+
+
+export const randomInt = (min : number, max : number) =>{
+	min = Math.ceil(min);
+	max = Math.floor(max);
+	return Math.floor(Math.random() * (max - min) + min); 
 }

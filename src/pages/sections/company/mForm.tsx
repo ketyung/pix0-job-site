@@ -1,5 +1,5 @@
 import FieldLabel from "@/components/FieldLabel"
-import { Industries } from "@/models"
+import { Industries, Industry } from "@/models"
 import { Select, Input, TextArea, Button, Drawer } from "pix0-core-ui"
 import { CiCircleInfo } from "react-icons/ci";
 import { useState } from "react";
@@ -39,8 +39,8 @@ export const DEFAULT_COMPANY :  UserCompany = {
     regNo : "",
     name: "",
     description: "",
-    industry : "",
-    size : "",
+    industry : Industry.InformationTechnology,
+    size : "1-3",
     logoUrl :null, 
     dateCreated : new Date(),
     dateUpdated : new Date(),
@@ -171,7 +171,7 @@ export default function Form({ title, refresh, minWidth} :props) {
                          setImageCropOpen(true);
                     }}>
                     <ProfileImage width="100px" imageUrl={company.logoUrl}  
-                    alt={ntb(company.name)} paddingTop="16px" fontSize="54px"/>
+                    alt={ntb(company.name)} paddingTop="14px" fontSize="54px"/>
                 </DndUploader>
         </FieldLabel>
         </div>}
@@ -259,7 +259,7 @@ export default function Form({ title, refresh, minWidth} :props) {
                 onClick={async (e)=>{
                     e.preventDefault();
                     await moveStage();
-                }}>{(stage=== 2 && processing) ? <BeatLoader size={8} color="#eee"/> : <>{stage === 2 ? 'Create Company Profile' : 'Next'} 
+                }}>{(stage=== 3 && processing) ? <BeatLoader size={8} color="#eee"/> : <>{stage === 3 ? 'Create Company Profile' : 'Next'} 
                 <GrNext className="ml-2 inline"/></>}</Button>
           
         </div>
