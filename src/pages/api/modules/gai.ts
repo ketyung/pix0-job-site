@@ -73,8 +73,8 @@ async function handlePost (req: NextApiRequest,  res: NextApiResponse, _userId? 
              if ( data !== undefined) {
                 
                 if ( param1 === 'detectImageNudity') {
-                    //await detectImageNudity(data, res);
-                    await testDetectImageNudity(res);
+                    await detectImageNudity(data, res);
+                    //await testDetectImageNudity(res);
                 }else {
                     res.status(400).json({text: "Invalid action!", status:-1});
                 }
@@ -89,6 +89,23 @@ async function handlePost (req: NextApiRequest,  res: NextApiResponse, _userId? 
 }
 
 
+function extractMimeTypeAndData(base64Data: string): { mimeType: string; data: string } {
+    // Regular expression to match the mime type and data portion
+    const regex = /^data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+);base64,(.*)$/;
+
+    // Execute the regular expression
+    const matches = base64Data.match(regex);
+
+    if (!matches || matches.length < 3) {
+        throw new Error('Invalid base64 data string');
+    }
+
+    // Extract the mime type and data from the matches
+    const mimeType = matches[1];
+    const data = matches[2];
+
+    return { mimeType, data };
+}
 
 async function detectImageNudity(imageData : any,  res: NextApiResponse,) {
 
@@ -97,11 +114,13 @@ async function detectImageNudity(imageData : any,  res: NextApiResponse,) {
      
         const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
 
-        const prompt = "Does this image contain any nudity and sexual content that is NSFW?";
+        let ext = extractMimeTypeAndData(imageData);
+
+        const prompt = "Does this image contain any NSFW content?"; //"Does this image contain any nudity and sexual content that is NSFW?";
         const image = {
             inlineData: {
-                data: imageData ,
-                mimeType: "image/jpeg",
+                data: ext.data ,
+                mimeType: ext.mimeType,
             },
         };
 
@@ -109,7 +128,7 @@ async function detectImageNudity(imageData : any,  res: NextApiResponse,) {
         
         const result = await model.generateContent([prompt, ...imageParts]);
         const text = result.response.text();
-        console.log("detectImageResult::", result);
+        console.log("detectImageResult::", result, text );
 
         res.status(200).json({  text : text, status : 1});  
 
@@ -124,9 +143,12 @@ async function detectImageNudity(imageData : any,  res: NextApiResponse,) {
 
 
 function fileToGenerativePart(path : string , mimeType : string ) {
+
+    let bdata = Buffer.from(fs.readFileSync(path)).toString("base64");
+    console.log("bdata:::", bdata.substring(0,300));
     return {
       inlineData: {
-        data: Buffer.from(fs.readFileSync(path)).toString("base64"),
+        data: bdata,
         mimeType
       },
     };
@@ -139,7 +161,7 @@ async function testDetectImageNudity(res: NextApiResponse,) {
      
         const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
 
-        const prompt = "Does this image contain any nudity and sexual content that is NSFW?";
+        const prompt = "Does this image contain any NSFW content?"; //"Does this image contain any nudity and sexual content that is NSFW?";
         const imageParts = [fileToGenerativePart("/Users/ketyung/pix0/web/pix0-job-site/src/pages/api/modules/testImg1.png", "image/png")];
 
         
