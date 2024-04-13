@@ -22,6 +22,7 @@ import { blobUrlToBase64 } from "@/utils";
 import { getSession } from "next-auth/react";
 import { singleUpload } from "@/utils/cloudUpload";
 import { sha256 } from "@/utils/enc";
+import { dImage } from "./testClientSideGai";
 
 type props = {
 
@@ -97,7 +98,9 @@ export default function Form({ title, isEditMode, refresh, editRowId, minWidth} 
 
 
                 await detectImageNudity(company.logoUrl);
-                
+
+                //await dImage( company.logoUrl);
+
                 let upe= await singleUpload(company.logoUrl, 
                 `${sha256(sess?.user?.name ?? "-test-")}-`, "logos", company.logoUrlPubId, true);
 

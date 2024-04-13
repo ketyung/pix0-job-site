@@ -3,6 +3,8 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 import bodyParser from "body-parser";
 const jsonParser = bodyParser.json();
+const fs = require('fs');
+
 
 export async function handler(req: NextApiRequest, res: NextApiResponse, userId? : string ) {
 
@@ -62,7 +64,6 @@ async function handlePost (req: NextApiRequest,  res: NextApiResponse, _userId? 
 
         const param1 = path[1];
 
-        console.log("parm::", param1);
         jsonParser(req, res, async () => {
             const { data } = req.body;
             
@@ -70,6 +71,7 @@ async function handlePost (req: NextApiRequest,  res: NextApiResponse, _userId? 
                 
                 if ( param1 === 'detectImageNudity') {
                     await detectImageNudity(data, res);
+                    //await testDetectImageNudity(res);
                 }else {
                     res.status(400).json({text: "Invalid action!", status:-1});
                 }
@@ -100,10 +102,47 @@ async function detectImageNudity(imageData : any,  res: NextApiResponse,) {
             },
         };
 
+        const imageParts = [image];
         
-        const result = await model.generateContent([prompt, image]);
+        const result = await model.generateContent([prompt, ...imageParts]);
         const text = result.response.text();
         console.log("detectImageResult::", result);
+
+        res.status(200).json({  text : text, status : 1});  
+
+    }
+    catch (e : any ){
+
+        console.log("detecImageNudity.error::", e.message?.substring(0,550));
+        res.status(422).json({error: e.message, status:-1});
+    }
+    
+}
+
+
+function fileToGenerativePart(path : string , mimeType : string ) {
+    return {
+      inlineData: {
+        data: Buffer.from(fs.readFileSync(path)).toString("base64"),
+        mimeType
+      },
+    };
+  }
+
+async function testDetectImageNudity(res: NextApiResponse,) {
+
+    try {
+
+     
+        const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
+
+        const prompt = "Does this image contain any nudity and sexual content that is NSFW?";
+        const imageParts = [fileToGenerativePart("/Users/ketyung/pix0/web/pix0-job-site/src/pages/api/modules/testImg1.png", "image/png")];
+
+        
+        const result = await model.generateContent([prompt, ...imageParts]);
+        const text = result.response.text();
+        console.log("detectImageResult::", result, text );
 
         res.status(200).json({  text : text, status : 1});  
 
