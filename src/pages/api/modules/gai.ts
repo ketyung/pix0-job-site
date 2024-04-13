@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 import bodyParser from "body-parser";
+import { getUserCompany } from '../dbs/userCompany';
 const jsonParser = bodyParser.json();
 const fs = require('fs');
 
@@ -25,7 +26,7 @@ async function handleGet (req: NextApiRequest,  res: NextApiResponse, _userId? :
 
         const param2 = path[2];
         if ( param1 === 'genJobDesc') {
-            await genJobDesc(res, param2);
+            await genJobDesc(res, _userId ?? "", param2);
         }else {
             res.status(400).json({text: "Invalid action!", status:-1});
         }
@@ -33,13 +34,15 @@ async function handleGet (req: NextApiRequest,  res: NextApiResponse, _userId? :
 }
 
 
-async function genJobDesc(res: NextApiResponse, jobTitle : string, jobCategory? : string,  asJson? : boolean ) {
+async function genJobDesc(res: NextApiResponse, userId: string, jobTitle : string, jobCategory? : string,  asJson? : boolean ) {
     try {
+
+        let company = await getUserCompany(userId);
 
         const model = genAI.getGenerativeModel({ model: "gemini-pro"});
 
         const prompt = `Write the job description for a job titled as "${jobTitle}"${jobCategory 
-            && ` and in the category of "${jobCategory}"`}${ asJson && ' structured in JSON format' }`
+            && ` and in the category of "${jobCategory}"`}${ asJson && ' structured in JSON format' } for company [${company?.name}]`
         //console.log("prompt is::", prompt);
 
         const result = await model.generateContent(prompt);
@@ -70,8 +73,8 @@ async function handlePost (req: NextApiRequest,  res: NextApiResponse, _userId? 
              if ( data !== undefined) {
                 
                 if ( param1 === 'detectImageNudity') {
-                    await detectImageNudity(data, res);
-                    //await testDetectImageNudity(res);
+                    //await detectImageNudity(data, res);
+                    await testDetectImageNudity(res);
                 }else {
                     res.status(400).json({text: "Invalid action!", status:-1});
                 }
@@ -142,7 +145,7 @@ async function testDetectImageNudity(res: NextApiResponse,) {
         
         const result = await model.generateContent([prompt, ...imageParts]);
         const text = result.response.text();
-        console.log("detectImageResult::", result, text );
+        console.log("detectImageResult::", result.response, text, );
 
         res.status(200).json({  text : text, status : 1});  
 
