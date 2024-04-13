@@ -37,7 +37,7 @@ export const DEFAULT_JOBPOST : JobPost= {
     title: "",
     description: "",
     workType : "",
-    jobCategory : "",
+    jobCategory : JobCategorys[0],
     location:"",
     createdBy: "",
     salaryFrom : null,
