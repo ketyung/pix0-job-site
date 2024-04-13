@@ -568,3 +568,17 @@ export async function getCloudParams( onError? : (e : Error)=>void ) : Promise<C
       }
 
 }
+
+export async function detectImageNudity (imageData : any ) {
+
+      try {
+
+            let data = await postToRemote(imageData, "gai", "detectImageNudity");
+
+            console.log("data.detected::",data);
+            return ( data.status === 1);
+      }
+      catch(e: any){
+
+      }
+}

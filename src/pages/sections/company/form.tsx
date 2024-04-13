@@ -14,7 +14,7 @@ import MdEditor from 'react-markdown-editor-lite';
 // import style manually
 import 'react-markdown-editor-lite/lib/index.css';
 import MarkdownIt from 'markdown-it';
-import { createCompany, updateCompany, genCompanyDesc, getCompany } from "@/service";
+import { createCompany, updateCompany, genCompanyDesc, getCompany, detectImageNudity } from "@/service";
 import ProfileImage from "@/components/ProfileImage";
 import DndUploader from "@/components/DndUploader";
 import ImageCropper from "@/components/ImageCropper";
@@ -95,6 +95,9 @@ export default function Form({ title, isEditMode, refresh, editRowId, minWidth} 
 
             try {
 
+
+                await detectImageNudity(company.logoUrl);
+                
                 let upe= await singleUpload(company.logoUrl, 
                 `${sha256(sess?.user?.name ?? "-test-")}-`, "logos", company.logoUrlPubId, true);
 
