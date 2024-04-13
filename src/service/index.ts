@@ -569,16 +569,20 @@ export async function getCloudParams( onError? : (e : Error)=>void ) : Promise<C
 
 }
 
-export async function detectImageNudity (imageData : any ) {
+export async function checkIfImageIsSFW (imageData : any ) {
 
       try {
 
-            let data = await postToRemote(imageData, "gai", "detectImageNudity");
+            let data = await postToRemote(imageData, "gai", "checkIfImageIsSFW");
+            
+            const b= ( data.status === 1 && (data.text.trim() === "NO" || data.text.trim().toUpperCase().startsWith("NO")));
 
-            console.log("data.detected::",data);
-            return ( data.status === 1);
+            //console.log("checkImg::", data, b);
+            return b; 
+
       }
       catch(e: any){
 
+            return false; 
       }
 }

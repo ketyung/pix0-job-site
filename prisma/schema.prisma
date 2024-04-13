@@ -86,7 +86,7 @@ model UserCompany {
 
 
 model JobPost {
-    id             String   @db.VarChar(20)  @default(cuid()) @unique
+    id             String   @db.VarChar(30)  @default(cuid()) @unique
     companyId      String      @db.VarChar(30)
     code           String?     @db.VarChar(50)
     title          String?     @db.VarChar(150)

@@ -14,7 +14,7 @@ import MdEditor from 'react-markdown-editor-lite';
 // import style manually
 import 'react-markdown-editor-lite/lib/index.css';
 import MarkdownIt from 'markdown-it';
-import { createCompany, updateCompany, genCompanyDesc, getCompany, detectImageNudity } from "@/service";
+import { createCompany, updateCompany, genCompanyDesc, getCompany, checkIfImageIsSFW } from "@/service";
 import ProfileImage from "@/components/ProfileImage";
 import DndUploader from "@/components/DndUploader";
 import ImageCropper from "@/components/ImageCropper";
@@ -22,7 +22,6 @@ import { blobUrlToBase64 } from "@/utils";
 import { getSession } from "next-auth/react";
 import { singleUpload } from "@/utils/cloudUpload";
 import { sha256 } from "@/utils/enc";
-import { dImage } from "./testClientSideGai";
 
 type props = {
 
@@ -97,10 +96,12 @@ export default function Form({ title, isEditMode, refresh, editRowId, minWidth} 
             try {
 
 
-                await detectImageNudity(company.logoUrl);
-
-                //await dImage( company.logoUrl);
-
+                if (!await checkIfImageIsSFW(company.logoUrl)){
+                    toast.error("Company Logo is an image that NSFW");
+                    setProcessing(false);
+                    return;
+                }
+              
                 let upe= await singleUpload(company.logoUrl, 
                 `${sha256(sess?.user?.name ?? "-test-")}-`, "logos", company.logoUrlPubId, true);
 

@@ -3,7 +3,7 @@ import prisma from '../db';
 import { SearchResult } from '@/models';
 import { JobPost } from '@prisma/client';
 import { isBlank } from '@/utils';
-
+import cuid from "cuid";
 
 
 export async function createJobPost(userId: string,jobPost : JobPost) {
@@ -16,13 +16,13 @@ export async function createJobPost(userId: string,jobPost : JobPost) {
 
         let userCompany =  await getUserCompany(userId);
 
-        let nJobPost : any = {...jobPost, companyId : userCompany?.id, dateCreated : new Date()};
+        let nJobPost : any = {...jobPost, companyId : userCompany?.id, dateCreated : new Date(), id : cuid()};
   
         let newJobPost = await prisma.jobPost.create({data: nJobPost});
   
-        const cuid = newJobPost.id;
+        const nJobid = newJobPost.id;
   
-        return {cuid : cuid, status : 1}; 
+        return {cuid : nJobid, status : 1}; 
 
     }
     catch(e : any){
