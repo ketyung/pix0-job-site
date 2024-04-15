@@ -98,7 +98,7 @@ export async function getJobPosts(userId: string, keyword?: string, orderBy? : s
                 companyId: userCompany?.id,
                 OR: [
                     { code: { contains: keyword } },
-                    { name: { contains: keyword } },
+                    { title: { contains: keyword } },
                 ],
             },
         };
