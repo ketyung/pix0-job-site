@@ -17,7 +17,7 @@ import 'react-markdown-editor-lite/lib/index.css';
 import MarkdownIt from 'markdown-it';
 import { CountryCodesSel } from "@/components/CountryCodesSel";
 import countryCodesFromJson from '@/models/country_dial_info.json';
-
+import { IoClose } from "react-icons/io5";
 
 type props = {
 
@@ -223,12 +223,16 @@ export default function Form({ title, isEditMode, refresh, editRowId} :props) {
             <div className="mt-2 mb-2 text-left">
                 <FieldLabel title="Limited To Selected Country Only">
                     <div className="flex mt-1">
-                        <CountryCodesSel hideDialCode left={true} countryCodes={countryCodesFromJson}
+                        <CountryCodesSel lgWidth="w-2/5" hideDialCode left={true} countryCodes={countryCodesFromJson}
                         icon={<div className="px-1" title="Choose A Country">...</div>}
                         setSelectedValue={(c)=>{
                             setJobPost({...jobpost, location : c.name ?? ""});
                         }}/>
-                        {jobpost.location && <div className="ml-2">{jobpost.location}</div>}
+                        {jobpost.location && <div className="ml-2 flex">{jobpost.location}
+                        <IoClose className="ml-2 w-5 h-5 cursor-pointer mt-0.5" onClick={()=>{
+                              setJobPost({...jobpost, location : null });
+                        }}/>
+                        </div>}
                     </div>
                 </FieldLabel>
             </div>

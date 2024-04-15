@@ -13,7 +13,7 @@ export default function Index({
     const menuItems : MenuItem[] = [{
         title :<MenuItemView title="Job Posts" />, 
         icon : <MdPeopleAlt className="ml-0.5 w-4 h-4 mt-0.5"/>,
-        link : "/sections/jobPosts",
+        link : "/employer/jobPosts",
         withHoverEffect : true, 
     }]
 
