@@ -161,14 +161,14 @@ export default function Form({ title, isEditMode, refresh, editRowId} :props) {
             : <BsMarkdown title="Edit In Mark Down Editor" className="w-5 h-5"/>}</Button>
             
             </div>} className="w-full">
-                { viewMarkDown ? <MdEditor value={ntb(jobpost.description)} style={{ height: '300px' }} 
+                { viewMarkDown ? <MdEditor value={ntb(jobpost.description)} style={{ height: '400px' }} 
                 renderHTML={text => mdParser.render(text)} onChange={(e)=>{
                     setJobPost({...jobpost, description : e.text});
                 }} view={{
                     md: true, // Set to true to display Markdown content
                     html: false, // Set to true to display rendered HTML content
                     menu: true, // Set to true to hide the toolbar by default
-                }}/> : <TextArea rows={10} value={ntb(jobpost.description)} width="100%"
+                }}/> : <TextArea rows={15} value={ntb(jobpost.description)} width="100%"
                     placeholder="Add a short description such as provide additional information about this jobpost"
                 onChange={(e)=>{
                     setJobPost({...jobpost, description : e.target.value});
