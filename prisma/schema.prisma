@@ -85,6 +85,9 @@ model UserCompany {
 }
 
 
+
+
+
 model JobPost {
     id             String   @db.VarChar(30)  @default(cuid()) @unique
     companyId      String      @db.VarChar(30)
@@ -94,8 +97,12 @@ model JobPost {
     workType       String?     @db.VarChar(30)
     jobCategory    String?     @db.VarChar(50)
     location       String?     @db.VarChar(100)
+    jobStatus      String?     @db.VarChar(20)
     salaryFrom     Float?      @db.Float
     salaryTo       Float?      @db.Float
+    applyAtExt     YesNo        @default(N)
+    applyAtUrl     String?     @db.Text 
+    datePub        DateTime?    
     createdBy      String?     @db.VarChar(30)
     dateCreated    DateTime    @default(now())
     dateUpdated    DateTime    @updatedAt

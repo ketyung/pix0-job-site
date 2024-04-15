@@ -37,7 +37,7 @@ export const DEFAULT_JOBPOST : JobPost= {
     title: "",
     description: "",
     workType : "",
-    jobCategory : JobCategorys[0],
+    jobCategory :"",
     location:"",
     createdBy: "",
     salaryFrom : null,
@@ -168,9 +168,10 @@ export default function Form({ title, isEditMode, refresh, editRowId} :props) {
         </div>
         <div className="mt-2 mb-2 text-left">
             <FieldLabel title="Job Category" className="lg:w-3/5 w-full">
-                <Select value={ntb(jobpost.jobCategory)} options={JobCategorys.map(i=>{
+                <Select value={ntb(jobpost.jobCategory)} options={[{value:"", label:"Please Select"}, 
+                ...JobCategorys.map(i=>{
                     return {value : i, label: i}
-                })} onChange={(e)=>{
+                })]} onChange={(e)=>{
                     let selCat = JobCategorys.filter(i=>{
                         return i === e.target.value;
                     });
