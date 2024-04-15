@@ -1,9 +1,9 @@
 import FieldLabel from "@/components/FieldLabel"
-import { JobCategorys } from "@/models"
+import { JobCategorys, WorkType, WorkTypes } from "@/models"
 import { Select, Input, TextArea, Button } from "pix0-core-ui"
 import { CiCircleInfo } from "react-icons/ci";
 import { useState, useEffect } from "react";
-import { JobPost } from "@prisma/client";
+import { JobPost, YesNo } from "@prisma/client";
 import { isBlank } from "@/utils";
 import { toast } from "react-toastify";
 import { createJobPost, updateJobPost, getJobPost , genJobPostDesc} from "@/service";
@@ -15,6 +15,8 @@ import MdEditor from 'react-markdown-editor-lite';
 // import style manually
 import 'react-markdown-editor-lite/lib/index.css';
 import MarkdownIt from 'markdown-it';
+import { CountryCodesSel } from "@/components/CountryCodesSel";
+import countryCodesFromJson from '@/models/country_dial_info.json';
 
 
 type props = {
@@ -36,12 +38,16 @@ export const DEFAULT_JOBPOST : JobPost= {
     code : "",
     title: "",
     description: "",
-    workType : "",
+    workType : WorkType.Remote,
     jobCategory :"",
     location:"",
     createdBy: "",
     salaryFrom : null,
     salaryTo : null,
+    jobStatus: null, 
+    datePub : null,
+    applyAtExt : YesNo.N,
+    applyAtUrl : null, 
     dateCreated : new Date(),
     dateUpdated : new Date(),
     companyId : "",
@@ -180,6 +186,31 @@ export default function Form({ title, isEditMode, refresh, editRowId} :props) {
                 }}/>          
             </FieldLabel>
         </div>
+
+        <div className="mt-2 mb-2 text-left lg:flex">
+            <FieldLabel title="Work Type" className="lg:w-2/5 w-full">
+                <Select className="w-3/5" value={ntb(jobpost.workType)} options={[{value:"", label:"Please Select"}, 
+                ...WorkTypes.map(i=>{
+                    return {value : i, label: i}
+                })]} onChange={(e)=>{
+                    let selWt = WorkTypes.filter(i=>{
+                        return i === e.target.value;
+                    });
+                    setJobPost({...jobpost, workType : selWt[0]});    
+                }}/>          
+            </FieldLabel>
+            <FieldLabel title="Limited To Country/Region" className="lg:w-2/5 w-full">
+                <div className="flex mt-1">
+                    <CountryCodesSel hideDialCode countryCodes={countryCodesFromJson}
+                    icon={<div className="px-1" title="Choose A Country">...</div>}
+                    setSelectedValue={(c)=>{
+                        setJobPost({...jobpost, location : c.name ?? ""});
+                    }}/>
+                    {jobpost.location && <div className="ml-2">{jobpost.location}</div>}
+                </div>
+            </FieldLabel>
+        </div>
+
 
       
 

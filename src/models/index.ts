@@ -115,3 +115,38 @@ export const CompanySizes : CompanySize []  =[
     label : "More Than 1000 Employees"},
 
 ]
+
+
+export enum WorkType {
+
+    Remote = "Remote",
+
+    InOffice = "In Office",
+
+    Flexible = "Flexible",
+
+}
+
+export const WorkTypes = getAllEnumValues(WorkType);
+
+
+export enum JobStatus {
+
+    Published = "Published",
+
+    Draft = "Draft",
+
+    Closed = "Closed",
+}
+
+export const JobStatuses = getAllEnumValues(JobStatus);
+
+
+export interface CountryCode {
+
+    dialCode? : string,
+
+    code? : string, 
+
+    name? : string, 
+}
