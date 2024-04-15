@@ -139,7 +139,7 @@ export default function Form({ title, isEditMode, refresh, editRowId} :props) {
                 }} value={ntb(jobpost.title)} className="w-full" icon={<CiCircleInfo className="mb-2"/>}/>
             </FieldLabel>
             <FieldLabel title="Job Code" className="lg:w-2/12 w-full lg:mt-2 lg:ml-2">
-                <Input placeholder="Job Code If Any" onChange={(e)=>{
+                <Input placeholder="If Any" onChange={(e)=>{
                     setJobPost({...jobpost, code: e.target.value});
                 }} value={ntb(jobpost.code)} className="w-full" icon={<CiCircleInfo className="mb-2"/>}/>
             </FieldLabel>
