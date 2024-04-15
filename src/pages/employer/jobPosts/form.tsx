@@ -1,5 +1,5 @@
 import FieldLabel from "@/components/FieldLabel"
-import { JobCategorys, WorkType, WorkTypes } from "@/models"
+import { JobCategorys, JobStatus, JobStatuses, WorkType, WorkTypes } from "@/models"
 import { Select, Input, TextArea, Button, Checkbox } from "pix0-core-ui"
 import { CiCircleInfo } from "react-icons/ci";
 import { useState, useEffect } from "react";
@@ -44,7 +44,7 @@ export const DEFAULT_JOBPOST : JobPost= {
     createdBy: "",
     salaryFrom : null,
     salaryTo : null,
-    jobStatus: null, 
+    jobStatus: JobStatus.Draft, 
     datePub : null,
     applyAtExt : YesNo.N,
     applyAtUrl : null, 
@@ -226,6 +226,22 @@ export default function Form({ title, isEditMode, refresh, editRowId} :props) {
                     setJobPost({...jobpost, applyAtUrl: e.target.value});
                 }} value={ntb(jobpost.applyAtUrl)} placeholder="e.g. https://linkedin.com/...."/>
             </FieldLabel> }     
+        </div>
+
+        <div className="mt-2 mb-2 text-left lg:flex">
+            <FieldLabel title="Status" className="lg:w-2/5 w-full">
+
+                <Select value={ntb(jobpost.jobStatus)} options={[{value:"", label:"-"}, 
+                ...JobStatuses.map(i=>{
+                    return {value : i, label: i}
+                })]} onChange={(e)=>{
+                    let selStat = JobStatuses.filter(i=>{
+                        return i === e.target.value;
+                    });
+
+                    setJobPost({...jobpost, jobStatus:selStat[0]});    
+                }}/>          
+            </FieldLabel>
         </div>
 
         <div className="mt-2 mb-2 lg:flex">

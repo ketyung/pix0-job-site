@@ -7,8 +7,8 @@ import { CiSearch } from "react-icons/ci";
 import Row from "./row";
 import BeatLoader from "react-spinners/BeatLoader";
 
-type props = {
 
+type props = {
     reloadCount? : number,
 
     onEdit?: (id? : string) => void, 
@@ -24,6 +24,7 @@ export default function List({reloadCount, onEdit} :props) {
 
     const [loading, setLoading] = useState(false);
 
+    
     const rowsPerPage = STANDARD_RES_ROWS_PER_PAGE;
 
     const refreshResult =  useMemo(() => async (searchString? : string, pageNum? : number ) => {
