@@ -7,7 +7,7 @@ import { getSession, signOut } from 'next-auth/react';
 import {  userSignOutByGid } from '@/service';
 import { GoOrganization } from "react-icons/go";
 import { Modal} from 'pix0-core-ui';
-import CompanyForm from '../pages/sections/company/form';
+import CompanyForm from '../pages/employer/company/form';
 
 type props = {
 
