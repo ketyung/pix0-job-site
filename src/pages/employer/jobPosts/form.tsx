@@ -1,6 +1,6 @@
 import FieldLabel from "@/components/FieldLabel"
 import { JobCategorys, WorkType, WorkTypes } from "@/models"
-import { Select, Input, TextArea, Button } from "pix0-core-ui"
+import { Select, Input, TextArea, Button, Checkbox } from "pix0-core-ui"
 import { CiCircleInfo } from "react-icons/ci";
 import { useState, useEffect } from "react";
 import { JobPost, YesNo } from "@prisma/client";
@@ -212,7 +212,21 @@ export default function Form({ title, isEditMode, refresh, editRowId} :props) {
         </div>
 
 
-      
+        <div className="mt-2 mb-2 text-left lg:flex">
+             <FieldLabel title="Apply At External Site?" className="lg:w-2/5 w-full">
+                <Checkbox setChecked={(e)=>{
+                    
+                    setJobPost({...jobpost, applyAtExt :e? 'Y' : 'N'});
+                    
+                }} checked={jobpost.applyAtExt === 'Y'}/>
+            </FieldLabel>  
+
+            {jobpost.applyAtExt === 'Y' && <FieldLabel title="External Site URL" className="lg:w-2/5 w-full">
+                <Input onChange={(e)=>{
+                    setJobPost({...jobpost, applyAtUrl: e.target.value});
+                }} value={ntb(jobpost.applyAtUrl)} placeholder="e.g. https://linkedin.com/...."/>
+            </FieldLabel> }     
+        </div>
 
         <div className="mt-2 mb-2 lg:flex">
             <Button disabled={processing} className="border border-gray-300 w-48 flex rounded justify-center bg-gray-300 dark:bg-gray-600 py-1"
