@@ -45,7 +45,7 @@ export default function List({reloadCount, onEdit} :props) {
 
     return <div className="overflow-x-auto mx-2 mb-20 text-sm">
     <div>
-    <Input className="lg:w-3/5 w-full mb-2" placeholder="Enter item code or name to search" 
+    <Input className="lg:w-3/5 w-full mb-2" placeholder="Enter job title or job code to search" 
       rightIcon={
         loading ? <BeatLoader className="lg:ml-4 w-10 h-4" color="#aaa" size={8}/> :
       <CiSearch className="w-5 h-5 mb-1 cursor-pointer" onClick={async ()=>{

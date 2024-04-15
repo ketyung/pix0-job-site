@@ -97,7 +97,7 @@ export default function Index({openForm }:IndexProps ) {
             {switchView()}
            
         </div>
-        <Drawer withCloseButton open={drawerOpen} width="70%" atRight groupId="d000Inv"
+        <Drawer withCloseButton open={drawerOpen} width="75%" atRight groupId="d000Inv"
         onClose={()=>{
             setDrawerOpen(false);
         }}>
