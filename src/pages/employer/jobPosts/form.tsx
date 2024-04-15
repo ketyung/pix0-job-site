@@ -221,7 +221,7 @@ export default function Form({ title, isEditMode, refresh, editRowId} :props) {
                 </FieldLabel>
             </div> 
             <div className="mt-2 mb-2 text-left">
-                <FieldLabel title="Limited To Country/Region">
+                <FieldLabel title="Limited To Selected Country Only">
                     <div className="flex mt-1">
                         <CountryCodesSel hideDialCode left={true} countryCodes={countryCodesFromJson}
                         icon={<div className="px-1" title="Choose A Country">...</div>}
