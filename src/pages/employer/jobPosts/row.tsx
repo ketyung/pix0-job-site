@@ -35,10 +35,11 @@ export default function Row({row, refresh, onEdit, index} :props) {
     return <tr className="dark:hover:bg-gray-700 hover:bg-gray-100 hover:cursor-pointer hover:shadow-xl">
          <td className="hidden lg:inline-block text-center py-2">{<Checkbox checked={false}
         lightBgColor="#ed8" groupId="invCb">{index && <span className="ml-1">{index}</span>}</Checkbox>}</td>
-        <td className="hidden lg:inline-block px-1 whitespace-nowrap py-2" style={{maxWidth:"10%"}}>{ntb(row?.code)}</td>
-        <td className="px-6 whitespace-nowrap py-2" style={{maxWidth:"35%"}}>{ntb(row?.title)}</td>
-        <td className="hidden lg:inline-block px-1 whitespace-nowrap py-2">{ntb(row?.jobCategory)}</td>
-        <td className="px-6 whitespace-nowrap text-center py-2"><ListActionDropDown onDelete={deleteRow}
+        <td className="hidden lg:inline-block px-1 whitespace-nowrap py-2">{ntb(row?.code)}</td>
+        <td className="px-1 whitespace-nowrap py-2">{ntb(row?.title)}</td>
+        <td className="hidden lg:inline-block px-1 py-2">{ntb(row?.jobCategory)}</td>
+        <td className="inline-block px-6 py-2 text-right">{ntb(row?.jobStatus)}</td>
+        <td className="px-1 whitespace-nowrap text-center py-2"><ListActionDropDown onDelete={deleteRow}
         onEdit={()=>{
             if ( onEdit ){
                 onEdit(row?.id);

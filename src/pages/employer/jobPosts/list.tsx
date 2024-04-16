@@ -61,11 +61,12 @@ export default function List({reloadCount, onEdit} :props) {
       <thead>
        
         <tr className="dark:bg-gray-800 bg-gray-100 border-b border-gray-300 text-xs font-bold dark:text-gray-100 text-gray-500 uppercase">
-          <th className="hidden lg:inline-block text-center py-2 px-2" style={{maxWidth:"15%"}}>No.</th>
-          <th className="hidden lg:inline-block px-1 text-left py-2" style={{maxWidth:"10%"}}>Code</th>
-          <th className="px-6 text-left py-2" style={{maxWidth:"35%"}}>Title</th>
+          <th className="hidden lg:inline-block text-center py-2 px-2">No.</th>
+          <th className="hidden lg:inline-block px-1 text-left py-2">Code</th>
+          <th className="px-1 text-left py-2">Title</th>
           <th className="hidden lg:inline-block px-1 text-left py-2">Category</th>
-          <th className="px-6 text-left py-2 text-center">Action</th>
+          <th className="inline-block lg:pl-10 pl-6 text-right py-2">Status</th>
+          <th className="px-1 text-left py-2 text-center">Action</th>
         </tr>
       </thead>
       <tbody className="dark:bg-gray-800 bg-white divide-y dark:divide-gray-600 divide-gray-200">
@@ -76,14 +77,14 @@ export default function List({reloadCount, onEdit} :props) {
       }
       { (searchResult.results.length ?? 0) === 0 &&
       <tr>
-        <td colSpan={5} className="text-center">
+        <td colSpan={6} className="text-center">
           <div className="mt-2 text-gray-400 p-2">You Have NOT Posted Any Job Yet</div>
         </td>
       </tr>
       }
       { (searchResult.results.length ?? 0) > 0 &&
       <tr>
-          <td colSpan={5}>
+          <td colSpan={6}>
             <Pagination currentPage={page} totalPages={searchResult.totalPages ?? 0}
             onPageChange={async (p)=>{
                 setPage(p);

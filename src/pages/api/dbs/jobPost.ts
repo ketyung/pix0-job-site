@@ -2,9 +2,24 @@ import { getUserCompany } from './userCompany';
 import prisma from '../db';
 import { SearchResult } from '@/models';
 import { JobPost } from '@prisma/client';
-import { isBlank } from '@/utils';
+import { isBlank , padNum} from '@/utils';
 import cuid from "cuid";
 
+
+async function getJobCodePrefix(_companyId? : string) {
+    return "J";
+}
+
+async function autoGenJobCode (companyId : string) {
+
+    let whereClause: any = {
+        where: {
+            companyId: companyId
+        },
+    };
+
+    return `${await getJobCodePrefix(companyId)}${padNum( await getCount(whereClause)+1) }`;
+}
 
 export async function createJobPost(userId: string,jobPost : JobPost) {
 
@@ -16,7 +31,9 @@ export async function createJobPost(userId: string,jobPost : JobPost) {
 
         let userCompany =  await getUserCompany(userId);
 
-        let nJobPost : any = {...jobPost, companyId : userCompany?.id, dateCreated : new Date(), id : cuid()};
+        let jobCode = isBlank(jobPost.code) ? await autoGenJobCode(userCompany?.id ?? "") : jobPost.code
+
+        let nJobPost : any = {...jobPost, companyId : userCompany?.id, dateCreated : new Date(), id : cuid(), code : jobCode};
   
         let newJobPost = await prisma.jobPost.create({data: nJobPost});
   
