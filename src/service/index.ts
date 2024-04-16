@@ -609,7 +609,7 @@ export async function checkIfImageIsSFW (imageData : any ) {
 
             let data = await postToRemote(imageData, "gai", "checkIfImageIsSFW");
             
-            const b= ( data.status === 1 && (data.text.trim() === "NO" || data.text.trim().toUpperCase().startsWith("NO")));
+            const b= ( data.status === 1 && (data.text.trim().toUpperCase() === "NO" || data.text.trim().toUpperCase().startsWith("NO")));
 
             //console.log("checkImg::", data, b);
             return b; 

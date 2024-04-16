@@ -165,7 +165,10 @@ async function checkIfImageIsSFW(imageData : any,  res: NextApiResponse,) {
 
          //"Does this image contain any nudity and sexual content that is NSFW?";
        
-        const prompt = "Does this image contain any NSFW content?"; 
+        //const prompt = "Does this image contain any NSFW content?"; 
+
+        const prompt = "Please analyze the image and determine if it contains any NSFW (Not Safe for Work) content. (Please answer with 'yes' or 'no')";
+
         const image = {
             inlineData: {
                 data: ext.data ,
@@ -177,7 +180,8 @@ async function checkIfImageIsSFW(imageData : any,  res: NextApiResponse,) {
         
         const result = await model.generateContent([prompt, ...imageParts]);
         const text = await result.response.text();
-        //console.log("detectImageResult::", result, text );
+        
+        //console.log("detectImageResult::", text );
 
         res.status(200).json({  text : text, status : 1});  
 
