@@ -64,7 +64,7 @@ export default function List({reloadCount, onEdit} :props) {
           <th className="hidden lg:inline-block text-center py-2 px-2">No.</th>
           <th className="hidden lg:inline-block px-1 text-left py-2">Code</th>
           <th className="px-1 text-left py-2">Title</th>
-          <th className="hidden lg:inline-block px-1 text-left py-2">Category</th>
+          <th className="hidden lg:inline-block px-4 text-left py-2">Category</th>
           <th className="inline-block lg:pl-10 pl-6 text-right py-2">Status</th>
           <th className="px-1 text-left py-2 text-center">Action</th>
         </tr>

@@ -2,7 +2,7 @@ import Layout  from "./layout2";
 import { ThemeProvider } from "pix0-core-ui";
 
 export default function Index({
-    children}: {children: React.ReactNode}) {
+    children, title }: {children: React.ReactNode, title? : string }) {
 
-    return (<ThemeProvider defaultTheme={{mode : "light"}}><Layout>{children}</Layout></ThemeProvider>)
+    return (<ThemeProvider defaultTheme={{mode : "light"}}><Layout title={title}>{children}</Layout></ThemeProvider>)
 }

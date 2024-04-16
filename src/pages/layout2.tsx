@@ -4,6 +4,7 @@ import './fonts.css';
 import { Input, ThemeToggle } from 'pix0-core-ui';
 import FieldLabel from '@/components/FieldLabel';
 import Link from 'next/link';
+import Head from 'next/head';
 
 type props = {
 
@@ -41,11 +42,14 @@ export default function Layout({ title, description, children} : props) {
 
 
 
-    return <><header className='dark:bg-gray-800 bg-top-bar-blue dark:text-gray-100 text-gray-800 shadow-xl 
-        border-width:1px dark:border-0 border border-gray-300 dark:border-gray-800 flex'>
+    return <>
+        <Head><title>{title ?? "Pix0 Jobs Site"}</title>
+            <meta name="description" content={ description ?? "You can find various jobs in various industry here including remote, in-office, hybrid etc"} />
+        </Head>
+        <header className='dark:bg-gray-800 bg-top-bar-blue dark:text-gray-100 text-gray-800 shadow-xl 
+        border-width:1px dark:border-0 border border-gray-300 dark:border-gray-800 flex'>   
             <Link href="/employer/jobPosts" className='bg-gray-700 rounded-full text-gray-100 py-1 px-4 text-sm font-bold m-2 hover:bg-green-900 cursor-pointer'>Post A JOB</Link>
             <ThemeToggle iconLightTextColor='#ffa'/>
-
         </header>
         { children ? <div className="dark:bg-gray-900 bg-gray-100 dark:text-gray-100 text-gray-900 min-h-screen h-full pt-4 pb-4">
             {children}</div> : DefaultMain()}

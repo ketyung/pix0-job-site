@@ -3,6 +3,7 @@ import { deleteJobPost } from "@/service";
 import { ntb } from "@/utils";
 import { toast } from "react-toastify";
 import { Checkbox} from 'pix0-core-ui';
+import Link from "next/link";
 
 type props ={
     row : any, 
@@ -36,8 +37,8 @@ export default function Row({row, refresh, onEdit, index} :props) {
          <td className="hidden lg:inline-block text-center py-2">{<Checkbox checked={false}
         lightBgColor="#ed8" groupId="invCb">{index && <span className="ml-1">{index}</span>}</Checkbox>}</td>
         <td className="hidden lg:inline-block px-1 whitespace-nowrap py-2">{ntb(row?.code)}</td>
-        <td className="px-1 whitespace-nowrap py-2">{ntb(row?.title)}</td>
-        <td className="hidden lg:inline-block px-1 py-2">{ntb(row?.jobCategory)}</td>
+        <td className="px-1 whitespace-nowrap py-2"><Link href={`/employer/jobPosts/${row?.id}`} target="_blank">{ntb(row?.title)}</Link></td>
+        <td className="hidden lg:inline-block px-4 py-2">{ntb(row?.jobCategory)}</td>
         <td className="inline-block px-6 py-2 text-right">{ntb(row?.jobStatus)}</td>
         <td className="px-1 whitespace-nowrap text-center py-2"><ListActionDropDown onDelete={deleteRow}
         onEdit={()=>{
