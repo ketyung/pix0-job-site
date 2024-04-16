@@ -1,0 +1,17 @@
+.MyMd.h1 {
+    font-weight: 700;
+    font-size: 28px;
+}
+
+.MyMd.h2 {
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.MyMd.b {
+    font-weight: 600;
+}
+
+.MyMd {
+    font-size: 16px;
+}
