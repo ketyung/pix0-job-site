@@ -35,7 +35,7 @@ export default function View({ jobId} :props) {
         </div>
     }
 
-    return <div className="mt-2 border border-gray-300 rounded p-2 lg:w-3/5 w-11/12 mx-auto lg:mb-2 mb-20">
+    return <div className="mt-2 border border-gray-300 rounded p-2 lg:w-3/5 w-11/12 mx-auto lg:mb-2 mb-20 shadow-xl">
 
         {loading ? <BeatLoader size={10} color="#999" className="my-10 mx-auto"/>
         :
