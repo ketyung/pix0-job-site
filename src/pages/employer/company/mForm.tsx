@@ -15,7 +15,7 @@ import MdEditor from 'react-markdown-editor-lite';
 // import style manually
 import 'react-markdown-editor-lite/lib/index.css';
 import MarkdownIt from 'markdown-it';
-import { createCompany, genCompanyDesc} from "@/service";
+import { createCompany, genCompanyDesc,  checkIfImageIsSFW } from "@/service";
 import { GrNext, GrPrevious } from "react-icons/gr";
 import ProfileImage from "@/components/ProfileImage";
 import DndUploader from "@/components/DndUploader";
@@ -93,7 +93,18 @@ export default function Form({ title, refresh, minWidth} :props) {
             //console.log("logoUrl::", company.logoUrl);
             let sess = await getSession();
 
+
+            if (!await checkIfImageIsSFW(company.logoUrl)){
+                toast.error("Company Logo is an image that NSFW");
+                setProcessing(false);
+                return;
+            }
+          
+            /*let upe= await singleUpload(company.logoUrl, 
+            `${sha256(sess?.user?.name ?? "-test-")}-`, "logos", company.logoUrlPubId, true);
+                */
             let upe= await singleUpload(company.logoUrl, `${sha256(sess?.user?.name ?? "-test-")}-`, "logos");
+
             if ( upe instanceof Error){
                 let eMesg = `Error uploading logo: ${upe.message}`;
                 toast.error(eMesg);

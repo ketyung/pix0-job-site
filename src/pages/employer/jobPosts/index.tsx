@@ -3,7 +3,7 @@ import { Button, Drawer, Modal } from "pix0-core-ui";
 import { FiPlusCircle } from "react-icons/fi";
 import { useState , useEffect, useMemo} from "react";
 import Form from "./form";
-import List from "./list";
+import List, { handleUnauthorizedError } from "./list";
 import { hasCompany } from '@/service';
 import CompanyForm from "../company/mForm";
 
@@ -38,7 +38,9 @@ export default function Index({openForm }:IndexProps ) {
 
 
     const verifyingHasCompany = useMemo(() => async () =>{
-        let hasC = await hasCompany();
+        let hasC = await hasCompany((e)=>{
+            handleUnauthorizedError(e);
+        });
         setHasCreatedCompany(hasC);
         return hasC;
     },[setHasCreatedCompany]); 
