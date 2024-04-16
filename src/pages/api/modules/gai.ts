@@ -44,8 +44,9 @@ async function genJobDesc(res: NextApiResponse, userId: string, jobTitle : strin
 
         const prompt = `Write the job description for a job titled as "${jobTitle}"${jobCategory 
             && ` and in the category of "${jobCategory}"`}${ asJson && ' structured in JSON format' } 
-            for company [${company?.name}] ${!isBlank(company?.industry) ? ` in the industry of ${company?.industry}` :""}
-            ${!isBlank(company?.description) ? ` and with 'About Us' as "${company?.description}]"` : ""} `;
+            for company ${company?.name} ${!isBlank(company?.industry) ? ` in the industry of ${company?.industry}` :""}
+            ${!isBlank(company?.description) ? ` and with 'About Us' as "${company?.description}]"` : ""} 
+            but please do NOT include To Apply section `;
 
           //console.log("prompt is::", prompt);
    
@@ -152,7 +153,7 @@ async function checkIfImageIsSFW(imageData : any,  res: NextApiResponse,) {
 function fileToGenerativePart(path : string , mimeType : string ) {
 
     let bdata = Buffer.from(fs.readFileSync(path)).toString("base64");
-    console.log("bdata:::", bdata.substring(0,300));
+    //console.log("bdata:::", bdata.substring(0,300));
     return {
       inlineData: {
         data: bdata,
