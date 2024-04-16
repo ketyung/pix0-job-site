@@ -1,6 +1,6 @@
 import FieldLabel from "@/components/FieldLabel"
 import { JobCategorys, JobStatus, JobStatuses, WorkType, WorkTypes } from "@/models"
-import { Select, Input, TextArea, Button, Checkbox } from "pix0-core-ui"
+import { Select, Input, TextArea, Button, Checkbox, DatePicker } from "pix0-core-ui"
 import { CiCircleInfo } from "react-icons/ci";
 import { useState, useEffect } from "react";
 import { JobPost, YesNo } from "@prisma/client";
@@ -191,6 +191,13 @@ export default function Form({ title, isEditMode, refresh, editRowId} :props) {
                     }}/>          
                 </FieldLabel>
             </div>
+            <div className="mt-2 mb-2 text-left">
+                <FieldLabel title="Date Published">
+                    <DatePicker onDateSelected={(e)=>{
+                        setJobPost({...jobpost, datePub : e});  
+                    }}/>
+                </FieldLabel>
+            </div>
 
             <div className="mt-2 mb-2 text-left">
                 <FieldLabel title="Job Category">
@@ -239,7 +246,7 @@ export default function Form({ title, isEditMode, refresh, editRowId} :props) {
 
 
             <div className="mt-2 mb-2 text-left lg:flex">
-                <FieldLabel title="Apply At External Site?">
+                <FieldLabel title="Apply At External Site?" className="pb-2">
                     <Checkbox setChecked={(e)=>{
                         
                         setJobPost({...jobpost, applyAtExt :e? 'Y' : 'N'});

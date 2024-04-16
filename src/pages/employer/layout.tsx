@@ -43,26 +43,41 @@ export default function Layout({children, title, description, menuItems}: props)
             return false;
         }
 
+
+        const reverifySess = async () =>{
+
+            let chk = await verifyLogin();
+            setIsLoggedIn( chk );
+
+            //console.log("chek.1::", chk);
+            if ( !chk){
+                JWTStorage.remove();
+            }
+
+        }
+
         let signedIn = JWTStorage.get() !== null;
         setIsLoggedIn(signedIn);
           
         if ( signedIn) {
 
-            setIsLoggedIn( await verifyLogin() );
+            await reverifySess();
 
         }else {
 
              if ( hasSignedIn()) {
             
                 let s = await checkIsSignedIn();
-                    
+                
+
                 if (s){
-                    setIsLoggedIn( await verifyLogin() );
+                    await reverifySess();
                 }
                 
 
             }else {
 
+                JWTStorage.remove();
                 setIsLoggedIn(false);
             }
             
@@ -71,12 +86,8 @@ export default function Layout({children, title, description, menuItems}: props)
         setVerifying(false);
     },[setIsLoggedIn, setVerifying]);
 
-    useEffect(()=>{
-       
-        //setTimeout(()=>{
+    useEffect(()=>{ 
         verifySess();
-        //}, 2000);
-    
     },[verifySess]);
 
     return <>{ isLoggedIn ?  
