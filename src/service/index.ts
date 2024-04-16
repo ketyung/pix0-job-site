@@ -1,9 +1,20 @@
 import { JWTStorage } from "@/utils/local-storage";
 import { SignInData, SearchResult, CloudParam } from "@/models";
 import { JobPost, UserCompany } from "@prisma/client";
-
-
 const axios = require('axios');
+
+const UNAUTHORIZED_MESSAGE = "Unauthorized!";
+
+
+export const isErrorUnathorized = (data : any) : boolean =>{
+
+    if ( data instanceof Error){
+        return data.message.startsWith(UNAUTHORIZED_MESSAGE);
+    }
+
+    return false; 
+}
+
 
 
 const obtainHeaderWithJWT = async  () =>{
@@ -103,7 +114,7 @@ export async function verifyLogin(onError? : (e : Error)=>void ) {
             if(err.response && err.response.status === 401){
 
                   if ( onError) {
-                        onError(new Error(`Unauthorized : ${err.message}`));
+                        onError(new Error(`${UNAUTHORIZED_MESSAGE} ${err.message}`));
                   }
             }
 
@@ -137,7 +148,7 @@ export async function userSignOutByGid (
             if(err.response && err.response.status === 401){
 
                   if ( onError) {
-                        onError(new Error(`Unauthorized : ${err.response.data.error}`));
+                        onError(new Error(`${UNAUTHORIZED_MESSAGE} ${err.response.data.error}`));
                   }
             }
 
@@ -172,7 +183,7 @@ export async function userSignInByGid (signInData : SignInData,
             if(err.response && err.response.status === 401){
 
                   if ( onError) {
-                        onError(new Error(`Unauthorized : ${err.response.data.error}`));
+                        onError(new Error(`${UNAUTHORIZED_MESSAGE} ${err.response.data.error}`));
                   }
             }
 
@@ -221,7 +232,7 @@ export async function deleteContact(id: string, onError? : (e : Error)=>void ) {
             if(err.response && err.response.status === 401){
 
                   if ( onError) {
-                        onError(new Error(`Unauthorized : ${err.message}`));
+                        onError(new Error(`${UNAUTHORIZED_MESSAGE} ${err.message}`));
                   }
             }
 
@@ -260,7 +271,7 @@ export async function createJobPost (jobpost : JobPost, onError? : (e : Error)=>
             if(err.response && err.response.status === 401){
 
                   if ( onError) {
-                        onError(new Error(`Unauthorized : ${err.response.data.error}`));
+                        onError(new Error(`${UNAUTHORIZED_MESSAGE} ${err.response.data.error}`));
                   }
             }
 
@@ -286,7 +297,7 @@ export async function updateJobPost (jobpost : JobPost, onError? : (e : Error)=>
             if(err.response && err.response.status === 401){
 
                   if ( onError) {
-                        onError(new Error(`Unauthorized : ${err.response.data.error}`));
+                        onError(new Error(`${UNAUTHORIZED_MESSAGE} ${err.response.data.error}`));
                   }
             }
 
@@ -315,7 +326,7 @@ export async function checkIfJobPostInfoProper (jobpost : JobPost, onError? : (e
             if(err.response && err.response.status === 401){
 
                   if ( onError) {
-                        onError(new Error(`Unauthorized : ${err.response.data.error}`));
+                        onError(new Error(`${UNAUTHORIZED_MESSAGE} ${err.response.data.error}`));
                   }else {
 
                         throw err;
@@ -356,7 +367,7 @@ export async function getJobPosts(
             if(err.response && err.response.status === 401){
 
                   if ( onError) {
-                        onError(new Error(`Unauthorized : ${err.message}`));
+                        onError(new Error(`${UNAUTHORIZED_MESSAGE} ${err.message}`));
                   }
             }
 
@@ -388,7 +399,7 @@ export async function getJobPost(id : string, onError? : (e : Error)=>void ) : P
             if(err.response && err.response.status === 401){
 
                   if ( onError) {
-                        onError(new Error(`Unauthorized : ${err.message}`));
+                        onError(new Error(`${UNAUTHORIZED_MESSAGE} ${err.message}`));
                   }
             }
 
@@ -411,7 +422,7 @@ export async function deleteJobPost(id: string, onError? : (e : Error)=>void ) {
             if(err.response && err.response.status === 401){
 
                   if ( onError) {
-                        onError(new Error(`Unauthorized : ${err.message}`));
+                        onError(new Error(`${UNAUTHORIZED_MESSAGE} ${err.message}`));
                   }
             }
 
@@ -453,7 +464,7 @@ export async function createCompany (company : UserCompany, onError? : (e : Erro
             if(err.response && err.response.status === 401){
 
                   if ( onError) {
-                        onError(new Error(`Unauthorized : ${err.response.data.error}`));
+                        onError(new Error(`${UNAUTHORIZED_MESSAGE} ${err.response.data.error}`));
                   }
             }
 
@@ -479,7 +490,7 @@ export async function updateCompany (company : UserCompany, onError? : (e : Erro
             if(err.response && err.response.status === 401){
 
                   if ( onError) {
-                        onError(new Error(`Unauthorized : ${err.response.data.error}`));
+                        onError(new Error(`${UNAUTHORIZED_MESSAGE} ${err.response.data.error}`));
                   }
             }
 
@@ -513,7 +524,7 @@ export async function getCompany(id? : string, onError? : (e : Error)=>void ) : 
             if(err.response && err.response.status === 401){
 
                   if ( onError) {
-                        onError(new Error(`Unauthorized : ${err.message}`));
+                        onError(new Error(`${UNAUTHORIZED_MESSAGE} ${err.message}`));
                   }
             }
 
@@ -547,7 +558,7 @@ export async function hasCompany(onError? : (e : Error)=>void ) : Promise<boolea
             if(err.response && err.response.status === 401){
 
                   if ( onError) {
-                        onError(new Error(`Unauthorized : ${err.message}`));
+                        onError(new Error(`${UNAUTHORIZED_MESSAGE} ${err.message}`));
                   }
             }
 
@@ -593,7 +604,7 @@ export async function getCloudParams( onError? : (e : Error)=>void ) : Promise<C
             if(err.response && err.response.status === 401){
 
                   if ( onError) {
-                        onError(new Error(`Unauthorized : ${err.message}`));
+                        onError(new Error(`${UNAUTHORIZED_MESSAGE} ${err.message}`));
                   }
             }
 

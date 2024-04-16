@@ -1,17 +1,31 @@
 import { SearchResult } from "@/models"
 import { useEffect, useState, useCallback, useMemo} from "react"
-import { getJobPosts } from "@/service";
+import { getJobPosts, isErrorUnathorized } from "@/service";
 import { Pagination, Input } from "pix0-core-ui";
 import { STANDARD_RES_ROWS_PER_PAGE } from "@/models";
 import { CiSearch } from "react-icons/ci";
 import Row from "./row";
 import BeatLoader from "react-spinners/BeatLoader";
+import { toast } from "react-toastify";
 
 
 type props = {
     reloadCount? : number,
 
     onEdit?: (id? : string) => void, 
+}
+
+export const handleUnauthorizedError =(e: any)=>{
+
+    if ( isErrorUnathorized(e)){
+        toast.error("Unauthorized!");
+
+        setTimeout(()=>{
+            document.location.href="/employer";
+        },300);
+    }else {
+        toast.error(e.message);
+    }
 }
 
 export default function List({reloadCount, onEdit} :props) {
@@ -29,7 +43,9 @@ export default function List({reloadCount, onEdit} :props) {
 
     const refreshResult =  useMemo(() => async (searchString? : string, pageNum? : number ) => {
         setLoading(true);
-        let s = await getJobPosts(searchString ?? searchStr, '-', '-', pageNum ?? page , rowsPerPage);
+        let s = await getJobPosts(searchString ?? searchStr, '-', '-', pageNum ?? page , rowsPerPage, (e)=>{
+            handleUnauthorizedError(e);
+        });
         setSearchResult(s);
         setLoading(false);
     }, [searchStr, page, rowsPerPage]);
