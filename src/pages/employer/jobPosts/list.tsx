@@ -18,10 +18,9 @@ type props = {
 export const handleUnauthorizedError =(e: any)=>{
 
     if ( isErrorUnathorized(e)){
-        toast.error("Unauthorized!");
-
+        //toast.error("Unauthorized!");
         setTimeout(()=>{
-            document.location.href="/employer";
+            document.location.href="/employer/";
         },300);
     }else {
         toast.error(e.message);
