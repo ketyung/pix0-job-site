@@ -299,6 +299,40 @@ export async function updateJobPost (jobpost : JobPost, onError? : (e : Error)=>
 }
 
 
+
+export async function checkIfJobPostInfoProper (jobpost : JobPost, onError? : (e : Error)=>void ){
+
+      try {
+
+            let data = await postToRemote(jobpost, "gai", "checkJobPostInfo");
+
+            //console.log("data:::", data);
+
+            return ( data.status === 1 && data.text.trim() === "yes");
+
+      }catch(err : any) {
+
+            if(err.response && err.response.status === 401){
+
+                  if ( onError) {
+                        onError(new Error(`Unauthorized : ${err.response.data.error}`));
+                  }else {
+
+                        throw err;
+                  }
+            }
+
+            if ( onError) {
+                  onError(new Error(`${err.response.data.error}`));
+            } else {
+                  throw err;
+            }
+            return false; 
+
+      }
+}
+
+
 export async function getJobPosts(
       searchStr? : string,
       orderBy? : string,

@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { JobPost, YesNo } from "@prisma/client";
 import { isBlank } from "@/utils";
 import { toast } from "react-toastify";
-import { createJobPost, updateJobPost, getJobPost , genJobPostDesc} from "@/service";
+import { createJobPost, updateJobPost, getJobPost , genJobPostDesc, checkIfJobPostInfoProper} from "@/service";
 import { ntb } from "@/utils";
 import { BeatLoader } from "react-spinners";
 import { BsMarkdown } from "react-icons/bs";
@@ -80,6 +80,23 @@ export default function Form({ title, isEditMode, refresh, editRowId} :props) {
         }
         
         setProcessing(true);
+
+        if (jobpost.jobStatus === JobStatus.Published) {
+            try {
+
+                if ( !await checkIfJobPostInfoProper(jobpost)){
+                    toast.error(`Job Post contains inappropriate text or content. 
+                    Please verify if your job post contains appropriate information`);
+                    setProcessing(false);
+                    return;
+                }
+
+            }catch(e: any){
+                toast.error(e.message);
+                setProcessing(false);
+                return; 
+            }
+        }
 
         let n = isEditMode ? await updateJobPost(jobpost, (e)=>{
             toast.error(e.message);
@@ -195,7 +212,7 @@ export default function Form({ title, isEditMode, refresh, editRowId} :props) {
                 <FieldLabel title="Date Published">
                     <DatePicker onDateSelected={(e)=>{
                         setJobPost({...jobpost, datePub : e});  
-                    }}/>
+                    }} value={jobpost.datePub!== null ? jobpost.datePub : undefined}/>
                 </FieldLabel>
             </div>
 

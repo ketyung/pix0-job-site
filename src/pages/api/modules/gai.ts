@@ -4,6 +4,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 import bodyParser from "body-parser";
 import { getUserCompany } from '../dbs/userCompany';
 import { isBlank } from '@/utils';
+import { JobPost } from '@prisma/client';
 const jsonParser = bodyParser.json();
 const fs = require('fs');
 
@@ -81,7 +82,11 @@ async function handlePost (req: NextApiRequest,  res: NextApiResponse, _userId? 
                 if ( param1 === 'checkIfImageIsSFW') {
                     await checkIfImageIsSFW(data, res);
                     //await testCheckIfImageIsSFW(res);
-                }else {
+                }
+                else if ( param1 === 'checkJobPostInfo') {
+                    await checkIfJobPostInfoProper(data, res);
+                }
+                else {
                     res.status(400).json({text: "Invalid action!", status:-1});
                 }
             }
@@ -92,6 +97,42 @@ async function handlePost (req: NextApiRequest,  res: NextApiResponse, _userId? 
             }
         });
     }
+}
+
+
+
+async function checkIfJobPostInfoProper(jobPost : JobPost,  res: NextApiResponse,) {
+
+    try {
+
+        const model = genAI.getGenerativeModel({ model: "gemini-pro"});
+
+        const prompt = `Please review the following job post and determine if it is appropriate:
+
+        Job Post JSON:
+        ${JSON.stringify(jobPost, null, 2)}
+        
+        Is this job post appropriate and free from NSFW (Not Safe for Work) content, harmful or offensive language, and insulting or discriminatory remarks? 
+        (Please answer with "yes" or "no")`;
+        
+        
+
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        const text = response.text();
+
+        //console.log("return.x.text::", text);
+
+        res.status(200).json({  text : text, status : 1});  
+
+
+    }
+    catch (e : any ){
+
+        console.log("detectJobPostInfo.error::", e.message?.substring(0,550));
+        res.status(422).json({error: e.message, status:-1});
+    }
+    
 }
 
 
