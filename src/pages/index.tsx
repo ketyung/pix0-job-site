@@ -12,7 +12,7 @@ export default function Index({
 
 
 interface PageProps {
-    data: any,
+    data?: any,
 
     children?: React.ReactNode, 
     

@@ -3,7 +3,7 @@ import { JobCategorys } from "@/models";
 import { ntb } from "@/utils";
 
 type props ={
-    jobPosts:any , 
+    jobPosts?:any , 
 }
 
 export default function LatestJobPosts ({jobPosts }: props){
@@ -26,13 +26,13 @@ export default function LatestJobPosts ({jobPosts }: props){
 
     return <div className="mt-10 lg:w-3/5 w-4/5 mx-auto">
         <div className="text-2xl my-2 ml-2">Latest Job Posts</div>      
-        {jobPosts.results.map((j:any)=>{
+        {jobPosts?.results?.map((j:any)=>{
 
             let catCls = `lg:w-32 w-24 text-center lg:text-base text-xs ml-2 lg:h-8 h-6 bg-${jobCatBgColor(j.jobCategory)}-500 text-gray-100 p-1 rounded`;
 
             //console.log("catClas::",catCls);
 
-            return <div className="mb-4 border-b border-gray-300 dark:border-gray-600 py-2 hover:bg-yellow-100 hover:dark:bg-gray-700 p-2">
+            return <div key={`Job_${j.id}`} className="mb-4 border-b border-gray-300 dark:border-gray-600 py-2 hover:bg-yellow-100 hover:dark:bg-gray-700 p-2">
                 <div className="flex">
                     <div className="w-9/12 text-xl">{j.title}</div>
                     <div className={catCls}>{j.jobCategory}</div>
