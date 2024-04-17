@@ -271,6 +271,8 @@ export async function getPubJobPost(id : string ) :Promise<JobPost|undefined> {
             jobCategory: true,
             description: true,
             jobStatus : true,  
+            applyAtExt: true,
+            applyAtUrl: true,
         }
     });
 
