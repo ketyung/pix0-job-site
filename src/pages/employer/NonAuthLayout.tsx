@@ -1,6 +1,6 @@
 import { Modal } from "pix0-core-ui"
 import image3 from '../../images/computer-tech.jpg'
-import SignInForm from "./common/SignInForm"
+import SignInForm from "../common/SignInForm"
 import { useState, useEffect } from "react";
 import Head from 'next/head';
 import Image from "next/image";

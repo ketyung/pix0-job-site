@@ -5,7 +5,7 @@ import { useEffect, useState, useMemo } from "react";
 import { getSession } from "next-auth/react";
 import { userSignInByGid, verifyLogin } from "@/service";
 import { JWTStorage } from "@/utils/local-storage";
-import CommonToastContainer  from "./common/CommonToastContainer";
+import CommonToastContainer  from "../common/CommonToastContainer";
 import Cover from "@/components/Cover";
 
 export default function Layout({children, title, description, menuItems}: props) {
