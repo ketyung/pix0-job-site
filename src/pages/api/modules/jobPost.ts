@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import bodyParser from "body-parser";
 import { getPageOffsetAndLimit, toTotalPages } from '@/utils';
-import { createJobPost, getJobPost, getJobPosts } from '../dbs/jobPost';
+import { createJobPost, getJobPost, getJobPosts, getPubJobPosts } from '../dbs/jobPost';
 import { updateJobPost, deleteJobPost } from '../dbs/jobPost';
 
 const jsonParser = bodyParser.json();
@@ -41,6 +41,18 @@ async function handleGet (req: NextApiRequest,  res: NextApiResponse, userId? : 
                     ascOrDesc !== '-' ? ascOrDesc : undefined, 
                     isNaN(pageNum) ? 1 : pageNum, isNaN(rowsPerPage) ? 10 : rowsPerPage);
 
+            } else if (param1 === "pubJobPosts"){
+
+                let keyword = path[2];
+                let orderBy = path[3];
+                let ascOrDesc = path[4];
+                let pageNum = parseInt(path[5]);
+                let rowsPerPage = parseInt(path[6]);
+                
+                await handleGetPubJobPosts(res, keyword, 
+                    orderBy !== '-' ? orderBy : undefined , 
+                    ascOrDesc !== '-' ? ascOrDesc : undefined, 
+                    isNaN(pageNum) ? 1 : pageNum, isNaN(rowsPerPage) ? 10 : rowsPerPage);
             }
             else {
                 await handleGetJobPost(res,  param1, userId);
@@ -71,6 +83,35 @@ async function handleGetJobPosts (
         let p = getPageOffsetAndLimit(page ?? 1, rowsPerPage ?? 10);
 
         let ndata = await getJobPosts(userId ?? "", keyword, orderBy, ascOrDesc, p.offset, p.limit);
+
+        let data = {...ndata, page, rowsPerPage};
+        data = { ...data , totalPages : toTotalPages(data)  };
+        //console.log("data:::",data);
+        res.status(200).json({  data : data, status : 1});   
+
+    }
+    catch(e: any){
+        console.log("e::",e);
+        res.status(422).send({error: e.message, status: -1});
+    }
+}
+
+
+
+
+async function handleGetPubJobPosts ( 
+    res: NextApiResponse, 
+    keyword? : string, 
+    orderBy? : string, 
+    ascOrDesc? : string, 
+    page? : number, 
+    rowsPerPage? : number  ){
+
+    try {
+
+        let p = getPageOffsetAndLimit(page ?? 1, rowsPerPage ?? 10);
+
+        let ndata = await getPubJobPosts (keyword, orderBy, ascOrDesc, p.offset, p.limit);
 
         let data = {...ndata, page, rowsPerPage};
         data = { ...data , totalPages : toTotalPages(data)  };

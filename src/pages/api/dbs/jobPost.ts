@@ -1,6 +1,6 @@
 import { getUserCompany } from './userCompany';
 import prisma from '../db';
-import { SearchResult } from '@/models';
+import { JobStatus, SearchResult } from '@/models';
 import { JobPost } from '@prisma/client';
 import { isBlank , padNum} from '@/utils';
 import cuid from "cuid";
@@ -153,6 +153,70 @@ async function getCount(where: any ): Promise<number> {
     return count;
 }
 
+
+
+export async function getPubJobPosts(keyword?: string, orderBy? : string, 
+    ascOrDesc? : string, offset: number = 0, limit: number = 10) :Promise<SearchResult> {
+    
+   
+    let whereClause: any = {
+        where: {
+            datePub: {
+                lte: new Date()
+            },
+
+            jobStatus : JobStatus.Published
+        },
+    };
+
+    if (keyword && keyword.trim()!== '-') {
+        whereClause = {
+            where: {
+                ...whereClause.where,
+                OR: [
+                    { code: { contains: keyword } },
+                    { title: { contains: keyword } },
+                ],
+            },
+        };
+    }
+
+    //console.log("wh.clu::", whereClause);
+
+    let ordBy : any =  {
+        datePub : 'desc'
+    };
+
+    if ( orderBy ){
+        ordBy = {
+            [`${orderBy}`]: ascOrDesc ?? 'asc'
+        };
+    }
+
+    const JobPosts = await prisma.jobPost.findMany({
+        ...whereClause,
+        skip: offset,
+        take: limit,
+        orderBy: ordBy,
+        select: {
+            company: true,
+            title: true,
+            datePub: true,
+            code: true,
+            id: true, 
+            location: true,
+            workType : true, 
+            jobCategory: true, 
+            // Exclude the description field
+            //description: false
+        }
+    });
+
+   
+    let total = await getCount(whereClause);
+
+    return {results : JobPosts, total};
+}
 
 export async function getJobPost(id : string, userId: string) :Promise<JobPost|undefined> {
     
