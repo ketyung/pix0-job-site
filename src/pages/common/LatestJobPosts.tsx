@@ -1,5 +1,5 @@
 import ProfileImage from "@/components/ProfileImage";
-import { JobCategorys, WorkType } from "@/models";
+import { JobCategorys, SearchResult, WorkType } from "@/models";
 import { ntb } from "@/utils";
 import { CiGlobe } from "react-icons/ci";
 import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
@@ -8,7 +8,7 @@ import { CiLocationOn } from "react-icons/ci";
 import Link from "next/link";
 
 type props ={
-    jobPosts?:any , 
+    jobPosts?: SearchResult , 
 }
 
 export default function LatestJobPosts ({jobPosts }: props){
