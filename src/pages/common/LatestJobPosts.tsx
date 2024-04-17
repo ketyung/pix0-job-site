@@ -11,7 +11,7 @@ export default function LatestJobPosts ({jobPosts }: props){
 
     const jobCatBgColor = (jCat : any ) =>{
 
-        let colors = ["red", "green", "blue",  "yellow", "green","gray", "purple"  ];
+        let colors = ["#800", "#070", "#f70", "#a0a", "#026","#0a9", "#967"];
 
         let idx = JobCategorys.indexOf(jCat);
 
@@ -28,14 +28,13 @@ export default function LatestJobPosts ({jobPosts }: props){
         <div className="text-2xl my-2 ml-2">Latest Job Posts</div>      
         {jobPosts?.results?.map((j:any)=>{
 
-            let catCls = `lg:w-32 w-24 text-center lg:text-base text-xs ml-2 lg:h-8 h-6 bg-${jobCatBgColor(j.jobCategory)}-500 text-gray-100 p-1 rounded`;
-
             //console.log("catClas::",catCls);
 
             return <div key={`Job_${j.id}`} className="mb-4 border-b border-gray-300 dark:border-gray-600 py-2 hover:bg-yellow-100 hover:dark:bg-gray-700 p-2">
                 <div className="flex">
                     <div className="w-9/12 text-xl">{j.title}</div>
-                    <div className={catCls}>{j.jobCategory}</div>
+                    <div className='lg:w-32 w-24 text-center lg:text-base text-xs ml-2 lg:h-8 h-6 text-gray-100 p-1 rounded'
+                    style={{backgroundColor:jobCatBgColor(j.jobCategory)}}>{j.jobCategory}</div>
                 </div>
                 <div className="mt-2 flex">
                     <ProfileImage width="30px" imageUrl={j.company.logoUrl !== null ? j.company.logoUrl : undefined}  
