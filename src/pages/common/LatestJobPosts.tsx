@@ -40,7 +40,7 @@ export default function LatestJobPosts ({jobPosts }: props){
                 <div className="mt-2 flex">
                     <ProfileImage width="30px" imageUrl={j.company.logoUrl !== null ? j.company.logoUrl : undefined}  
                     alt={ntb(j.company.name)} paddingTop="4px" fontSize="12px"/>
-                    <div className="w-10/12 text-left ml-2 mt-1">{j.company.name}</div>
+                    <div className="w-10/12 text-left ml-2 mt-1 text-sm">{j.company.name}</div>
                 </div>
             </div>
 
