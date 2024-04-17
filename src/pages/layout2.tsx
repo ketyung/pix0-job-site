@@ -22,7 +22,7 @@ type props = {
 const DefaultMain = (data?: any ) =>{
 
 
-    return <div className="dark:bg-gray-900 bg-gray-100 dark:text-gray-100 text-gray-900 h-screen pt-4 pb-4">
+    return <div className="dark:bg-gray-900 bg-gray-100 dark:text-gray-100 text-gray-900 h-full pt-4 pb-4">
         <section id="home">
             <div className="rounded bg-gray-300 mx-auto lg:w-3/5 w-4/5 dark:bg-gray-800 lg:flex flex-col lg:flex-row my-4 p-2">
                 <div className='text-left min-w-32'>
