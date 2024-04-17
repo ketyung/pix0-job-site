@@ -5,6 +5,7 @@ import { Input, ThemeToggle } from 'pix0-core-ui';
 import FieldLabel from '@/components/FieldLabel';
 import Link from 'next/link';
 import Head from 'next/head';
+import LatestJobPosts from './common/LatestJobPosts';
 
 type props = {
 
@@ -13,10 +14,12 @@ type props = {
     description ? : string, 
   
     children : ReactNode,
+
+    data? : any, 
 }
 
 
-const DefaultMain = () =>{
+const DefaultMain = (data?: any ) =>{
 
 
     return <div className="dark:bg-gray-900 bg-gray-100 dark:text-gray-100 text-gray-900 h-screen pt-4 pb-4">
@@ -32,13 +35,14 @@ const DefaultMain = () =>{
                     <Input className='lg:w-3/5 w-full'/>
                 </FieldLabel>
             </div>
+            {data && <LatestJobPosts jobPosts={data}/>}
         </section>
 
     </div>;
 
 }
 
-export default function Layout({ title, description, children} : props) {
+export default function Layout({ title, description, children, data} : props) {
 
 
 
@@ -52,7 +56,7 @@ export default function Layout({ title, description, children} : props) {
             <ThemeToggle iconLightTextColor='#ffa'/>
         </header>
         { children ? <div className="dark:bg-gray-900 bg-gray-100 dark:text-gray-100 text-gray-900 min-h-screen h-full pt-4 pb-4">
-            {children}</div> : DefaultMain()}
+            {children}</div> : DefaultMain(data )}
        </>
 
 }

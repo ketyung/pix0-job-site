@@ -433,6 +433,38 @@ export async function deleteJobPost(id: string, onError? : (e : Error)=>void ) {
 }
 
 
+export async function getPubJobPosts(
+      searchStr? : string,
+      orderBy? : string,
+      ascOrDesc? : string, 
+      page? : number, 
+      rowsPerPage? : number,
+      onError? : (e : Error)=>void ) : Promise<SearchResult> {
+
+      try {
+
+            let searchString = searchStr === '' ? '-' : searchStr;
+            let data = await fetchRemote("jobPost","pubJobPosts", searchString,
+            orderBy, ascOrDesc, 
+            page ? `${page}` : undefined, 
+            rowsPerPage ? `${rowsPerPage}` : undefined);
+
+            return data.data;
+
+      }catch(err : any) {
+
+            if(err.response && err.response.status === 401){
+
+                  if ( onError) {
+                        onError(new Error(`${UNAUTHORIZED_MESSAGE} ${err.message}`));
+                  }
+            }
+
+            return {results:[]}; 
+
+      }
+
+}
 
 export async function genJobPostDesc (jobpostTitle : string ){
 
