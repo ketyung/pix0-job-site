@@ -50,7 +50,7 @@ export default function LatestJobPosts ({jobPosts }: props){
             //console.log("catClas::",catCls);
 
             return <div key={`Job_${j.id}`} 
-            className="mb-4 border-b border-gray-300 dark:border-gray-600 py-2 hover:bg-green-100 hover:dark:bg-gray-700 p-2">
+            className="mb-4 border-b border-gray-300 dark:border-gray-600 py-2 hover:bg-gray-300 hover:dark:bg-gray-700 p-2 rounded">
                 <Link href={`/jobPost/${j.id}`} target="_blank">
                     <div className="flex">
                         <div className="w-9/12 text-xl">{j.title}</div>
