@@ -243,6 +243,43 @@ export async function getJobPost(id : string, userId: string) :Promise<JobPost|u
 
 
 
+export async function getPubJobPost(id : string ) :Promise<JobPost|undefined> {
+    
+   
+    let whereClause: any = {
+        where: {
+            datePub: {
+                lte: new Date()
+            },
+
+            jobStatus : JobStatus.Published,
+
+            id 
+        },
+    };
+   
+    const JobPost = await prisma.jobPost.findFirst({
+        ...whereClause,
+        select: {
+            company: true,
+            title: true,
+            datePub: true,
+            code: true,
+            id: true, 
+            location: true,
+            workType : true, 
+            jobCategory: true,
+            description: true,
+            jobStatus : true,  
+        }
+    });
+
+   
+    return JobPost!== null ? JobPost : undefined;
+}
+
+
+
 export async function deleteJobPost(userId: string, id : string ) :Promise<boolean> {
 
     try {

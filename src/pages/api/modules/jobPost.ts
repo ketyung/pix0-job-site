@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import bodyParser from "body-parser";
 import { getPageOffsetAndLimit, toTotalPages } from '@/utils';
-import { createJobPost, getJobPost, getJobPosts, getPubJobPosts } from '../dbs/jobPost';
+import { createJobPost, getJobPost, getJobPosts, getPubJobPosts, getPubJobPost } from '../dbs/jobPost';
 import { updateJobPost, deleteJobPost } from '../dbs/jobPost';
 
 const jsonParser = bodyParser.json();
@@ -53,6 +53,10 @@ async function handleGet (req: NextApiRequest,  res: NextApiResponse, userId? : 
                     orderBy !== '-' ? orderBy : undefined , 
                     ascOrDesc !== '-' ? ascOrDesc : undefined, 
                     isNaN(pageNum) ? 1 : pageNum, isNaN(rowsPerPage) ? 10 : rowsPerPage);
+            } 
+            else if ( param1 === 'pubJobPost'){
+                let id = path[2];
+                await handleGetPubJobPost(res, id);
             }
             else {
                 await handleGetJobPost(res,  param1, userId);
@@ -144,6 +148,25 @@ async function handleGetJobPost ( res: NextApiResponse, id : string,  userId? : 
     }
 }
 
+
+
+async function handleGetPubJobPost ( res: NextApiResponse, id : string ){
+
+    try {
+
+        let ndata = await getPubJobPost(id );
+
+        if ( ndata !== undefined){
+            res.status(200).json({  data : ndata, status : 1});   
+        }else {
+            res.status(404).json({  message : "Contact NOT found", status : -1});      
+        }
+    }
+    catch(e: any){
+        console.log("e::",e);
+        res.status(422).send({error: e.message, status: -1});
+    }
+}
 
 
 async function handlePost (req: NextApiRequest,  res: NextApiResponse, userId? : string) {

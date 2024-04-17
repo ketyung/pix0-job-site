@@ -409,6 +409,38 @@ export async function getJobPost(id : string, onError? : (e : Error)=>void ) : P
 
 }
 
+
+
+
+export async function getPubJobPost(id : string, onError? : (e : Error)=>void ) : Promise<JobPost|undefined>{
+
+      try {
+
+            let res = await fetchRemote("jobPost","pubJobPost",id);
+
+            if( res.status === 1){
+                  return res.data;
+            }else {
+                  if ( onError) {
+                        onError(new Error('Contact NOT found!'));
+                  }
+                  return undefined;
+            }
+
+      }catch(err : any) {
+
+            if(err.response && err.response.status === 401){
+
+                  if ( onError) {
+                        onError(new Error(`${UNAUTHORIZED_MESSAGE} ${err.message}`));
+                  }
+            }
+
+            return undefined; 
+
+      }
+}
+
 export async function deleteJobPost(id: string, onError? : (e : Error)=>void ) {
 
       try {

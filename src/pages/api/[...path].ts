@@ -19,7 +19,7 @@ const isPathToSkipCheckAuth = (req: NextApiRequest) =>{
     let aPath = (path && path.length > 1) ? `${path[0]}/${path[1]}` : '';
 
     let skipPaths = ['user/verify', 'user/signup', 'user/signInByEmail','user/signInByGid', 'verify/email', 'auth/error', 'auth/google',
-        'jobPost/pubJobPosts'
+        'jobPost/pubJobPosts','jobPost/pubJobPost'
     ];
 
     let passCheck= skipPaths.includes(aPath);
