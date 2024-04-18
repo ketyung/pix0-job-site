@@ -2977,10 +2977,10 @@ pirates@^4.0.1:
   resolved "https://registry.yarnpkg.com/pirates/-/pirates-4.0.6.tgz#3018ae32ecfcff6c29ba2267cbf21166ac1f36b9"
   integrity sha512-saLsH7WeYYPiD25LDuLRRY/i+6HaPYr6G1OUlN39otzkSTxKnubR9RTxS3/Kk50s1g2JTgFwWQDQyplC5/SHZg==
 
-pix0-core-ui@^4.0.7:
-  version "4.0.7"
-  resolved "https://registry.yarnpkg.com/pix0-core-ui/-/pix0-core-ui-4.0.7.tgz#32a1fe05b3e213f5b866716357212d64bdfa0eed"
-  integrity sha512-WANhIfg4EZ503F9aMQFzzwoqgTUju6XWO6AEede6dQsMk2AAsQdX+kxI5yWZ16y6Qg6cPQy8Xzb4XJll5SMmrQ==
+pix0-core-ui@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/pix0-core-ui/-/pix0-core-ui-4.1.1.tgz#4e8dbdb7fe9e3598f1e885bd62f9c349a0e37862"
+  integrity sha512-GLps59De0k8ITomKYIpIN6MiYRCwfSkrhpnTogivErorQC76xovpe7h2VG2T1/LfeIpZ1dJmbOgEeiOHNV8B+w==
   dependencies:
     styled-jsx "^5.1.2"
 

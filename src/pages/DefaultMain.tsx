@@ -5,7 +5,7 @@ import { getPubJobPosts } from "@/service";
 import { useState } from "react";
 import { SearchResult } from "@/models";
 
-export const DefaultMain = (data?: any ) =>{
+const DefaultMain = (data?: any ) =>{
 
 
     const [jobPosts, setJobPosts] = useState<SearchResult>(data);
@@ -33,3 +33,5 @@ export const DefaultMain = (data?: any ) =>{
     </div>;
 
 }
+
+export default DefaultMain;

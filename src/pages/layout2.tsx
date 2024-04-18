@@ -1,10 +1,11 @@
+'use client';
 import { ReactNode} from 'react';
 import './globals.css'
 import './fonts.css';
 import { ThemeToggle } from 'pix0-core-ui';
 import Link from 'next/link';
 import Head from 'next/head';
-import { DefaultMain } from './DefaultMain';
+import DefaultMain from './DefaultMain';
 
 type props = {
 

@@ -25,7 +25,7 @@
     "next": "14.1.4",
     "next-auth": "^4.24.7",
     "next-transpile-modules": "^10.0.1",
-    "pix0-core-ui": "^4.0.7",
+    "pix0-core-ui": "^4.1.1",
     "react": "^18",
     "react-dom": "^18",
     "react-easy-crop": "^5.0.6",
