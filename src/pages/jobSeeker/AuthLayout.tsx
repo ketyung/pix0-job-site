@@ -72,7 +72,7 @@ export default function AuthLayout({children, title, description, menuItems}: pr
     }, []);
 
 
-    return (<><Head><title>{title ?? "Pix0 Application Suite"}</title>
+    return (<><Head><title>{title ?? "Job Seeker at Pix0 Job Site"}</title>
       <meta name="description" content={ description ?? "An easy to use applications by Pix0 Inc"} />
       </Head>
       <ThemeProvider>
