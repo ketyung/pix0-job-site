@@ -90,7 +90,7 @@ export default function AuthLayout({children, title, description, menuItems}: pr
       </Head>
       <ThemeProvider>
       <main className="flex flex-row min-h-screen text-gray-800 bg-gray-200 dark:bg-gray-700">
-        <div className={`lg:${isSidebarOpen ? 'w-32' : 'w-0'} h-full overflow-y-auto overflow-x-hidden text-left`}>
+        <div className={`lg:${isSidebarOpen ? 'w-48' : 'w-0'} h-full overflow-y-auto overflow-x-hidden text-left`}>
             <Button onClick={toggleSidebar} className={`hidden lg:inline 
             rounded bg-gray-100 dark:bg-gray-800 
             text-gray-800 dark:text-gray-100
