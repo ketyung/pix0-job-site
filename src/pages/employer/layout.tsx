@@ -7,6 +7,7 @@ import { userSignInByGid, verifyLogin } from "@/service";
 import { JWTStorage } from "@/utils/local-storage";
 import CommonToastContainer  from "../common/CommonToastContainer";
 import Cover from "@/components/Cover";
+import { UserType } from "@prisma/client";
 
 export default function Layout({children, title, description, menuItems}: props) {
         
@@ -25,7 +26,12 @@ export default function Layout({children, title, description, menuItems}: props)
         const hasSignedIn = () =>{
 
             //return (session !== undefined && session?.user !== undefined && status === 'authenticated');
-            return (session !== undefined && session?.user !== undefined);
+            let sessionUser : any = session?.user;
+
+            //console.log("sess.User::", sessionUser);
+
+            return (session !== undefined && session?.user !== undefined && 
+                (sessionUser.userType === UserType.HiringManager  || sessionUser.userType === UserType.Both));
         }
  
 
