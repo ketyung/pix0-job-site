@@ -35,7 +35,7 @@ export default function Layout({ title, description, children, data} : props) {
             <Link href="/employer/jobPosts" className='text-center bg-gray-700 rounded-full text-gray-100 py-1 px-4 text-sm font-bold m-2 hover:bg-green-900 cursor-pointer'>Post A JOB</Link>
             <div className='w-1/12 mt-3 text-right'><ThemeToggle iconLightTextColor='#ffa'/></div>
         </header>
-        { children ? <div className="dark:bg-gray-900 bg-gray-100 dark:text-gray-100 text-gray-900 min-h-screen h-full pt-4 pb-4">
+        { children ? <div className="dark:bg-gray-900 bg-gray-100 dark:text-gray-100 text-gray-900 h-full pt-4 pb-4">
             {children}</div> : DefaultMain(data )}
        </>
 
