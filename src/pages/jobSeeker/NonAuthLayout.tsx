@@ -20,8 +20,8 @@ export default function NonAuthLayout({title, description}:props) {
         },500);
     },[]);
   
-    return <><Head><title>{title ?? "Employer's Section For Pix0 Jobs"}</title>
-    <meta name="description" content={ description ?? "Employers can easily post jobs here"} />
+    return <><Head><title>{title ?? "Job Seeker's Section For Pix0 Jobs"}</title>
+    <meta name="description" content={ description ?? "You can apply for your ideal jobs here"} />
     </Head>
     <main className="flex flex-row min-h-screen text-gray-800 bg-gray-200 dark:bg-gray-700">
        {isOpen && <Image  alt="Look For Remote Jobs?" src={image3.src} className="w-full h-full" width={100} height={100}  layout="responsive"/>}
