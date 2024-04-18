@@ -1,6 +1,6 @@
 import NextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
-import { createGoogleCredential } from "../dbs/user";
+import { createGoogleCredential, getUserByHEmail } from "../dbs/user";
 import { sha256 } from "@/utils/enc";
 
 // refer here for Google Sign In
@@ -36,10 +36,14 @@ export default NextAuth({
         },
 
         async session({ session, user, token }) {
-            //console.log("user:::", user, token, session);
+            
             let sAccId= sha256(token.sub);
+            let u = await getUserByHEmail(sha256(session.user?.email ?? ""));
+            
             //console.log("sAcc.id::", sAccId);
-            let newSession : any = {...session, accountId : sAccId };
+            let newSession : any = {...session, accountId : sAccId, user: {...session.user, userType : u?.userType} };
+            
+            //console.log("user:::", "u:",user, "t:",token, "s:",newSession);
 
             //console.log("n.sess:", newSession);
             return newSession

@@ -175,6 +175,28 @@ export async function getUser(userId : string ) :Promise<User|null> {
 
 
 
+
+export async function getUserByHEmail(hEmail : string ) :Promise<User|null> {
+  try {
+
+    
+      const user = await prisma.user.findUnique({
+        where: {
+          hEmail ,
+        },
+      });
+  
+      return user ;
+  } 
+  catch (error) {
+      console.error(error);
+      return null;
+  }
+}
+
+
+
+
 export async function hasLinkedGoogleCredential(userEmail : string ) :Promise<User|null> {
   try {
 

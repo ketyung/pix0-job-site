@@ -38,9 +38,7 @@ export default function Index({openForm }:IndexProps ) {
 
 
     const verifyingHasCompany = useMemo(() => async () =>{
-        let hasC = await hasCompany((e)=>{
-            handleUnauthorizedError(e);
-        });
+        let hasC = await hasCompany();
         setHasCreatedCompany(hasC);
         return hasC;
     },[setHasCreatedCompany]); 
