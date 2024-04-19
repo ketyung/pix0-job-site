@@ -1,6 +1,8 @@
 import { JWTStorage } from "@/utils/local-storage";
 import { SignInData, SearchResult, CloudParam } from "@/models";
 import { JobPost, UserCompany } from "@prisma/client";
+import getConfig from 'next/config';
+
 const axios = require('axios');
 
 const UNAUTHORIZED_MESSAGE = "Unauthorized!";
@@ -42,6 +44,10 @@ export async function fetchRemote(module : string, param1? : string, param2? : s
       param5? : string , param6? : string, param7? : string ) {
   try {
     
+      const { serverRuntimeConfig, publicRuntimeConfig } = getConfig()
+
+        console.log("print.for.testing.RestApiKey:", publicRuntimeConfig.restApiKey);
+
         let uri = `${process.env.NEXT_PUBLIC_API_URL}/${module}${param1 ? 
             `/${encodeURIComponent(param1)}` : ""}${param2 
             ? `/${encodeURIComponent(param2)}` : ""}${param3 
