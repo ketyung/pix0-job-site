@@ -2,7 +2,8 @@ import NextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
 import { createGoogleCredential, getUserByHEmail } from "../dbs/user";
 import { sha256 } from "@/utils/enc";
-
+import { encrypt } from "@/utils/enc";
+//const jwt = require('jsonwebtoken');
 // refer here for Google Sign In
 // https://next-auth.js.org/providers/google
 // https://github.com/nextauthjs/next-auth/tree/v4/packages/next-auth
@@ -48,6 +49,19 @@ export default NextAuth({
             //console.log("n.sess:", newSession);
             return newSession
         },
+
+        async jwt({ token, user, account, profile }) {
+            
+            let u = await getUserByHEmail(sha256(user?.email ?? ""));
+
+            const nToken = u!== undefined ? {...token,  
+                userId: encrypt(u?.id ?? "", process.env.UID_ENCRYPT_KEY ?? "xxxx"),
+                userType : u?.userType,      
+            } : token;//
+            
+            console.log("n.Token::", nToken);
+            return nToken;
+        }
     },
     
     pages: {
