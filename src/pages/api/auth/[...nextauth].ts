@@ -54,12 +54,12 @@ export default NextAuth({
             
             let u = await getUserByHEmail(sha256(user?.email ?? ""));
 
-            const nToken = u!== undefined ? {...token,  
-                userId: encrypt(u?.id ?? "", process.env.UID_ENCRYPT_KEY ?? "xxxx"),
+            const nToken = u?.id!== undefined ? {...token,  
+                userId: encrypt(u.id , process.env.UID_ENCRYPT_KEY ?? "xxxx"),
                 userType : u?.userType,      
             } : token;//
             
-            //console.log("n.Token::", nToken);
+            console.log("n.Token::", nToken);
             return nToken;
         }
     },
