@@ -4,7 +4,6 @@ import { props } from "./AuthLayout";
 import { useEffect, useState, useMemo } from "react";
 import { getSession } from "next-auth/react";
 import { userSignInByGid, verifyLogin } from "@/service";
-import { JWTStorage } from "@/utils/local-storage";
 import CommonToastContainer  from "../common/CommonToastContainer";
 import Cover from "@/components/Cover";
 import { UserType } from "@prisma/client";
@@ -25,10 +24,7 @@ export default function Layout({children, title, description, menuItems}: props)
 
         const hasSignedIn = () =>{
 
-            //return (session !== undefined && session?.user !== undefined && status === 'authenticated');
             let sessionUser : any = session?.user;
-
-            //console.log("sess.User::", sessionUser);
 
             return (session !== undefined && session?.user !== undefined && 
                 (sessionUser.userType === UserType.HiringManager  || sessionUser.userType === UserType.Both));
@@ -42,7 +38,8 @@ export default function Layout({children, title, description, menuItems}: props)
     
                 let newSess : any = session;
     
-                let signedIn = await userSignInByGid({email : newSess?.user?.email, accountId : newSess.accountId})
+                let signedIn = await userSignInByGid({email : newSess?.user?.email, accountId : newSess.accountId});
+
                 return signedIn;
             }
             
@@ -55,40 +52,22 @@ export default function Layout({children, title, description, menuItems}: props)
             let chk = await verifyLogin();
             setIsLoggedIn( chk );
 
-            //console.log("chek.1::", chk);
-            if ( !chk){
-                JWTStorage.remove();
-            }
-
         }
-
-        let signedIn = JWTStorage.get() !== null;
-        setIsLoggedIn(signedIn);
-          
-        if ( signedIn) {
-
-            await reverifySess();
+    
+        if ( hasSignedIn()) {
+        
+            let s = await checkIsSignedIn();
+            setIsLoggedIn(s);
+            
+            if (s){
+                await reverifySess();
+            } 
 
         }else {
-
-             if ( hasSignedIn()) {
-            
-                let s = await checkIsSignedIn();
-                
-
-                if (s){
-                    await reverifySess();
-                }
-                
-
-            }else {
-
-                JWTStorage.remove();
-                setIsLoggedIn(false);
-            }
-            
+            setIsLoggedIn(false);
         }
-
+            
+       
         setVerifying(false);
     },[setIsLoggedIn, setVerifying]);
 
