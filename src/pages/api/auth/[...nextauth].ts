@@ -17,6 +17,8 @@ export default NextAuth({
         })
     ],
 
+    session: { strategy: "jwt" }, 
+
     callbacks: {
         
         async signIn({ account, profile }) {
@@ -41,12 +43,7 @@ export default NextAuth({
             let sAccId= sha256(token.sub);
             let u = await getUserByHEmail(sha256(session.user?.email ?? ""));
             
-            //console.log("sAcc.id::", sAccId);
-            let newSession : any = {...session, accountId : sAccId, user: {...session.user, userType : u?.userType} };
-            
-            //console.log("user:::", "u:",user, "t:",token, "s:",newSession);
-
-            //console.log("n.sess:", newSession);
+            let newSession : any = {...session, accountId : sAccId, user: {...session.user, userType : u?.userType} };  
             return newSession
         },
 
@@ -54,13 +51,13 @@ export default NextAuth({
             
             let u = await getUserByHEmail(sha256(user?.email ?? ""));
 
-            const nToken = u?.id!== undefined ? {...token,  
+            const newToken = u?.id!== undefined ? {...token,  
                 userId: encrypt(u.id , process.env.UID_ENCRYPT_KEY ?? "xxxx"),
-                userType : u?.userType,      
+                userType : u?.userType, accountId: sha256(token.sub),  
             } : token;//
             
-            //console.log("n.Token::", nToken);
-            return nToken;
+            //console.log("n.Token::", newToken);
+            return newToken;
         }
     },
     

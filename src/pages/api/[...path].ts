@@ -1,6 +1,7 @@
 // pages/api/[...path].ts
 import { NextApiRequest, NextApiResponse } from 'next';
-import { isValidJwtToken } from '@/utils/jwt';
+import { AuthType, isAllowedUser, isValidJwtToken } from '@/utils/jwt';
+import { getToken } from "next-auth/jwt";
 
 function checkAllowed  (req: NextApiRequest) {
 
@@ -29,6 +30,66 @@ const isPathToSkipCheckAuth = (req: NextApiRequest) =>{
 }
 
 
+const verifyToken = async (req : NextApiRequest, res: NextApiResponse, _next: (userId? : string , providerAccountId? : string) => void) =>{
+
+
+    if (req.headers) {
+        
+        
+        const token = req.headers['token'];
+        const aTok = Array.isArray(token) ? token[0] : token;
+
+        const v = await isValidJwtToken(aTok);
+
+        if (v.valid) {
+            _next(v.userId, v.providerAccountId);
+            return true;
+        } else {
+            res.status(401).json({ error: "Unauthorized!", message: "Unauthroized Access", version: process.env.VERSION });
+            return false; 
+        }
+
+    }else {
+        
+        res.status(422).json(
+        process.env.NODE_ENV === "production"
+            ? { status: "unauthorized" }
+            : { error: "Undefined cookies!", status: "unauthorized" }
+        );
+        
+        return false; 
+    }
+}
+
+
+const verifyToken2 = async (req : NextApiRequest, res: NextApiResponse, _next: (userId? : string , providerAccountId? : string) => void) =>{
+
+
+        const _token : any = await getToken({ req });
+
+        if ( _token !== null) {
+
+            const v = await isAllowedUser({id : _token.userId, authType: AuthType.GOOGLE, accountId : _token.accountId });
+
+            if (v.valid) {
+                _next(v.userId, v.providerAccountId);
+                return true;
+            } else {
+                res.status(401).json({ error: "Unauthorized!", message: "Unauthroized Access", version: process.env.VERSION });
+                return false; 
+            }
+        }else {
+        
+            res.status(422).json(
+            process.env.NODE_ENV === "production"
+                ? { status: "unauthorized" }
+                : { error: "Undefined cookies!", status: "unauthorized" }
+            );
+            
+            return false; 
+        }
+}
+
 const checkAccess = async (req: NextApiRequest, res: NextApiResponse, _next: (userId? : string , providerAccountId? : string) => void, byPassCheck? : boolean) => {
     if ( byPassCheck){
         _next(); return; 
@@ -40,30 +101,14 @@ const checkAccess = async (req: NextApiRequest, res: NextApiResponse, _next: (us
         return;
     }
 
+    if ( !verifyToken2(req, res, _next)){
+        return; 
+    }
+
     if ( isPathToSkipCheckAuth(req)){
         _next(); return; 
     }
 
-    if (req.headers) {
-        const token = req.headers['token'];
-        const aTok = Array.isArray(token) ? token[0] : token;
-
-        const v = await isValidJwtToken(aTok);
-
-        if (v.valid) {
-            _next(v.userId, v.providerAccountId);
-        } else {
-            res.status(401).json({ error: "Unauthorized!", message: "Unauthroized Access", version: process.env.VERSION });
-        }
-
-    }else {
-        
-            res.status(422).json(
-            process.env.NODE_ENV === "production"
-                ? { status: "unauthorized" }
-                : { error: "Undefined cookies!", status: "unauthorized" }
-            );
-    }
 };
 
 

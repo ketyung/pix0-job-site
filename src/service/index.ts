@@ -24,7 +24,7 @@ const obtainHeaderWithJWT = async  () =>{
       try {
   
           let jwt = JWTStorage.get();
-  
+
           let hdrs = ( jwt !== null ) ? {           
               'Content-Type': 'application/json',
               'token': jwt, 
