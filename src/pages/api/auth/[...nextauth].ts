@@ -41,10 +41,10 @@ export default NextAuth({
         async session({ session, user, token }) {
             
             let sAccId= sha256(token.sub);
-            let u = await getUserByHEmail(sha256(session.user?.email ?? ""));
             let signedIn = await signInByGid(session.user?.email ?? "", sAccId);
             //console.log("signedIn::", signedIn);
             if ( signedIn.signedIn) {
+                let u = await getUserByHEmail(sha256(session.user?.email ?? ""));
                 let newSession : any = {...session, accountId : sAccId, user: {...session.user, userType : u?.userType} };  
                 return newSession
             }else {
