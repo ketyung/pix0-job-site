@@ -133,39 +133,6 @@ export async function verifyLogin(onError? : (e : Error)=>void ) {
 
 
 
-export async function userSignOutByGid (
-      onError? : (e : Error)=>void, onMessage? : (message : string) => void  ){
-
-      try {
-
-            let data = await fetchRemote ("user", "signOutByGid");
-
-            //console.log("jwt.data::", data);
-            if ( data.status === 1)
-                  JWTStorage.remove();
-
-            if ( onMessage )
-                  onMessage(data.message);
-
-            return ( data.status === 1);
-
-      }catch(err : any) {
-
-            if(err.response && err.response.status === 401){
-
-                  if ( onError) {
-                        onError(new Error(`${UNAUTHORIZED_MESSAGE} ${err.response.data.error}`));
-                  }
-            }
-
-            if ( onError) {
-                  onError(new Error(`${err.response.data.error}`));
-            }
-            return false; 
-
-      }
-}
-
 
 export async function userSignInByGid (signInData : SignInData, 
       onError? : (e : Error)=>void, onMessage? : (message : string) => void  ){
