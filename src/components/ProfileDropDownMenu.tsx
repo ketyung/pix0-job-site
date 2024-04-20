@@ -4,7 +4,6 @@ import { PiSignOut } from "react-icons/pi";
 import { CgProfile } from "react-icons/cg";
 import { toast } from 'react-toastify';
 import { getSession, signOut } from 'next-auth/react';
-import {  userSignOutByGid } from '@/service';
 import { GoOrganization } from "react-icons/go";
 import { Modal} from 'pix0-core-ui';
 import CompanyForm from '../pages/employer/company/form';
@@ -63,15 +62,19 @@ const ProfileDropdownMenu = ({className} :props) => {
   
     const logOut = async (onError?:(e : Error)=> void) =>{
 
-        const session = await getSession();
+        try {
 
-        if (session!== null && session !== undefined /*&& status === 'authenticated'*/ && session.user !== undefined ) {
-            signOut();
-            let s = await userSignOutByGid(onError);
-            
-            document.location.reload();
-            return s; 
+            const session = await getSession();
+
+            if (session!== null && session !== undefined /*&& status === 'authenticated'*/ && session.user !== undefined ) {
+                signOut();
+                
+                document.location.reload();
+            }
+        }catch(e:any){
+            if ( onError) onError(e);
         }
+        
     }
     const signOutNow = async () =>{
 

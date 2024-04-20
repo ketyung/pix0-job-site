@@ -70,6 +70,7 @@ const verifyToken2 = async (req : NextApiRequest, res: NextApiResponse, _next: (
         if ( _token !== null) {
 
             const v = await isAllowedUser({id : _token.userId, authType: AuthType.GOOGLE, accountId : _token.accountId });
+            //console.log("jwt.checked::", v);
 
             if (v.valid) {
                 _next(v.userId, v.providerAccountId);
@@ -101,12 +102,12 @@ const checkAccess = async (req: NextApiRequest, res: NextApiResponse, _next: (us
         return;
     }
 
-    if ( !verifyToken2(req, res, _next)){
-        return; 
-    }
-
     if ( isPathToSkipCheckAuth(req)){
         _next(); return; 
+    }
+
+    if ( !verifyToken2(req, res, _next)){
+        return; 
     }
 
 };

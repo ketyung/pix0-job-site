@@ -1,6 +1,6 @@
 import NextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
-import { createGoogleCredential, getUserByHEmail } from "../dbs/user";
+import { createGoogleCredential, getUserByHEmail, signOutUserByGid } from "../dbs/user";
 import { sha256 } from "@/utils/enc";
 import { encrypt } from "@/utils/enc";
 //const jwt = require('jsonwebtoken');
@@ -65,6 +65,14 @@ export default NextAuth({
         signIn: '/api/auth/google', // Redirect to Google sign-in
     },
    
+    events: {
+        async signOut(message) {  
+
+            let nToken : any = message.token;
+            let signedOut = await signOutUserByGid( nToken.userId, nToken.accountId, true);
+            console.log("signedOut.data::", signedOut);
+        },
+    },
 });
 
 

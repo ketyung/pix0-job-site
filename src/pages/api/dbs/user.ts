@@ -53,12 +53,16 @@ Promise<{authToken? : string, signedIn: boolean, eUserId? : string, accountId? :
 
 
 
-export async function signOutUserByGid(uid  : string , accountId : string  ) :
+export async function signOutUserByGid(uid  : string , accountId : string, toDecryptUid?: boolean  ) :
 Promise<{ signedOut : boolean, errorMessage? : string  }> {
     try {
+
+        let dUserId = toDecryptUid? decrypt(uid, process.env.UID_ENCRYPT_KEY ?? DEFAULT_ENC_KEY) : uid;
+
+
         const user = await prisma.user.findUnique({
           where: {
-            id: uid,
+            id: dUserId,
           },
         });
     
@@ -88,7 +92,7 @@ Promise<{ signedOut : boolean, errorMessage? : string  }> {
                 data: updData,
             });
 
-            return { signedOut : upd.userId === uid  };
+            return { signedOut : upd.userId === dUserId };
 
         }
 
