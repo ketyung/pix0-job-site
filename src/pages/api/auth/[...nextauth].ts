@@ -69,9 +69,14 @@ export default NextAuth({
         async signOut(message) {  
 
             let nToken : any = message.token;
-            let signedOut = await signOutUserByGid( nToken.userId, nToken.accountId, true);
-            console.log("signedOut.data::", signedOut);
+            await signOutUserByGid( nToken.userId, nToken.accountId, true);
+            
         },
+        /*
+        async signIn(message) {
+
+            console.log("after.signeIn::", message);
+        }*/
     },
 });
 
