@@ -1,6 +1,6 @@
 import NextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
-import { createGoogleCredential, getUserByHEmail, signOutUserByGid } from "../dbs/user";
+import { createGoogleCredential, getUserByHEmail, signInByGid, signOutUserByGid } from "../dbs/user";
 import { sha256 } from "@/utils/enc";
 import { encrypt } from "@/utils/enc";
 //const jwt = require('jsonwebtoken');
@@ -42,9 +42,16 @@ export default NextAuth({
             
             let sAccId= sha256(token.sub);
             let u = await getUserByHEmail(sha256(session.user?.email ?? ""));
-            
-            let newSession : any = {...session, accountId : sAccId, user: {...session.user, userType : u?.userType} };  
-            return newSession
+            let signedIn = await signInByGid(session.user?.email ?? "", sAccId);
+            //console.log("signedIn::", signedIn);
+            if ( signedIn.signedIn) {
+                let newSession : any = {...session, accountId : sAccId, user: {...session.user, userType : u?.userType} };  
+                return newSession
+            }else {
+                return null;
+            }
+
+           
         },
 
         async jwt({ token, user, account, profile }) {
