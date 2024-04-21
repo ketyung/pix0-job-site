@@ -3,6 +3,7 @@ import FieldLabel from "@/components/FieldLabel";
 import { ResumeData, SkillSet } from "@/models";
 import { useState } from "react";
 import { isBlank } from "@/utils";
+import { IoIosAddCircleOutline } from "react-icons/io";
 
 export type props = {
 
@@ -39,7 +40,7 @@ export default function SkillsetForm({resumeData, setResumeData}: props) {
                     />
                 </FieldLabel>
 
-                <Button className="rounded bg-cyan-600 text-gray-100 p-1 w-48 ml-4 h-8.5 mt-4"
+                <Button className="bg-transparent mt-2" title="Add This Skill"
                 onClick={(e)=>{
                     e.preventDefault();
                     if ( !isBlank(currSkillset.name) && !isBlank(currSkillset.experience)){
@@ -49,7 +50,7 @@ export default function SkillsetForm({resumeData, setResumeData}: props) {
                         setCurrSkillsets([...sks,{}]);
                     }
                   
-                }}>Add</Button>
+                }}><IoIosAddCircleOutline className="w-6 h-6 mt-2"/></Button>
                 
             </div>
 
