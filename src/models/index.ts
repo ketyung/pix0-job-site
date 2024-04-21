@@ -150,3 +150,17 @@ export interface CountryCode {
 
     name? : string, 
 }
+
+export interface SkillSet {
+
+    name? : string, 
+
+    experience? : string, 
+}
+
+export interface ResumeData {
+
+    about? : string, 
+
+    skillsets? : SkillSet[], 
+}
