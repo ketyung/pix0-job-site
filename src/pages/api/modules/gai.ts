@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 import { getUserCompany } from '../dbs/userCompany';
 import { isBlank } from '@/utils';
 import { JobPost } from '@prisma/client';
+import { ResumeData } from '@/models';
 const jsonParser = bodyParser.json();
 const fs = require('fs');
 
@@ -85,6 +86,9 @@ async function handlePost (req: NextApiRequest,  res: NextApiResponse, _userId? 
                 }
                 else if ( param1 === 'checkJobPostInfo') {
                     await checkIfJobPostInfoProper(data, res);
+                }
+                else if ( param1 === 'generateResume') {
+                    await generateResume(data, res);
                 }
                 else {
                     res.status(400).json({text: "Invalid action!", status:-1});
@@ -232,3 +236,36 @@ async function testCheckIfImageIsSFW(res: NextApiResponse,) {
     }
     
 }
+
+
+async function generateResume(data : ResumeData,  res: NextApiResponse,) {
+
+    try {
+
+        const model = genAI.getGenerativeModel({ model: "gemini-pro"});
+
+        const prompt = `Please generate a resume based on the following data in JSON:
+
+        Resume's JSON:
+        ${JSON.stringify(data, null, 2)}`;
+        
+        
+
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        const text = response.text();
+
+        //console.log("return.x.text::", text);
+
+        res.status(200).json({  text : text, status : 1});  
+
+
+    }
+    catch (e : any ){
+
+        console.log("detectJobPostInfo.error::", e.message?.substring(0,550));
+        res.status(422).json({error: e.message, status:-1});
+    }
+    
+}
+

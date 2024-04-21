@@ -3,7 +3,7 @@ import FieldLabel from "@/components/FieldLabel";
 import { ResumeData, SkillSet } from "@/models";
 import { useState } from "react";
 import { isBlank } from "@/utils";
-import { IoIosAddCircleOutline } from "react-icons/io";
+import { IoIosAddCircleOutline, IoIosRemoveCircleOutline } from "react-icons/io";
 
 export type props = {
 
@@ -14,7 +14,7 @@ export type props = {
 
 export default function SkillsetForm({resumeData, setResumeData}: props) {
 
-    const [currSkillsets, setCurrSkillsets] = useState<SkillSet[]>(resumeData?.skillsets ?? [{}]);
+    const [currSkillsets, setCurrSkillsets] = useState<SkillSet[]>(resumeData?.skillsets ? [...resumeData.skillsets ,{}] : [{}]);
 
     const [currSkillset, setCurrSkillset] = useState<SkillSet>({});
 
@@ -30,7 +30,7 @@ export default function SkillsetForm({resumeData, setResumeData}: props) {
                     }}/>
                 </FieldLabel>
                 <FieldLabel title="Years Of Experience">
-                    <Select className="w-40"
+                    <Select className="w-40" value={s.experience}
                     onChange={(e)=>{
                         setCurrSkillset({...currSkillset, experience: e.target.value});
                     }}
@@ -40,6 +40,21 @@ export default function SkillsetForm({resumeData, setResumeData}: props) {
                     />
                 </FieldLabel>
 
+
+                {(currSkillsets[i].name && currSkillsets[i].experience) ?
+               
+                <Button className="bg-transparent mt-2" title="Add This Skill"
+                onClick={(e)=>{
+                    e.preventDefault();
+                    let sks = [...currSkillsets];
+                    sks.splice(i, 1);
+                    setCurrSkillsets(sks);
+                   
+                    if ( setResumeData)
+                        setResumeData({...resumeData, skillsets : sks});
+                }}><IoIosRemoveCircleOutline className="w-6 h-6 mt-2"/></Button>
+              
+               :
                 <Button className="bg-transparent mt-2" title="Add This Skill"
                 onClick={(e)=>{
                     e.preventDefault();
@@ -48,9 +63,15 @@ export default function SkillsetForm({resumeData, setResumeData}: props) {
 
                         sks[i] = currSkillset;
                         setCurrSkillsets([...sks,{}]);
+
+                        if ( setResumeData)
+                            setResumeData({...resumeData, skillsets : sks});
                     }
-                  
+                    
                 }}><IoIosAddCircleOutline className="w-6 h-6 mt-2"/></Button>
+              
+                }
+
                 
             </div>
 

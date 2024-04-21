@@ -35,9 +35,12 @@ export default function Form (){
                 }
             }
 
-            if ( stage === 3 ){
+            if ( stage === 1 ){
 
-             
+                if ( (resumeData?.skillsets?.length ?? 0)< 3 ){
+
+                    toast.error('Please enter at least 3 skillsets');
+                }
                 return; 
             }
 
