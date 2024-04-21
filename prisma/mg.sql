@@ -18,3 +18,4 @@ alter table JobPost add  applyAtUrl text after applyAtExt;
 
 alter table JobPost add datePub datetime after applyAtUrl;
 
+alter table User add about varchar(255) after googleId;

@@ -41,10 +41,6 @@ export default function AuthLayout({children, title, description, menuItems}: pr
    
     const [drawerOpen, setDrawerOpen] = useState(false);
 
-    const [ verifyingCompany, setVerifyingCompany] = useState(false);
-
-    const [hasCreatedCompany, setHasCreatedCompany] = useState(true);
-
 
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
@@ -97,7 +93,7 @@ export default function AuthLayout({children, title, description, menuItems}: pr
                 <AiOutlineMenu className="w-4 h-4"/>
             </Button>  
             <div className='float-right flex'>
-                <ProfileDropdownMenu className='mt-1'/>
+                <ProfileDropdownMenu className='mt-1' excludeCompanyProfile/>
                 <ThemeToggle/>
             </div>
         </div>

@@ -11,9 +11,11 @@ import CompanyForm from '../pages/employer/company/form';
 type props = {
 
     className ? : string, 
+
+    excludeCompanyProfile? : boolean,
 }
 
-const ProfileDropdownMenu = ({className} :props) => {
+const ProfileDropdownMenu = ({className, excludeCompanyProfile} :props) => {
 
     //const { data: session, status } = useSession();
 
@@ -97,10 +99,10 @@ const ProfileDropdownMenu = ({className} :props) => {
         <ul style={menuStyles}>
             <li style={listItemStyles} className='cursor-pointer flex w-full text-sm hover:bg-gray-300 dark:hover:bg-gray-500'>
                 <CgProfile className='inline w-4 h-4 mr-2 mt-1'/>User Profile</li>
-            <li style={listItemStyles} className='cursor-pointer flex w-full text-sm hover:bg-gray-300 dark:hover:bg-gray-500'
+            { !excludeCompanyProfile && <li style={listItemStyles} className='cursor-pointer flex w-full text-sm hover:bg-gray-300 dark:hover:bg-gray-500'
              onClick={async ()=>{
                 setCompanyProfileOpen(true);
-            }}><GoOrganization className='inline w-4 h-4 mr-2 mt-1'/>Company Profile</li>
+            }}><GoOrganization className='inline w-4 h-4 mr-2 mt-1'/>Company Profile</li>}
             <li style={listItemStyles} className='cursor-pointer flex w-full text-sm hover:bg-gray-300 dark:hover:bg-gray-500'
             onClick={async ()=>{
                 await signOutNow();

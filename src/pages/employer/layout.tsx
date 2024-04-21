@@ -25,7 +25,7 @@ export default function Layout({children, title, description, menuItems}: props)
         const hasSignedIn = () =>{
 
             let sessionUser : any = session?.user;
-
+           
             return (session !== undefined && session?.user !== undefined && 
                 (sessionUser.userType === UserType.HiringManager  || sessionUser.userType === UserType.Both));
         }

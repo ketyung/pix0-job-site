@@ -27,8 +27,8 @@ export default function Layout({children, title, description, menuItems}: props)
 
             let sessionUser : any = session?.user;
 
-            return (session !== undefined && session?.user !== undefined && 
-                (sessionUser.userType === UserType.JobSeeker  || sessionUser.userType === UserType.Both));
+            return (session !== undefined && session?.user !== undefined) /*&& 
+                (sessionUser.userType === UserType.JobSeeker  || sessionUser.userType === UserType.Both))*/;
         }
  
 

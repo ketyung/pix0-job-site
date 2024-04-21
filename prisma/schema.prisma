@@ -42,6 +42,7 @@ model User {
     hEmail             String               @unique
     hPhoneNumber       String               @unique
     googleId           String?              @unique
+    about              String?  @db.VarChar(255),
     userType           UserType?    @default(HiringManager)
     country            String?  @db.VarChar(3) 
     dateCreated        DateTime             @default(now())
