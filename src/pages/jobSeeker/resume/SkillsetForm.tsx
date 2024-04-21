@@ -25,7 +25,7 @@ export default function SkillsetForm({resumeData, setResumeData}: props) {
                 <FieldLabel title="Skillset" className="mr-2">
                     <Input placeholder="e.g. React, NodeJS, TypeScript" className="w-96" value={s.name}
                     onChange={(e)=>{
-                        setCurrSkillset({...currSkillset, name: e.target.value});
+                        setCurrSkillset({...currSkillset, name: e.target.value, experience :'1 Year'});
                     }}/>
                 </FieldLabel>
                 <FieldLabel title="Years Of Experience">
