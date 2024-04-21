@@ -22,7 +22,7 @@ export default function SkillsetForm({resumeData, setResumeData}: props) {
         <div className="my-2 text-xs">Your Skillsets</div>
         {currSkillsets.map((s,i)=>{
 
-            return <div key={`Sks_${i}`} className="flex text-left p-2 bg-gray-200 mb-4 rounded">
+            return <div key={`Sks_${i}`} className="flex text-left p-2 bg-gray-200 dark:bg-gray-700 mb-4 rounded">
                 <FieldLabel title="Skillset" className="mr-2">
                     <Input placeholder="e.g. React, NodeJS, TypeScript" className="w-96" value={s.name}
                     onChange={(e)=>{

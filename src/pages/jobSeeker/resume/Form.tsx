@@ -52,7 +52,7 @@ export default function Form (){
 
 
     return <div className="border border-gray-300 rounded p-2">
-        <div className="my-2 font-bold bg-gray-300 p-1 text-left">Generate CV/Resume With AI</div>
+        <div className="my-2 font-bold dark:bg-gray-700 bg-gray-300 p-1 text-left">Generate CV/Resume With AI</div>
         {stage=== 0 && <AboutForm resumeData={resumeData} setResumeData={setResumeData}/>}
 
         {stage === 1 && <SkillsetForm resumeData={resumeData} setResumeData={setResumeData}/>}
