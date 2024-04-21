@@ -2,6 +2,7 @@ import MainIndex  from "..";
 import { Button, Drawer, Modal } from "pix0-core-ui";
 import { FiPlusCircle } from "react-icons/fi";
 import { useState , useEffect, useMemo} from "react";
+import Form from "./Form";
 
 export enum ViewType {
 
@@ -46,8 +47,7 @@ export default function Index({openForm }:IndexProps ) {
                 <Button className="mx-2 w-64 justify-center flex border pt-1 border-gray-400 rounded p-1"
                 onClick={async (e)=>{
                     e.preventDefault();
-
-              
+                    setDrawerOpen(true);
                 }}>
                     <FiPlusCircle className="mr-2 w-5 w-5 inline"/>
                     <span className="mt-2 text-xs pt-2">Generate A Resume With AI</span>
@@ -60,7 +60,7 @@ export default function Index({openForm }:IndexProps ) {
             setDrawerOpen(false);
         }}>
             <div className='text-center p-2 overflow-y-auto max-h-screen'>
-              
+              <Form/>
             </div>    
         </Drawer>
 
