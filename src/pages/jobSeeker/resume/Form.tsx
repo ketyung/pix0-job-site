@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { GrNext, GrPrevious } from "react-icons/gr";
 import { ResumeData } from "@/models";
 import SkillsetForm from "./SkillsetForm";
+import WorkExpForm from "./WorkExpForm";
 
 
 export default function Form (){
@@ -40,9 +41,12 @@ export default function Form (){
                 if ( (resumeData?.skillsets?.length ?? 0)< 3 ){
 
                     toast.error('Please enter at least 3 skillsets');
+                    return; 
                 }
-                return; 
+               
             }
+
+            console.log("stg::", stage);
 
             if ( stage < 3) {
                 setStage(stage + 1);
@@ -57,6 +61,8 @@ export default function Form (){
 
         {stage === 1 && <SkillsetForm resumeData={resumeData} setResumeData={setResumeData}/>}
 
+        {stage === 2 && <WorkExpForm resumeData={resumeData} setResumeData={setResumeData}/>}
+
         <div className="mt-2 mb-2 lg:flex">
 
                 { stage > 0 && <Button disabled={processing} className="p-1 rounded bg-gray-500 text-gray-100 mr-2 w-64"
@@ -68,8 +74,9 @@ export default function Form (){
                 <Button disabled={processing} className="p-1 rounded bg-gray-500 text-gray-100 w-64"
                 onClick={async (e)=>{
                     e.preventDefault();
+                    console.log("g.stg:", stage);
                     await moveStage();
-                }}>{(stage=== 3 && processing) ? <BeatLoader size={8} color="#eee"/> : <>{stage === 3 ? 'Create Company Profile' : 'Next'} 
+                }}>{(stage=== 3 && processing) ? <BeatLoader size={8} color="#eee"/> : <>{stage === 3 ? 'Generate By AI' : 'Next'} 
                 <GrNext className="ml-2 inline"/></>}</Button>
         
         </div>

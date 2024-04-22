@@ -158,9 +158,23 @@ export interface SkillSet {
     experience? : string, 
 }
 
+
+export interface WorkExp {
+
+    companyName? : string,
+
+    role? : string, 
+
+    fromYear? : string,
+     
+    toYear? : string, 
+}
+
 export interface ResumeData {
 
     about? : string, 
 
     skillsets? : SkillSet[], 
+
+    workExperiences?: WorkExp[], 
 }
