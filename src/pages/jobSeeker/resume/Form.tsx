@@ -34,6 +34,12 @@ export default function Form (){
                     toast.error('Error! Please Provide Some Description About YourSelf');
                     return;
                 }
+
+                if ( (resumeData?.about?.length ?? 0) > 250) {
+                    toast.error('Error! Your Description Has Exceeded 250 Max Characters');
+                    return;
+                    
+                }
             }
 
             if ( stage === 1 ){
@@ -46,8 +52,7 @@ export default function Form (){
                
             }
 
-            console.log("stg::", stage);
-
+         
             if ( stage < 3) {
                 setStage(stage + 1);
             }
