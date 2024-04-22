@@ -63,15 +63,15 @@ export default function Form (){
 
         {stage === 2 && <WorkExpForm resumeData={resumeData} setResumeData={setResumeData}/>}
 
-        <div className="mt-2 mb-2 lg:flex">
+        <div className="mt-2 mb-2 lg:flex text-left">
 
-                { stage > 0 && <Button disabled={processing} className="p-1 rounded bg-gray-500 text-gray-100 mr-2 w-64"
+                { stage > 0 && <Button disabled={processing} className="p-1 rounded bg-gray-500 text-gray-100 mr-2 w-64 lg:mt-0 mt-2"
                 onClick={async (e)=>{
                     e.preventDefault();
                     moveStage(true);
                 }}><GrPrevious className="mr-4 inline"/> Prev</Button>}
 
-                <Button disabled={processing} className="p-1 rounded bg-gray-500 text-gray-100 w-64"
+                <Button disabled={processing} className="p-1 rounded bg-gray-500 text-gray-100 lg:ml-2 w-64 lg:mt-0 mt-2"
                 onClick={async (e)=>{
                     e.preventDefault();
                     console.log("g.stg:", stage);

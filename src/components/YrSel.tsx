@@ -21,8 +21,8 @@ export default function YrSel({ onChange, value  }: YearSelectProps)  {
 
     return  <Select className="w-40" value={value}
     onChange={handleChange}
-        options={years.map((year) => (
+        options={ [{value:"-", label:"-"}, ...years.map((year) => (
             {value : `${year}`, label: `${year}`}
-          ))}
+          ))]}
     />
 };
