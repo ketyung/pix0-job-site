@@ -49,6 +49,7 @@ model User {
     dateUpdated        DateTime             @updatedAt
     GoogleCredential   GoogleCredential[]
     UserCompany        UserCompany[]
+    Resume             UserResume[]  
 }
 
 
@@ -85,6 +86,16 @@ model UserCompany {
     @@id([id, userId])
 }
 
+
+model UserResume {
+
+    id  String @db.VarChar(30)  @default(cuid()) @unique(map: "user_resume_id_unique_constraint")
+    userId      String    @db.VarChar(30)
+    resumeData  String    
+    resumeText  String    @db.Text 
+    user        User      @relation(fields: [userId], references: [id])
+    @@id([id, userId])
+}
 
 
 

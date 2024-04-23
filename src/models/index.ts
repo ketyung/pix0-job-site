@@ -178,3 +178,15 @@ export interface ResumeData {
 
     workExperiences?: WorkExp[], 
 }
+
+
+export interface Resume {
+
+    id? : string, 
+
+    userId? : string,
+
+    data?: ResumeData,
+
+    text? : string, 
+}

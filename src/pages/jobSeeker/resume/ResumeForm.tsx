@@ -7,7 +7,9 @@ import { useState } from "react";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { Button } from "pix0-core-ui";
 import { BeatLoader } from "react-spinners";
-import { genResume } from "@/service";
+import { genResume, saveResume } from "@/service";
+import { Resume } from "@/models";
+import { toast } from "react-toastify";
 
 export default function ResumeForm({resumeData}:props) {
 
@@ -16,6 +18,8 @@ export default function ResumeForm({resumeData}:props) {
     const [genResumeText ,setGenResumeText] = useState<string>();
 
     const [processing, setProcessing] = useState(false);
+
+    const [resume, setResume] = useState<Resume>({data : resumeData });
 
     const generateResume = async () =>{
 
@@ -26,30 +30,56 @@ export default function ResumeForm({resumeData}:props) {
     
             setGenResumeText(txt);
 
+            setResume({...resume, text : txt});
+
             setProcessing(false);
         }
       
+    }
+
+
+    const saveResumeNow = async () =>{
+
+        setProcessing(true);
+        let rt = await saveResume(resume);
+        setResume(rt);
+    
+        if(rt!== undefined){
+            toast.info("Resume Saved Successfully!");
+        }else {
+            toast.error("Some error saving resume!");
+        }
+
+        setProcessing(false);
+
     }
    
     return <div className="mt-10 text-left">
         {genResumeText !== undefined ?
 
-        <FieldLabel title={<div className="flex"><div className="mt-5">Your Resume</div>
-        <Button className="ml-2 font-bold bg-cyan-600 rounded text-gray-100 mt-4 p-1 w-20 text-center inline mb-2" 
+        <div><FieldLabel title={<div className="flex"><div className="mt-5">Your Resume</div>
+        <Button className="ml-2 font-bold rounded border border-gray-300 mt-4 p-1 w-20 text-center inline mb-2" 
         onClick={async (e)=>{
             e.preventDefault();
             await generateResume();
         }}
-        disabled={processing}>{processing ? <BeatLoader size={10} color="#aaa"/> : <>Regenerate</>}</Button> </div>}>
+        disabled={processing}>{processing ? <BeatLoader size={6} color="#aaa"/> : <>Regenerate</>}</Button> </div>}>
         <MdEditor value={genResumeText} style={{ height: '400px' }} 
                 renderHTML={text => mdParser.render(text)} onChange={(e)=>{
-               
+                    setResume({...resume, text: e.text});
                 }} view={{
                     md: true, // Set to true to display Markdown content
                     html: false, // Set to true to display rendered HTML content
                     menu: true, // Set to true to hide the toolbar by default
                 }}/> 
-        </FieldLabel> : 
+        </FieldLabel> 
+        <Button className="font-bold bg-cyan-600 rounded text-gray-100 mt-4 p-1 w-64" onClick={async (e)=>{
+                e.preventDefault();
+                await saveResumeNow();
+            }}
+            disabled={processing}>{processing ? <BeatLoader size={10} color="#aaa"/> : <>Save Resume</>}</Button>
+        </div>
+        : 
         
         <div className="mt-4 text-center">
             <IoDocumentTextOutline className="my-4 w-40 h-40 mx-auto"/>
