@@ -13,9 +13,11 @@ type props = {
     className ? : string, 
 
     excludeCompanyProfile? : boolean,
+
+    signOutCallbackUrl? : string, 
 }
 
-const ProfileDropdownMenu = ({className, excludeCompanyProfile} :props) => {
+const ProfileDropdownMenu = ({className, excludeCompanyProfile, signOutCallbackUrl} :props) => {
 
     //const { data: session, status } = useSession();
 
@@ -70,7 +72,7 @@ const ProfileDropdownMenu = ({className, excludeCompanyProfile} :props) => {
 
             if (session!== null && session !== undefined /*&& status === 'authenticated'*/ && session.user !== undefined ) {
                 
-                signOut();
+                signOut( { callbackUrl: signOutCallbackUrl });
                 
                 document.location.reload();
             }

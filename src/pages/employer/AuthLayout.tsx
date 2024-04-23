@@ -110,7 +110,7 @@ export default function AuthLayout({children, title, description, menuItems}: pr
                 <AiOutlineMenu className="w-4 h-4"/>
             </Button>  
             <div className='float-right flex'>
-                <ProfileDropdownMenu className='mt-1'/>
+                <ProfileDropdownMenu className='mt-1' signOutCallbackUrl='/employer'/>
                 <ThemeToggle/>
             </div>
         </div>
