@@ -78,7 +78,7 @@ async function handleSave ( res: NextApiResponse,  userId: string, data : any  )
     try {
 
         let ndata = await saveResume(userId, data );
-        console.log("n.data::", ndata, data);
+       //console.log("n.data::", ndata, data);
 
         res.status(200).json({ message: "Saved", data : ndata, status : 1});   
 
