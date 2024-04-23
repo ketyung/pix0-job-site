@@ -6,6 +6,7 @@ import { getUserCompany } from '../dbs/userCompany';
 import { isBlank } from '@/utils';
 import { JobPost } from '@prisma/client';
 import { ResumeData } from '@/models';
+import { getUser } from '../dbs/user';
 const jsonParser = bodyParser.json();
 const fs = require('fs');
 
@@ -88,7 +89,7 @@ async function handlePost (req: NextApiRequest,  res: NextApiResponse, _userId? 
                     await checkIfJobPostInfoProper(data, res);
                 }
                 else if ( param1 === 'generateResume') {
-                    await generateResume(data, res);
+                    await generateResume(data, res, _userId);
                 }
                 else {
                     res.status(400).json({text: "Invalid action!", status:-1});
@@ -211,43 +212,28 @@ function fileToGenerativePart(path : string , mimeType : string ) {
     };
   }
 
-async function testCheckIfImageIsSFW(res: NextApiResponse,) {
+
+
+async function generateResume(data : ResumeData,  res: NextApiResponse, userId? : string ) {
 
     try {
 
-     
-        const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
-
-        const prompt = "Does this image contain any NSFW content?"; //"Does this image contain any nudity and sexual content that is NSFW?";
-        const imageParts = [fileToGenerativePart("/Users/ketyung/pix0/web/pix0-job-site/src/pages/api/modules/testImg1.png", "image/png")];
-
-        
-        const result = await model.generateContent([prompt, ...imageParts]);
-        const text = result.response.text();
-        console.log("detectImageResult::", result.response, text, );
-
-        res.status(200).json({  text : text, status : 1});  
-
-    }
-    catch (e : any ){
-
-        console.log("detecImageNudity.error::", e.message?.substring(0,250));
-        res.status(422).json({error: e.message, status:-1});
-    }
-    
-}
-
-
-async function generateResume(data : ResumeData,  res: NextApiResponse,) {
-
-    try {
+        if ( userId === undefined) {
+            res.status(404).json({  text : "Not Found", status : -1});
+            return;  
+        }
+        let user = await getUser(userId, true);
 
         const model = genAI.getGenerativeModel({ model: "gemini-pro"});
 
         const prompt = `Please generate a resume based on the following data in JSON:
 
         Resume's JSON:
-        ${JSON.stringify(data, null, 2)}`;
+        ${JSON.stringify(data, null, 2)}
+        
+        Personal Info's JSON:
+        ${JSON.stringify(user, null, 2)}
+        `;
         
         
 

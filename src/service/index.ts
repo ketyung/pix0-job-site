@@ -1,5 +1,5 @@
 import { JWTStorage } from "@/utils/local-storage";
-import { SignInData, SearchResult, CloudParam } from "@/models";
+import { SignInData, SearchResult, CloudParam, ResumeData } from "@/models";
 import { JobPost, UserCompany } from "@prisma/client";
 import getConfig from 'next/config';
 
@@ -485,6 +485,21 @@ export async function genJobPostDesc (jobpostTitle : string ){
       }
 }
 
+
+export async function genResume (resumeData: ResumeData){
+
+      try {
+
+            let data = await postToRemote(resumeData, "gai", "generateResume");
+
+            return ( data.status === 1 ) ? data.text : undefined;
+
+
+      }catch(err : any) {
+            return undefined; 
+
+      }
+}
 
 
 

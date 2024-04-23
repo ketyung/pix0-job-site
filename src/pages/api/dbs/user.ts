@@ -158,15 +158,22 @@ export async function allowedUserByGid(userId : string, accountId : string  ) :P
 
 
 
-export async function getUser(userId : string ) :Promise<User|null> {
+export async function getUser(userId : string, toDecryptInfo?: boolean ) :Promise<User|null> {
   try {
 
     
-      const user = await prisma.user.findUnique({
+      let user = await prisma.user.findUnique({
         where: {
           id : userId,
         },
       });
+
+      if (user!== null && toDecryptInfo) {
+
+          let email = decrypt( user.email, process.env.EM_ENCRYPT_KEY ?? DEFAULT_ENC_KEY);
+          user = {...user, email: email};
+
+      }
   
       return user ;
   } 

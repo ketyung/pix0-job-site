@@ -1,13 +1,13 @@
 import AboutForm from "./AboutForm";
 import { useState } from "react";
 import { Button } from "pix0-core-ui";
-import { BeatLoader } from "react-spinners";
 import { isBlank } from "@/utils";
 import { toast } from "react-toastify";
 import { GrNext, GrPrevious } from "react-icons/gr";
 import { ResumeData } from "@/models";
 import SkillsetForm from "./SkillsetForm";
 import WorkExpForm from "./WorkExpForm";
+import ResumeForm from "./ResumeForm";
 
 
 export default function Form (){
@@ -68,21 +68,22 @@ export default function Form (){
 
         {stage === 2 && <WorkExpForm resumeData={resumeData} setResumeData={setResumeData}/>}
 
-        <div className="mt-2 mb-2 lg:flex text-left">
+        {stage === 3 && <ResumeForm resumeData={resumeData}/>}
 
-                { stage > 0 && <Button disabled={processing} className="p-1 rounded bg-gray-500 text-gray-100 mr-2 w-64 lg:mt-0 mt-2"
+        <div className="mt-8 mb-2 lg:flex text-left">
+
+                { stage > 0 && <Button disabled={processing} className="p-1 rounded-full bg-gray-500 text-gray-100 mr-2 w-24 lg:mt-0 mt-2"
                 onClick={async (e)=>{
                     e.preventDefault();
                     moveStage(true);
                 }}><GrPrevious className="mr-4 inline"/> Prev</Button>}
 
-                <Button disabled={processing} className="p-1 rounded bg-gray-500 text-gray-100 lg:ml-2 w-64 lg:mt-0 mt-2"
+                {stage <3  &&
+                <Button disabled={processing} className="p-1 rounded-full bg-gray-500 text-gray-100 lg:ml-2 w-24 lg:mt-0 mt-2"
                 onClick={async (e)=>{
                     e.preventDefault();
-                    console.log("g.stg:", stage);
                     await moveStage();
-                }}>{(stage=== 3 && processing) ? <BeatLoader size={8} color="#eee"/> : <>{stage === 3 ? 'Generate By AI' : 'Next'} 
-                <GrNext className="ml-2 inline"/></>}</Button>
+                }}><>Next <GrNext className="ml-2 inline"/></></Button>}
         
         </div>
 
