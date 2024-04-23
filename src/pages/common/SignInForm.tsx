@@ -3,7 +3,12 @@ import { signIn } from 'next-auth/react';
 import { FaGoogle, FaLinkedin } from "react-icons/fa";
 import { toast } from "react-toastify";
 
-export default function SignInForm() {
+type props = {
+
+    callbackUrl? : string,
+}
+
+export default function SignInForm({callbackUrl} : props) {
 
 
      return <div className="mx-auto p-2 min-w-80">
@@ -13,7 +18,7 @@ export default function SignInForm() {
         <Button className="p-1 rounded-3xl text-sm bg-red-500 text-gray-100 w-full mx-auto"
                 onClick={async (e)=>{
                     e.preventDefault();
-                    await signIn('google');
+                    await signIn('google', { callbackUrl: callbackUrl });
                 }}>{<div className="flex p-1"><FaGoogle className="mr-2 w-5 h-5"/>
                 Sign In With Google</div>}</Button>
         </div>
