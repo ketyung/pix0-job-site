@@ -51,7 +51,6 @@ async function handlePost (req: NextApiRequest,  res: NextApiResponse, userId? :
         const param1 = path[1];
         jsonParser(req, res, async () => {
             const { data } = req.body;
-            
             if ( data !== undefined) {
                 
                 if ( param1 === 'save'){
@@ -85,6 +84,8 @@ async function handleSave ( res: NextApiResponse,  userId: string, data : any  )
 
     }
     catch(e: any){
+
+        console.log("e::", e);
         res.status(422).send({error: e.message, status: -1});
     }
 }

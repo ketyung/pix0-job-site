@@ -46,7 +46,7 @@ export async function fetchRemote(module : string, param1? : string, param2? : s
     
       const { serverRuntimeConfig, publicRuntimeConfig } = getConfig()
 
-        console.log("print.for.testing.RestApiKey:", publicRuntimeConfig.restApiKey);
+        //console.log("print.for.testing.RestApiKey:", publicRuntimeConfig.restApiKey);
 
         let uri = `${process.env.NEXT_PUBLIC_API_URL}/${module}${param1 ? 
             `/${encodeURIComponent(param1)}` : ""}${param2 

@@ -19,7 +19,7 @@ export default function ResumeForm({resumeData}:props) {
 
     const [processing, setProcessing] = useState(false);
 
-    const [resume, setResume] = useState<Resume>({data : resumeData });
+    const [resumeInfo, setResumeInfo] = useState<Resume>({data : resumeData });
 
     const generateResume = async () =>{
 
@@ -30,7 +30,7 @@ export default function ResumeForm({resumeData}:props) {
     
             setGenResumeText(txt);
 
-            setResume({...resume, text : txt});
+            setResumeInfo({...resumeInfo, text : txt});
 
             setProcessing(false);
         }
@@ -41,8 +41,9 @@ export default function ResumeForm({resumeData}:props) {
     const saveResumeNow = async () =>{
 
         setProcessing(true);
-        let rt = await saveResume(resume);
-        setResume(rt);
+
+        let rt = await saveResume(resumeInfo);
+        setResumeInfo(rt);
     
         if(rt!== undefined){
             toast.info("Resume Saved Successfully!");
@@ -66,7 +67,7 @@ export default function ResumeForm({resumeData}:props) {
         disabled={processing}>{processing ? <BeatLoader size={6} color="#aaa"/> : <>Regenerate</>}</Button> </div>}>
         <MdEditor value={genResumeText} style={{ height: '400px' }} 
                 renderHTML={text => mdParser.render(text)} onChange={(e)=>{
-                    setResume({...resume, text: e.text});
+                    setResumeInfo({...resumeInfo, text: e.text});
                 }} view={{
                     md: true, // Set to true to display Markdown content
                     html: false, // Set to true to display rendered HTML content
