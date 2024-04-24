@@ -1,6 +1,6 @@
 import { sha256, encrypt, decrypt } from '@/utils/enc';
 import prisma from '../db';
-import { User } from "@prisma/client";
+import { User, UserType } from "@prisma/client";
 import cuid from "cuid";
 
 export const DEFAULT_ENC_KEY = "zGx63636xx38xsHkad";
@@ -171,7 +171,8 @@ export async function getUser(userId : string, toDecryptInfo?: boolean ) :Promis
       if (user!== null && toDecryptInfo) {
 
           let email = decrypt( user.email, process.env.EM_ENCRYPT_KEY ?? DEFAULT_ENC_KEY);
-          user = {...user, email: email};
+          let phone = decrypt( user.phoneNumber, process.env.TEL_ENCRYPT_KEY ?? DEFAULT_ENC_KEY);
+          user = {...user, email: email, phoneNumber : phone};
 
       }
   
@@ -232,18 +233,18 @@ export async function hasLinkedGoogleCredential(userEmail : string ) :Promise<Us
 
 
 
-async function createUserFromGoogleProfile(data : any) {
+async function createUserFromGoogleProfile(data : any,userType? : UserType) {
 
     let user : any = { email : data.email ? encrypt( data.email, process.env.EM_ENCRYPT_KEY ?? DEFAULT_ENC_KEY) : null , 
     phoneNumber : `Phone-${cuid()}`,title : data.title ?? "Mr", firstName : data.given_name ?? "", lastName : data.family_name ?? "" , 
-    hEmail :  data.email ? sha256(data.email) : null, hPhoneNumber : `hPhone-${cuid()}`};
+    hEmail :  data.email ? sha256(data.email) : null, hPhoneNumber : `hPhone-${cuid()}`, userType : userType ?? UserType.HiringManager};
 
     const newUser = await prisma.user.create({ data : user});
 
     return newUser;
 }
 
-export async function createGoogleCredential(profile : any, account : any  ) :Promise<{ status:boolean, encAccountId? : string}>  {
+export async function createGoogleCredential(profile : any, account : any ,userType? : UserType ) :Promise<{ status:boolean, encAccountId? : string}>  {
 
     let user : any = await prisma.user.findUnique({
         where: {
@@ -256,7 +257,7 @@ export async function createGoogleCredential(profile : any, account : any  ) :Pr
     });
 
     if ( user === null) {
-        user = await createUserFromGoogleProfile(profile);
+        user = await createUserFromGoogleProfile(profile, userType);
     }
 
     //console.log("acc.expiresAt::", account.expires_at);

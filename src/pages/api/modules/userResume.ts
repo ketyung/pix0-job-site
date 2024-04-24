@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import bodyParser from "body-parser";
-import { saveResume } from '../dbs/userResume';
+import { getUserResume, saveResume } from '../dbs/userResume';
 
 const jsonParser = bodyParser.json();
 
@@ -25,7 +25,9 @@ async function handleGet (req: NextApiRequest,  res: NextApiResponse, userId? : 
 
         if (param1!== undefined && param1 !== null ){
         
-          
+            if (param1 === 'resume') {
+                await handleGetResume(res, userId );
+            }
      
         }
         else {
@@ -36,6 +38,25 @@ async function handleGet (req: NextApiRequest,  res: NextApiResponse, userId? : 
 
 }
 
+
+
+async function handleGetResume ( res: NextApiResponse,  userId? : string  ){
+
+    try {
+
+        let ndata = await getUserResume(userId ?? "");
+
+        if ( ndata !== undefined){
+            res.status(200).json({  data : ndata, status : 1});   
+        }else {
+            res.status(404).json({  message : "Resume NOT found", status : -1});      
+        }
+    }
+    catch(e: any){
+        console.log("e::",e);
+        res.status(422).send({error: e.message, status: -1});
+    }
+}
 
 async function handlePost (req: NextApiRequest,  res: NextApiResponse, userId? : string) {
     

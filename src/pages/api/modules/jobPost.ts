@@ -139,7 +139,7 @@ async function handleGetJobPost ( res: NextApiResponse, id : string,  userId? : 
         if ( ndata !== undefined){
             res.status(200).json({  data : ndata, status : 1});   
         }else {
-            res.status(404).json({  message : "Contact NOT found", status : -1});      
+            res.status(404).json({  message : "Job Post NOT found", status : -1});      
         }
     }
     catch(e: any){

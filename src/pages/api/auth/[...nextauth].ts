@@ -7,20 +7,13 @@ import { encrypt } from "@/utils/enc";
 import { NextRequest } from "next/server";
 import { EMPLOYER_SIGN_IN_CALLBACK_URL } from "@/pages/employer/NonAuthLayout";
 import { JOBSEEKER_SIGN_IN_CALLBACK_URL } from "@/pages/jobSeeker/NonAuthLayout";
-
+import { UserType } from "@prisma/client";
 //const jwt = require('jsonwebtoken');
 // refer here for Google Sign In
 // https://next-auth.js.org/providers/google
 // https://github.com/nextauthjs/next-auth/tree/v4/packages/next-auth
 // https://www.telerik.com/blogs/how-to-implement-google-authentication-nextjs-app-using-nextauth
 // https://next-auth.js.org/getting-started/client#additional-parameters
-
-enum SignInType {
-
-    EMPLOYER = 'Employer',
-
-    JOBSEEKER = 'JobSeeker', 
-}
 
 const obtainSignInType = (req? : NextRequest) =>{
 
@@ -30,10 +23,10 @@ const obtainSignInType = (req? : NextRequest) =>{
         const url = cookies['next-auth.callback-url'];
 
         if (  url.indexOf(EMPLOYER_SIGN_IN_CALLBACK_URL)!== -1) 
-            return SignInType.EMPLOYER;
+            return UserType.HiringManager;
 
         else if (url.indexOf(JOBSEEKER_SIGN_IN_CALLBACK_URL)!== -1 )
-            return SignInType.JOBSEEKER;
+            return UserType.JobSeeker;
         else 
             return undefined;
    }
@@ -138,12 +131,12 @@ export default handler;
 //export default NextAuth(Options());
 //export default (req : NextApiRequest, _res : NextApiResponse) => NextAuth(Options(req));
 
-async function createGC(profile : any , account : any, signInType? : SignInType) : Promise<{ status:boolean, encAccountId? : string}>{
+async function createGC(profile : any , account : any, userType? :UserType) : Promise<{ status:boolean, encAccountId? : string}>{
 
     try {
 
-        console.log("signIn.type::", signInType);
-        return await createGoogleCredential(profile, account);
+        console.log("signIn.type::", userType);
+        return await createGoogleCredential(profile, account, userType);
 
     }
     catch(e: any){

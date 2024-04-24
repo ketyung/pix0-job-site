@@ -7,6 +7,7 @@ import { isBlank } from '@/utils';
 import { JobPost } from '@prisma/client';
 import { ResumeData } from '@/models';
 import { getUser } from '../dbs/user';
+
 const jsonParser = bodyParser.json();
 const fs = require('fs');
 
@@ -200,19 +201,6 @@ async function checkIfImageIsSFW(imageData : any,  res: NextApiResponse,) {
 }
 
 
-function fileToGenerativePart(path : string , mimeType : string ) {
-
-    let bdata = Buffer.from(fs.readFileSync(path)).toString("base64");
-    //console.log("bdata:::", bdata.substring(0,300));
-    return {
-      inlineData: {
-        data: bdata,
-        mimeType
-      },
-    };
-  }
-
-
 
 async function generateResume(data : ResumeData,  res: NextApiResponse, userId? : string ) {
 
@@ -224,6 +212,10 @@ async function generateResume(data : ResumeData,  res: NextApiResponse, userId? 
         }
         let user = await getUser(userId, true);
 
+        let userInfo = {firstName : user?.firstName, lastName : user?.lastName, phoneNumber : user?.phoneNumber,
+            email : user?.email, 
+        }
+
         const model = genAI.getGenerativeModel({ model: "gemini-pro"});
 
         const prompt = `Please generate a resume based on the following data in JSON:
@@ -232,7 +224,7 @@ async function generateResume(data : ResumeData,  res: NextApiResponse, userId? 
         ${JSON.stringify(data, null, 2)}
         
         Personal Info's JSON:
-        ${JSON.stringify(user, null, 2)}
+        ${JSON.stringify(userInfo, null, 2)}
         `;
         
         
