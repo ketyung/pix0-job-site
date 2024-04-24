@@ -3,8 +3,8 @@ import GoogleProvider from "next-auth/providers/google";
 import { createGoogleCredential, getUserByHEmail, signInByGid, signOutUserByGid } from "../dbs/user";
 import { sha256 } from "@/utils/enc";
 import { encrypt } from "@/utils/enc";
-import { NextApiRequest, NextApiResponse } from 'next';
-
+//import { NextApiRequest, NextApiResponse } from 'next';
+import { NextRequest } from "next/server";
 //const jwt = require('jsonwebtoken');
 // refer here for Google Sign In
 // https://next-auth.js.org/providers/google
@@ -14,7 +14,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 // https://github.com/nextauthjs/next-auth/issues/45
 // https://github.com/nextauthjs/next-auth/discussions/469
 
-const Options : any = (req? : NextApiRequest) => (
+const Options : any = (req? : NextRequest) => (
 
     {
         providers: [
@@ -30,11 +30,11 @@ const Options : any = (req? : NextApiRequest) => (
             
             async signIn({ account, profile, email } : any ) {
     
-            //console.log("req::",request);
+              console.log("req::xxx::",req?.referrer);
     
               if (account !== null && account.provider === "google") {
                 
-                let stat = await createGC(profile, account);
+                 let stat = await createGC(profile, account);
                  return stat.status;
               }
     
@@ -100,7 +100,16 @@ const Options : any = (req? : NextApiRequest) => (
 
 )
 
-export default NextAuth(Options());
+
+
+type RouteHandlerContext = { params: { nextauth: string[] } };
+
+const handler = async (req: NextRequest, context: RouteHandlerContext) => {
+    return await NextAuth(req, context, Options(req));
+};
+
+export default handler;
+//export default NextAuth(Options());
 //export default (req : NextApiRequest, _res : NextApiResponse) => NextAuth(Options(req));
 
 async function createGC(profile : any , account : any) : Promise<{ status:boolean, encAccountId? : string}>{
