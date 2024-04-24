@@ -64,16 +64,16 @@ export default function ResumeForm({resume}:props) {
     }
    
     return <div className="mt-10 text-left">
-        {genResumeText !== undefined ?
+        {(genResumeText || resume?.text) ?
 
         <div><FieldLabel title={<div className="flex"><div className="mt-5">Your Resume</div>
-        <Button className="ml-2 font-bold rounded border border-gray-300 mt-4 p-1 w-20 text-center inline mb-2" 
+        <Button className="ml-20 font-bold rounded border border-gray-300 mt-4 p-1 w-40 text-center inline mb-2" 
         onClick={async (e)=>{
             e.preventDefault();
             await generateResume();
         }}
-        disabled={processing}>{processing ? <BeatLoader size={6} color="#aaa"/> : <>Regenerate</>}</Button> </div>}>
-        <MdEditor value={genResumeText} style={{ height: '400px' }} 
+        disabled={processing}>{processing ? <BeatLoader size={6} color="#aaa"/> : <>Re-generate With AI</>}</Button> </div>}>
+        <MdEditor value={genResumeText ?? resume?.text} style={{ height: '400px' }} 
                 renderHTML={text => mdParser.render(text)} onChange={(e)=>{
                     setResumeInfo({...resumeInfo, text: e.text});
                 }} view={{
