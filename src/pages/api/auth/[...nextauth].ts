@@ -10,6 +10,7 @@ import { encrypt } from "@/utils/enc";
 // https://github.com/nextauthjs/next-auth/tree/v4/packages/next-auth
 // https://www.telerik.com/blogs/how-to-implement-google-authentication-nextjs-app-using-nextauth
 // https://next-auth.js.org/getting-started/client#additional-parameters
+// https://github.com/nextauthjs/next-auth/issues/45
 
 export default NextAuth({
     providers: [
