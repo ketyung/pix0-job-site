@@ -7,7 +7,7 @@ import Image from "next/image";
 import { props } from "./AuthLayout";
 import Logo from "@/components/Logo"
 
-
+export const JOBSEEKER_SIGN_IN_CALLBACK_URL ="/jobSeeker/resume";
 
 export default function NonAuthLayout({title, description}:props) {
 
@@ -27,7 +27,7 @@ export default function NonAuthLayout({title, description}:props) {
        {isOpen && <Image  alt="Look For Remote Jobs?" src={image3.src} className="w-full h-full" width={100} height={100}  layout="responsive"/>}
        <Modal withoutCloseButton isOpen={isOpen} title={<div className="flex"><Logo className="mr-2 h-6 w-auto mb-1"/>
             <div className="mt-0.5">Sign In</div></div>}>
-            <SignInForm callbackUrl='/jobSeeker/resume'/>   
+            <SignInForm callbackUrl={JOBSEEKER_SIGN_IN_CALLBACK_URL}/>   
        </Modal>
     </main>
   

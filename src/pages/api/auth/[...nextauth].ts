@@ -5,6 +5,8 @@ import { sha256 } from "@/utils/enc";
 import { encrypt } from "@/utils/enc";
 //import { NextApiRequest, NextApiResponse } from 'next';
 import { NextRequest } from "next/server";
+import { EMPLOYER_SIGN_IN_CALLBACK_URL } from "@/pages/employer/NonAuthLayout";
+import { JOBSEEKER_SIGN_IN_CALLBACK_URL } from "@/pages/jobSeeker/NonAuthLayout";
 
 //const jwt = require('jsonwebtoken');
 // refer here for Google Sign In
@@ -12,6 +14,32 @@ import { NextRequest } from "next/server";
 // https://github.com/nextauthjs/next-auth/tree/v4/packages/next-auth
 // https://www.telerik.com/blogs/how-to-implement-google-authentication-nextjs-app-using-nextauth
 // https://next-auth.js.org/getting-started/client#additional-parameters
+
+enum SignInType {
+
+    EMPLOYER = 'Employer',
+
+    JOBSEEKER = 'JobSeeker', 
+}
+
+const obtainSignInType = (req? : NextRequest) =>{
+
+    if ( req?.cookies ) {
+
+        const cookies :any = req.cookies;
+        const url = cookies['next-auth.callback-url'];
+
+        if (  url.indexOf(EMPLOYER_SIGN_IN_CALLBACK_URL)!== -1) 
+            return SignInType.EMPLOYER;
+
+        else if (url.indexOf(JOBSEEKER_SIGN_IN_CALLBACK_URL)!== -1 )
+            return SignInType.JOBSEEKER;
+        else 
+            return undefined;
+   }
+
+   return undefined;
+}
 
 const Options : any = (req? : NextRequest) => (
 
@@ -29,16 +57,9 @@ const Options : any = (req? : NextRequest) => (
             
             async signIn({ account, profile, email } : any ) {
     
-              if ( req?.cookies ) {
-
-                   const cookies :any = req.cookies;
-
-                   console.log("req.cookies::", cookies['next-auth.callback-url']);
-              }
-             
               if (account !== null && account.provider === "google") {
                 
-                 let stat = await createGC(profile, account);
+                 let stat = await createGC(profile, account, obtainSignInType(req));
                  return stat.status;
               }
     
@@ -117,9 +138,11 @@ export default handler;
 //export default NextAuth(Options());
 //export default (req : NextApiRequest, _res : NextApiResponse) => NextAuth(Options(req));
 
-async function createGC(profile : any , account : any) : Promise<{ status:boolean, encAccountId? : string}>{
+async function createGC(profile : any , account : any, signInType? : SignInType) : Promise<{ status:boolean, encAccountId? : string}>{
 
     try {
+
+        console.log("signIn.type::", signInType);
         return await createGoogleCredential(profile, account);
 
     }
