@@ -3,6 +3,7 @@ import GoogleProvider from "next-auth/providers/google";
 import { createGoogleCredential, getUserByHEmail, signInByGid, signOutUserByGid } from "../dbs/user";
 import { sha256 } from "@/utils/enc";
 import { encrypt } from "@/utils/enc";
+
 //const jwt = require('jsonwebtoken');
 // refer here for Google Sign In
 // https://next-auth.js.org/providers/google
@@ -22,7 +23,10 @@ export default NextAuth({
 
     callbacks: {
         
-        async signIn({ account, profile}) {
+        async signIn({ account, profile }) {
+
+          //console.log("u::", user, email, credentials);
+
           if (account !== null && account.provider === "google") {
             
             let stat = await createGC(profile, account);
@@ -65,7 +69,8 @@ export default NextAuth({
             
             //console.log("n.Token::", newToken);
             return newToken;
-        }
+        },
+
     },
     
     pages: {
