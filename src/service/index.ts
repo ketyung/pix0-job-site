@@ -1,6 +1,6 @@
 import { JWTStorage } from "@/utils/local-storage";
 import { SignInData, SearchResult, CloudParam, Resume , ResumeData} from "@/models";
-import { JobPost, UserCompany } from "@prisma/client";
+import { JobPost, UserCompany, UserResume } from "@prisma/client";
 import getConfig from 'next/config';
 
 const axios = require('axios');
@@ -712,4 +712,39 @@ export async function saveResume (resume : Resume, onError? : (e : Error)=>void 
             return false; 
 
       }
+}
+
+
+
+
+export async function getOwnResume(onError? : (e : Error)=>void ) : Promise<UserResume|undefined>{
+
+      try {
+            
+            let res = await fetchRemote("userResume", "resume");
+
+             if( res.status === 1){
+                  return res.data;
+            }else {
+                  if ( onError) {
+                        onError(new Error('Contact NOT found!'));
+                  }
+                  return undefined;
+            }
+
+      }catch(err : any) {
+
+            if(err.response && err.response.status === 401){
+
+                  if ( onError) {
+                        onError(new Error(`${UNAUTHORIZED_MESSAGE} ${err.message}`));
+                  }
+            }
+
+            console.log("getC.err:",err);
+
+            return undefined; 
+
+      }
+
 }

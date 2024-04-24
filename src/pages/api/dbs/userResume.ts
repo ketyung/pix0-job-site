@@ -1,7 +1,7 @@
 import { Resume } from "@/models";
 import prisma from '../db';
 import cuid from "cuid";
-import { UserResume } from "@prisma/client";
+
 
 export async function saveResume(userId: string,resume : Resume) :Promise<Resume> {
 
@@ -50,7 +50,7 @@ export async function saveResume(userId: string,resume : Resume) :Promise<Resume
 }
 
 
-export async function getUserResume(userId : string) :Promise<UserResume|null> {
+export async function getUserResume(userId : string) :Promise<Resume|null> {
     try {
   
         const resume = await prisma.userResume.findFirst({
@@ -59,7 +59,7 @@ export async function getUserResume(userId : string) :Promise<UserResume|null> {
             }
         });
     
-        return resume ;
+        return {id: resume?.id, data: JSON.parse(resume?.resumeData ?? ""), text: resume?.resumeText };
     } 
     catch (error) {
         console.error(error);

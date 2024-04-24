@@ -1,22 +1,30 @@
 import AboutForm from "./AboutForm";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "pix0-core-ui";
 import { isBlank } from "@/utils";
 import { toast } from "react-toastify";
 import { GrNext, GrPrevious } from "react-icons/gr";
-import { ResumeData } from "@/models";
+import { Resume } from "@/models";
 import SkillsetForm from "./SkillsetForm";
 import WorkExpForm from "./WorkExpForm";
 import ResumeForm from "./ResumeForm";
 
+type props ={
 
-export default function Form (){
+    resume?: Resume,
+}
+
+export default function Form ({resume} : props){
 
     const [stage, setStage] = useState(0);
 
     const [processing, setProcessing] = useState(false);
 
-    const [resumeData, setResumeData] = useState<ResumeData>();
+    const [resumeInfo, setResumeInfo] = useState<Resume>();
+
+    useEffect(()=>{
+        setResumeInfo(resume);
+    },[resume])
 
 
     const moveStage = async (prev? : boolean) =>{
@@ -30,12 +38,12 @@ export default function Form (){
 
             if ( stage === 0 ){
 
-                if ( isBlank(resumeData?.about)){
+                if ( isBlank(resumeInfo?.data?.about)){
                     toast.error('Error! Please Provide Some Description About YourSelf');
                     return;
                 }
 
-                if ( (resumeData?.about?.length ?? 0) > 250) {
+                if ( (resume?.data?.about?.length ?? 0) > 250) {
                     toast.error('Error! Your Description Has Exceeded 250 Max Characters');
                     return;
                     
@@ -44,7 +52,7 @@ export default function Form (){
 
             if ( stage === 1 ){
 
-                if ( (resumeData?.skillsets?.length ?? 0)< 3 ){
+                if ( (resume?.data?.skillsets?.length ?? 0)< 3 ){
 
                     toast.error('Please enter at least 3 skillsets');
                     return; 
@@ -62,13 +70,25 @@ export default function Form (){
 
     return <div className="border border-gray-300 rounded p-2">
         <div className="my-2 font-bold dark:bg-gray-700 bg-gray-300 p-1 text-left">Generate CV/Resume With AI</div>
-        {stage=== 0 && <AboutForm resumeData={resumeData} setResumeData={setResumeData}/>}
+        {stage=== 0 && <AboutForm resumeData={resume?.data} setResumeData={(d)=>{
 
-        {stage === 1 && <SkillsetForm resumeData={resumeData} setResumeData={setResumeData}/>}
+            setResumeInfo({...resumeInfo, data :d });
 
-        {stage === 2 && <WorkExpForm resumeData={resumeData} setResumeData={setResumeData}/>}
+        }}/>}
 
-        {stage === 3 && <ResumeForm resumeData={resumeData}/>}
+        {stage === 1 && <SkillsetForm resumeData={resume?.data} setResumeData={(d)=>{
+
+            setResumeInfo({...resumeInfo, data :d });
+            
+        }}/>}
+
+        {stage === 2 && <WorkExpForm resumeData={resume?.data} setResumeData={(d)=>{
+
+            setResumeInfo({...resumeInfo, data :d });
+
+        }}/>}
+
+        {stage === 3 && <ResumeForm resume={resume}/>}
 
         <div className="mt-8 mb-2 lg:flex text-left">
 

@@ -1,5 +1,4 @@
 import FieldLabel from "@/components/FieldLabel";
-import { props } from "./SkillsetForm";
 import 'react-markdown-editor-lite/lib/index.css';
 import MarkdownIt from 'markdown-it';
 import MdEditor from 'react-markdown-editor-lite';
@@ -11,7 +10,12 @@ import { genResume, saveResume } from "@/service";
 import { Resume } from "@/models";
 import { toast } from "react-toastify";
 
-export default function ResumeForm({resumeData}:props) {
+type props = {
+
+    resume? : Resume,
+}
+
+export default function ResumeForm({resume}:props) {
 
     const mdParser = new MarkdownIt(/* Markdown-it options */);
    
@@ -19,14 +23,14 @@ export default function ResumeForm({resumeData}:props) {
 
     const [processing, setProcessing] = useState(false);
 
-    const [resumeInfo, setResumeInfo] = useState<Resume>({data : resumeData });
+    const [resumeInfo, setResumeInfo] = useState<Resume|undefined>(resume);
 
     const generateResume = async () =>{
 
-        if ( resumeData ){
+        if ( resume?.data ){
             setProcessing(true);
     
-            let txt = await genResume(resumeData);
+            let txt = await genResume(resume.data);
     
             setGenResumeText(txt);
 
@@ -40,19 +44,23 @@ export default function ResumeForm({resumeData}:props) {
 
     const saveResumeNow = async () =>{
 
-        setProcessing(true);
+        if ( resumeInfo) {
 
-        let rt = await saveResume(resumeInfo);
-        setResumeInfo(rt);
+            setProcessing(true);
+
+            let rt = await saveResume(resumeInfo);
+            setResumeInfo(rt);
+        
+            if(rt!== undefined){
+                toast.info("Resume Saved Successfully!");
+            }else {
+                toast.error("Some error saving resume!");
+            }
     
-        if(rt!== undefined){
-            toast.info("Resume Saved Successfully!");
-        }else {
-            toast.error("Some error saving resume!");
+            setProcessing(false);
+    
         }
-
-        setProcessing(false);
-
+       
     }
    
     return <div className="mt-10 text-left">
