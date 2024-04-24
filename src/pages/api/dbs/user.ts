@@ -287,7 +287,7 @@ export async function createGoogleCredential(profile : any, account : any ,userT
         user = await createUserFromGoogleProfile(profile, userType);
     } else {
 
-        if ( user.userType !== userType) {
+        if ( user.userType !== userType && user.userType !== UserType.Both) {
               await updateUser({...user, userType : UserType.Both, GoogleCredential : undefined});
         }
     }
