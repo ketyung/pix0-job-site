@@ -12,9 +12,11 @@ import ResumeForm from "./ResumeForm";
 type props ={
 
     resume?: Resume,
+
+    reload?: () =>void, 
 }
 
-export default function Form ({resume} : props){
+export default function Form ({resume, reload} : props){
 
     const [stage, setStage] = useState(0);
 
@@ -88,7 +90,7 @@ export default function Form ({resume} : props){
 
         }}/>}
 
-        {stage === 3 && <ResumeForm resume={resume}/>}
+        {stage === 3 && <ResumeForm resume={resume} reload={reload}/>}
 
         <div className="mt-8 mb-2 lg:flex text-left">
 

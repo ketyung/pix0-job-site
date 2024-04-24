@@ -13,9 +13,11 @@ import { toast } from "react-toastify";
 type props = {
 
     resume? : Resume,
+
+    reload?: () =>void, 
 }
 
-export default function ResumeForm({resume}:props) {
+export default function ResumeForm({resume, reload}:props) {
 
     const mdParser = new MarkdownIt(/* Markdown-it options */);
    
@@ -58,6 +60,8 @@ export default function ResumeForm({resume}:props) {
             }
     
             setProcessing(false);
+
+            if (reload) reload();
     
         }
        

@@ -22,7 +22,7 @@ export async function saveResume(userId: string,resume : Resume) :Promise<Resume
                         id: existingRecord.id,
                         userId 
                     },
-                    data: {...resume, resumeData : resume.data ? JSON.stringify(resume.data) : "", resumeText : resume.text}
+                    data: {id:existingRecord.id, userId: userId, resumeData : resume.data ? JSON.stringify(resume.data) : "", resumeText : resume.text}
                 });
 
                 return {...resume, id: existingRecord.id, userId: userId};
