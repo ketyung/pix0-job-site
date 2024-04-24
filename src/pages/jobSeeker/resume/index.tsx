@@ -43,12 +43,12 @@ export default function Index({openForm }:IndexProps ) {
     //    console.log("r::",r );
         setLoading(false);
 
-    }, [reloadCount]);
+    }, []);
 
 
     useEffect(()=>{
         fetchResume()
-    },[fetchResume]);
+    },[fetchResume, reloadCount]);
 
 
     const reload = () =>{
@@ -70,7 +70,7 @@ export default function Index({openForm }:IndexProps ) {
         setOpenFormIfNeeded();
     },[setOpenFormIfNeeded]);
     
-    return <MainIndex title="Job Posts - Pix0 Application">
+    return <MainIndex title="Job Seeker's Section - Pix0 Application">
         <div className="text-left">
             <h2 className="ml-2 mb-10 font-bold">Your CV/Resume</h2>
             <div className="mb-4 flex">
