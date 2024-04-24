@@ -72,25 +72,25 @@ export default function Form ({resume, reload} : props){
 
     return <div className="border border-gray-300 rounded p-2">
         <div className="my-2 font-bold dark:bg-gray-700 bg-gray-300 p-1 text-left">Generate CV/Resume With AI</div>
-        {stage=== 0 && <AboutForm resumeData={resume?.data} setResumeData={(d)=>{
+        {stage=== 0 && <AboutForm resumeData={resumeInfo?.data} setResumeData={(d)=>{
 
             setResumeInfo({...resumeInfo, data :d });
 
         }}/>}
 
-        {stage === 1 && <SkillsetForm resumeData={resume?.data} setResumeData={(d)=>{
+        {stage === 1 && <SkillsetForm resumeData={resumeInfo?.data} setResumeData={(d)=>{
 
             setResumeInfo({...resumeInfo, data :d });
             
         }}/>}
 
-        {stage === 2 && <WorkExpForm resumeData={resume?.data} setResumeData={(d)=>{
+        {stage === 2 && <WorkExpForm resumeData={resumeInfo?.data} setResumeData={(d)=>{
 
             setResumeInfo({...resumeInfo, data :d });
 
         }}/>}
 
-        {stage === 3 && <ResumeForm resume={resume} reload={reload}/>}
+        {stage === 3 && <ResumeForm resume={resumeInfo} reload={reload}/>}
 
         <div className="mt-8 mb-2 lg:flex text-left">
 

@@ -9,6 +9,7 @@ import { BeatLoader } from "react-spinners";
 import { genResume, saveResume } from "@/service";
 import { Resume } from "@/models";
 import { toast } from "react-toastify";
+import { useEffect } from "react";
 
 type props = {
 
@@ -25,14 +26,14 @@ export default function ResumeForm({resume, reload}:props) {
 
     const [processing, setProcessing] = useState(false);
 
-    const [resumeInfo, setResumeInfo] = useState<Resume|undefined>(resume);
+    const [resumeInfo, setResumeInfo] = useState<Resume>();
 
     const generateResume = async () =>{
 
-        if ( resume?.data ){
+        if ( resumeInfo?.data ){
             setProcessing(true);
     
-            let txt = await genResume(resume.data);
+            let txt = await genResume(resumeInfo?.data);
     
             setGenResumeText(txt);
 
@@ -66,6 +67,11 @@ export default function ResumeForm({resume, reload}:props) {
         }
        
     }
+
+    useEffect(()=>{
+
+        setResumeInfo(resume);
+    },[resume]);
    
     return <div className="mt-10 text-left">
         {(genResumeText || resume?.text) ?
