@@ -69,7 +69,7 @@ export default function Index({openForm }:IndexProps ) {
                 (resumeInfo ? 
                 <div className="p-2 text-center">
                     <IoDocumentTextOutline className="w-48 h-48 mt-2 text-gray-400 dark:text-gray-600"/>
-                    <Button className="mx-2 w-64 justify-center flex border pt-1 border-gray-400 rounded p-1"
+                    <Button className="mx-2 w-48 justify-center flex border pt-1 border-gray-400 rounded p-1"
                     onClick={async (e)=>{
                         e.preventDefault();
                         setDrawerOpen(true);
