@@ -6,9 +6,12 @@ import { toast } from "react-toastify";
 type props = {
 
     callbackUrl? : string,
+
+    fromEmployer? : boolean,
+
 }
 
-export default function SignInForm({callbackUrl} : props) {
+export default function SignInForm({callbackUrl, fromEmployer} : props) {
 
 
      return <div className="mx-auto p-2 min-w-80">
@@ -18,7 +21,7 @@ export default function SignInForm({callbackUrl} : props) {
         <Button className="p-1 rounded-3xl text-sm bg-red-500 text-gray-100 w-full mx-auto"
                 onClick={async (e)=>{
                     e.preventDefault();
-                    await signIn('google', { callbackUrl: callbackUrl });
+                    await signIn('google', { callbackUrl: callbackUrl }, { login_hint: fromEmployer ? "fromEmployer" : ""});
                 }}>{<div className="flex p-1"><FaGoogle className="mr-2 w-5 h-5"/>
                 Sign In With Google</div>}</Button>
         </div>

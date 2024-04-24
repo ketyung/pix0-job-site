@@ -80,7 +80,6 @@ export default NextAuth({
         },
         /*
         async signIn(message) {
-
             console.log("after.signeIn::", message);
         }*/
     },
