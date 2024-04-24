@@ -5,14 +5,13 @@ import { sha256 } from "@/utils/enc";
 import { encrypt } from "@/utils/enc";
 //import { NextApiRequest, NextApiResponse } from 'next';
 import { NextRequest } from "next/server";
+
 //const jwt = require('jsonwebtoken');
 // refer here for Google Sign In
 // https://next-auth.js.org/providers/google
 // https://github.com/nextauthjs/next-auth/tree/v4/packages/next-auth
 // https://www.telerik.com/blogs/how-to-implement-google-authentication-nextjs-app-using-nextauth
 // https://next-auth.js.org/getting-started/client#additional-parameters
-// https://github.com/nextauthjs/next-auth/issues/45
-// https://github.com/nextauthjs/next-auth/discussions/469
 
 const Options : any = (req? : NextRequest) => (
 
@@ -30,8 +29,13 @@ const Options : any = (req? : NextRequest) => (
             
             async signIn({ account, profile, email } : any ) {
     
-              console.log("req::xxx::",req?.referrer);
-    
+              if ( req?.cookies ) {
+
+                   const cookies :any = req.cookies;
+
+                   console.log("req.cookies::", cookies['next-auth.callback-url']);
+              }
+             
               if (account !== null && account.provider === "google") {
                 
                  let stat = await createGC(profile, account);
@@ -89,7 +93,8 @@ const Options : any = (req? : NextRequest) => (
     
                 let nToken : any = message.token;
                 await signOutUserByGid( nToken.userId, nToken.accountId, true);
-                
+                //console.log("cookies::", req?.cookies);
+
             },
             /*
             async signIn(message) {

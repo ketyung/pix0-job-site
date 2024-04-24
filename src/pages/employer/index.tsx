@@ -5,7 +5,8 @@ import { MenuItem } from "@/components/Sidebar";
 import { MdPeopleAlt } from "react-icons/md";
 import React from "react";
 import { SessionProvider } from "next-auth/react";
-
+import { GetServerSidePropsContext } from "next";
+import { NextRequest } from "next/server";
 
 export default function Index({
     children, title, isLoggedIn }: PageProps) {
@@ -36,5 +37,4 @@ interface PageProps {
 
     isLoggedIn? : boolean,
 }
-
 
