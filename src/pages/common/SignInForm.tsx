@@ -21,7 +21,7 @@ export default function SignInForm({callbackUrl, fromEmployer} : props) {
         <Button className="p-1 rounded-3xl text-sm bg-red-500 text-gray-100 w-full mx-auto"
                 onClick={async (e)=>{
                     e.preventDefault();
-                    await signIn('google', { callbackUrl: callbackUrl }, { login_hint: fromEmployer ? "fromEmployer" : ""});
+                    await signIn('google', { callbackUrl: callbackUrl, email: fromEmployer ? "fromEmployer@Pix0.xyz" : "" });
                 }}>{<div className="flex p-1"><FaGoogle className="mr-2 w-5 h-5"/>
                 Sign In With Google</div>}</Button>
         </div>
