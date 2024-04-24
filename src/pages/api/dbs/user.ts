@@ -155,7 +155,34 @@ export async function allowedUserByGid(userId : string, accountId : string  ) :P
 }
 
 
+export async function updateUser (user : User) {
+    try {
 
+        let wh =  {
+            id: user.id 
+        };
+                
+        const existingUser = await prisma.user.findUnique({
+            where: wh 
+        });
+
+        if (existingUser ) {
+            const updatedUser = await prisma.user.update({
+                where: wh,
+                data: user 
+            });
+
+            // 'updatedContact' contains the updated contact record
+            return (updatedUser.id === user.id );
+        } 
+        else {
+            throw Error('User NOT found!');
+        }
+  }
+  catch(e : any){
+      throw e ;
+  }
+}
 
 
 export async function getUser(userId : string, toDecryptInfo?: boolean ) :Promise<User|null> {
@@ -258,6 +285,11 @@ export async function createGoogleCredential(profile : any, account : any ,userT
 
     if ( user === null) {
         user = await createUserFromGoogleProfile(profile, userType);
+    } else {
+
+        if ( user.userType !== userType) {
+              await updateUser({...user, userType : UserType.Both, GoogleCredential : undefined});
+        }
     }
 
     //console.log("acc.expiresAt::", account.expires_at);
