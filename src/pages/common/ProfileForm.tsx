@@ -9,11 +9,13 @@ import { ntb } from "@/utils";
 import { BeatLoader } from "react-spinners";
 import 'react-markdown-editor-lite/lib/index.css';
 import MarkdownIt from 'markdown-it';
-import { updateProfile, getUserProfile } from "@/service";
+import { updateProfile, getUserProfile, checkIfImageIsSFW  } from "@/service";
 import ProfileImage from "@/components/ProfileImage";
 import DndUploader from "@/components/DndUploader";
 import ImageCropper from "@/components/ImageCropper";
 import { blobUrlToBase64 } from "@/utils";
+import { singleUpload } from "@/utils/cloudUpload";
+import { sha256 } from "@/utils/enc";
 
 type props = {
 
@@ -59,6 +61,29 @@ export default function ProfileForm({ title, refresh, minWidth} :props) {
             setProcessing(true);
 
      
+            /*
+          
+            if ( user.photoUrl !== null) {
+                if (!await checkIfImageIsSFW(user.photoUrl)){
+                    toast.error("Profile image is an image that NSFW");
+                    setProcessing(false);
+                    return;
+                }
+
+                let upe= await singleUpload(user.photoUrl , 
+                `${sha256(user?.firstName ?? "-test-")}-`, "logos", company.logoUrlPubId, true);
+    
+                if ( upe instanceof Error){
+                    let eMesg = `Error uploading logo: ${upe.message}`;
+                    toast.error(eMesg);
+                    setProcessing(false);
+                    return;
+                }else {
+                    newComp = { ...newComp, logoUrl : upe.imageUrl, logoUrlPubId: ntb(upe.imagePubId)};
+                    setCompany(newComp);
+                }
+            }*/
+            
 
             let n = await updateProfile(user, (e)=>{
                 toast.error(e.message);
