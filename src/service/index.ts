@@ -1,6 +1,6 @@
 import { JWTStorage } from "@/utils/local-storage";
 import { SignInData, SearchResult, CloudParam, Resume , ResumeData} from "@/models";
-import { JobPost, UserCompany, UserResume } from "@prisma/client";
+import { JobPost, User, UserCompany, UserResume } from "@prisma/client";
 import getConfig from 'next/config';
 
 const axios = require('axios');
@@ -722,6 +722,68 @@ export async function getOwnResume(onError? : (e : Error)=>void ) : Promise<User
       try {
             
             let res = await fetchRemote("userResume", "resume");
+
+             if( res.status === 1){
+                  return res.data;
+            }else {
+                  if ( onError) {
+                        onError(new Error('Contact NOT found!'));
+                  }
+                  return undefined;
+            }
+
+      }catch(err : any) {
+
+            if(err.response && err.response.status === 401){
+
+                  if ( onError) {
+                        onError(new Error(`${UNAUTHORIZED_MESSAGE} ${err.message}`));
+                  }
+            }
+
+            console.log("getC.err:",err);
+
+            return undefined; 
+
+      }
+
+}
+
+
+
+export async function updateProfile (user : User, onError? : (e : Error)=>void ){
+
+      try {
+
+            let data = await postToRemote(user, "user", "updateProfile");
+
+            return ( data.status === 1);
+
+      }catch(err : any) {
+
+            if(err.response && err.response.status === 401){
+
+                  if ( onError) {
+                        onError(new Error(`${UNAUTHORIZED_MESSAGE} ${err.response.data.error}`));
+                  }
+            }
+
+            if ( onError) {
+                  onError(new Error(`${err.response.data.error}`));
+            }
+            return false; 
+
+      }
+}
+
+
+
+
+export async function getUserProfile(onError? : (e : Error)=>void ) : Promise<User|undefined>{
+
+      try {
+            
+            let res = await fetchRemote("user", "userProfile");
 
              if( res.status === 1){
                   return res.data;

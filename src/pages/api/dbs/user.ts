@@ -169,7 +169,7 @@ export async function updateUser (user : User) {
         if (existingUser ) {
             const updatedUser = await prisma.user.update({
                 where: wh,
-                data: user 
+                data: {...user, dateUpdated : new Date()} 
             });
 
             // 'updatedContact' contains the updated contact record
@@ -211,7 +211,29 @@ export async function getUser(userId : string, toDecryptInfo?: boolean ) :Promis
   }
 }
 
+export async function updateUserProfile ( userId: string, newUserProfile : User) {
 
+    let storedUser = await getUser(userId);
+    if (storedUser ){
+
+        let email = encrypt( newUserProfile.email, process.env.EM_ENCRYPT_KEY ?? DEFAULT_ENC_KEY);
+        let phone = encrypt( newUserProfile.phoneNumber, process.env.TEL_ENCRYPT_KEY ?? DEFAULT_ENC_KEY);
+        let hEmail = sha256(newUserProfile.email);
+        let hPhone = sha256(newUserProfile.phoneNumber);
+        
+        storedUser = { ...storedUser, firstName : newUserProfile.firstName, lastName : newUserProfile.lastName,
+            email : email, phoneNumber : phone, hEmail: hEmail, hPhoneNumber: hPhone, about : newUserProfile.about,
+        };
+
+        return await updateUser(storedUser);
+    }else {
+
+        return false; 
+    }
+
+   
+
+}
 
 
 

@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { AuthType, getJwtToken, isValidJwtToken } from '@/utils/jwt';
 import bodyParser from "body-parser";
-import {  signInByGid, signOutUserByGid } from '../dbs/user';
+import {  getUser, signInByGid, signOutUserByGid, updateUserProfile } from '../dbs/user';
 
 
 
@@ -30,6 +30,8 @@ async function handleGet (req: NextApiRequest,  res: NextApiResponse, userId? : 
             await handleVerify(req, res );
         } else if (param1 === 'signOutByGid') {
             await handleSignOutByGid(res, userId, providerAccountId);
+        } else if ( param1 === 'userProfile'){
+            await handleFetchUserProfile(userId ?? "", res);
         }
     }
 
@@ -50,7 +52,11 @@ async function handlePost (req: NextApiRequest,  res: NextApiResponse, userId? :
                 
                 if ( param1 === "signInByGid") {
                     await handleSignInByGid(data, res);
-                }else {
+                }else if ( param1 === 'updateProfile'){
+                    await handleUpdateUserProfile(userId ?? "", data , res);
+                }
+                
+                else {
                     res.status(422).send({error:"Invalid Module", status: -1});
                 }
             }
@@ -136,4 +142,42 @@ async function handleVerify(req: NextApiRequest, res : NextApiResponse) {
     }
 
 }
+
+
+
+
+async function handleFetchUserProfile(userId: string, res : NextApiResponse) {
+
+    let user = await getUser(userId, true);
+
+    if ( user ) {
+        res.status(200).json({ status:1, data : user});
+    }else {
+   
+        res.status(404).json({  error: "User NOT found", status:-1 });
+   
+    }
+
+}
+
+async function handleUpdateUserProfile (userId: string, data : any,  res: NextApiResponse ){
+
+    try {
+      
+        
+        let updated = await updateUserProfile(userId, data);
+      
+        if ( updated ) {
+            res.status(200).json({ message: "Successfully Updated", status : 1});   
+        }else {
+            res.status(200).json({ message: "Failed Updating Profile", status : -1});   
+        }
+       
+    }
+    catch(e: any){
+        res.status(422).send({error: e.message, status: -1});
+    }
+}
+
+
 
