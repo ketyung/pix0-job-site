@@ -39,13 +39,9 @@ export default function ProfileForm({ title, refresh, minWidth} :props) {
 
     const [user, setUser] = useState<User>(DEFAULT_USER);
 
-    const [generating, setGenerating] = useState(false);
-
-    const [viewMarkDown, setViewMarkDown] = useState(false);
-
     const [imageCropOpen, setImageCropOpen] = useState(false);
 
-    const [logoImageChanged, setLogoImageChanged] = useState(false);
+    const [profileImageChanged, setProfileImageChanged] = useState(false);
 
     const [loading, setLoading] = useState(false);
 
@@ -115,11 +111,11 @@ export default function ProfileForm({ title, refresh, minWidth} :props) {
         <div className="mt-2 mb-2 lg:flex text-left">
             <FieldLabel title="Photo/Profile Image" className="lg:w-7/12 w-full mt-2">
                 <DndUploader title="Drag & Drop Profile Image Here" onDrop={(d)=>{
-                         //setUser({...user, logoUrl : d});
-                         setLogoImageChanged(true);
+                         setUser({...user, photoUrl : d});
+                         setProfileImageChanged(true);
                          setImageCropOpen(true);
                     }}>
-                    <ProfileImage width="90px" imageUrl={user.photoUrl !== null ? user.photoUrl : undefined}  
+                    <ProfileImage width="90px" round="rounded" imageUrl={user.photoUrl !== null ? user.photoUrl : undefined}  
                     alt={ntb(user?.firstName)} paddingTop="16px" fontSize="34px"/>
                 </DndUploader>
             </FieldLabel>
@@ -179,7 +175,7 @@ export default function ProfileForm({ title, refresh, minWidth} :props) {
         open={imageCropOpen} onClose={()=>{
                 setImageCropOpen(false);
         }}>
-            { imageCropOpen && <ImageCropper 
+            { imageCropOpen && <ImageCropper cropShape="square"
             imageSrc={user.photoUrl ?? ""} setCroppedImage={async (i)=>{
 
                 let cLogoDataUrl = await blobUrlToBase64(i);
