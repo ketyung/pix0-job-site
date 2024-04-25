@@ -7,6 +7,7 @@ import { getSession, signOut } from 'next-auth/react';
 import { GoOrganization } from "react-icons/go";
 import { Modal} from 'pix0-core-ui';
 import CompanyForm from '../pages/employer/company/form';
+import ProfileForm from '@/pages/common/ProfileForm';
 
 type props = {
 
@@ -26,6 +27,8 @@ const ProfileDropdownMenu = ({className, excludeCompanyProfile, signOutCallbackU
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     const [companyProfileOpen, setCompanyProfileOpen] = useState(false);
+
+    const [userProfileOpen, setUserProfileOpen] = useState(false);
 
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
@@ -99,7 +102,10 @@ const ProfileDropdownMenu = ({className, excludeCompanyProfile, signOutCallbackU
             <CgProfile className={`w-5 h-5 mt-1 ${theme.mode === 'dark' ? 'text-gray-100' : 'text-gray-600'}`}/>
         </button>
         <ul style={menuStyles}>
-            <li style={listItemStyles} className='cursor-pointer flex w-full text-sm hover:bg-gray-300 dark:hover:bg-gray-500'>
+            <li style={listItemStyles} className='cursor-pointer flex w-full text-sm hover:bg-gray-300 dark:hover:bg-gray-500'
+            onClick={async ()=>{
+                setUserProfileOpen(true);
+            }}>
                 <CgProfile className='inline w-4 h-4 mr-2 mt-1'/>User Profile</li>
             { !excludeCompanyProfile && <li style={listItemStyles} className='cursor-pointer flex w-full text-sm hover:bg-gray-300 dark:hover:bg-gray-500'
              onClick={async ()=>{
@@ -116,7 +122,11 @@ const ProfileDropdownMenu = ({className, excludeCompanyProfile, signOutCallbackU
         }}>
             <CompanyForm isEditMode={companyProfileOpen} minWidth='720px'/>
         </Modal>
-       
+        <Modal isOpen={userProfileOpen} maxWidth='800px' maxHeight='800px' onClose={()=>{
+            setUserProfileOpen(false);
+        }}>
+            <ProfileForm minWidth='720px'/>
+        </Modal>
         </div>
     );
 };

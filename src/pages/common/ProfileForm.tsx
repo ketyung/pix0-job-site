@@ -31,7 +31,7 @@ const DEFAULT_USER : User = {id:"", firstName : "", lastName: "", email: "", pho
 }
 
 
-export default function Form({ title, refresh, minWidth} :props) {
+export default function ProfileForm({ title, refresh, minWidth} :props) {
 
     const mdParser = new MarkdownIt(/* Markdown-it options */);
    
@@ -113,14 +113,14 @@ export default function Form({ title, refresh, minWidth} :props) {
         {loading && <BeatLoader className="ml-4 inline mt-2" size={8} color="#999"/>}       
         </div>
         <div className="mt-2 mb-2 lg:flex text-left">
-            <FieldLabel title="Company Logo" className="lg:w-7/12 w-full mt-2">
+            <FieldLabel title="Photo/Profile Image" className="lg:w-7/12 w-full mt-2">
                 <DndUploader title="Drag & Drop Profile Image Here" onDrop={(d)=>{
                          //setUser({...user, logoUrl : d});
                          setLogoImageChanged(true);
                          setImageCropOpen(true);
                     }}>
                     <ProfileImage width="90px" imageUrl={user.photoUrl !== null ? user.photoUrl : undefined}  
-                    alt={ntb(user?.firstName)} paddingTop="12px" fontSize="34px"/>
+                    alt={ntb(user?.firstName)} paddingTop="16px" fontSize="34px"/>
                 </DndUploader>
             </FieldLabel>
         </div>
@@ -148,12 +148,16 @@ export default function Form({ title, refresh, minWidth} :props) {
         </div>
         <div className="mt-2 mb-2 text-left">
             <FieldLabel title="Email">
-                <Input placeholder="email" />
+                <Input placeholder="email" value={ntb(user.email)} onChange={(e)=>{
+                    setUser({...user, email : e.target.value })
+                }}/>
             </FieldLabel>   
         </div>
         <div className="mt-2 mb-2 text-left">
             <FieldLabel title="Phone Number">
-                <Input placeholder="Phone Number" />
+                <Input placeholder="Phone Number"  value={ntb(user.phoneNumber)}onChange={(e)=>{
+                    setUser({...user, phoneNumber : e.target.value })
+                }}/>
             </FieldLabel>   
         </div>
        

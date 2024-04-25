@@ -223,6 +223,7 @@ export async function updateUserProfile ( userId: string, newUserProfile : User)
         
         storedUser = { ...storedUser, firstName : newUserProfile.firstName, lastName : newUserProfile.lastName,
             email : email, phoneNumber : phone, hEmail: hEmail, hPhoneNumber: hPhone, about : newUserProfile.about,
+            photoUrl : newUserProfile.photoUrl, 
         };
 
         return await updateUser(storedUser);
