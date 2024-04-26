@@ -29,7 +29,7 @@ type props = {
 
 const DEFAULT_USER : User = {id:"", firstName : "", lastName: "", email: "", phoneNumber: "",
     hEmail:"", hPhoneNumber :"",dateCreated: new Date(), dateUpdated: new Date(),
-    title :"Mr", googleId : null, userType: null, country: null, about : null, photoUrl: null, 
+    title :"Mr", googleId : null, userType: null, country: null, about : null, photoUrl: null, photoUrlPubId: null, 
 }
 
 
@@ -61,31 +61,31 @@ export default function ProfileForm({ title, refresh, minWidth} :props) {
             setProcessing(true);
 
      
-            /*
+            let newUser = {...user};
           
             if ( user.photoUrl !== null) {
                 if (!await checkIfImageIsSFW(user.photoUrl)){
-                    toast.error("Profile image is an image that NSFW");
+                    toast.error("Profile image is an image that is NSFW");
                     setProcessing(false);
                     return;
                 }
 
                 let upe= await singleUpload(user.photoUrl , 
-                `${sha256(user?.firstName ?? "-test-")}-`, "logos", company.logoUrlPubId, true);
+                `${sha256(user?.firstName ?? "-test-")}-`, "profileImages", user.photoUrlPubId, true);
     
                 if ( upe instanceof Error){
-                    let eMesg = `Error uploading logo: ${upe.message}`;
+                    let eMesg = `Error uploading photo: ${upe.message}`;
                     toast.error(eMesg);
                     setProcessing(false);
                     return;
                 }else {
-                    newComp = { ...newComp, logoUrl : upe.imageUrl, logoUrlPubId: ntb(upe.imagePubId)};
-                    setCompany(newComp);
+                    newUser = { ...newUser, photoUrl : upe.imageUrl, photoUrlPubId: ntb(upe.imagePubId)};
+                    setUser(newUser);
                 }
-            }*/
+            }
             
 
-            let n = await updateProfile(user, (e)=>{
+            let n = await updateProfile(newUser, (e)=>{
                 toast.error(e.message);
             });
     

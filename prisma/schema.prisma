@@ -44,6 +44,7 @@ model User {
     googleId           String?              @unique
     about              String?  @db.VarChar(255)
     photoUrl           String?  @db.Text 
+    photoUrlPubId      String?  @db.VarChar(150)
     userType           UserType?    @default(HiringManager)
     country            String?  @db.VarChar(3) 
     dateCreated        DateTime             @default(now())

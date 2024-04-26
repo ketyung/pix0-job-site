@@ -97,7 +97,7 @@ export default function Form({ title, isEditMode, refresh, editRowId, minWidth} 
 
 
                 if (!await checkIfImageIsSFW(company.logoUrl)){
-                    toast.error("Company Logo is an image that NSFW");
+                    toast.error("Company Logo is an image that is NSFW");
                     setProcessing(false);
                     return;
                 }

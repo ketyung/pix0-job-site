@@ -23,6 +23,8 @@ alter table User add about varchar(255) after googleId;
 
 alter table User add photoUrl text after about;
 
+alter table User add photoUrlPubId varchar(150) after photoUrl;
+
 CREATE TABLE UserResume (
     id VARCHAR(30) PRIMARY KEY,
     userId VARCHAR(30),
