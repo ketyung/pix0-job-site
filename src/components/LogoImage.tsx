@@ -13,7 +13,7 @@ type props = {
 }
 
 
-export default function ProfileImage({data, width, height, fontSize, paddingTop } : props) {
+export default function LogoImage({data, width, height, fontSize, paddingTop } : props) {
    
     return <>
     {data?.imageUrl!== undefined && data?.imageUrl !== null ?

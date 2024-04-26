@@ -15,10 +15,11 @@ export default function View({ jobPost } :props) {
     const applyView = () =>{
 
         return (jobPost?.jobStatus === JobStatus.Published ?
-        <Link href={jobPost.applyAtExt === 'Y' ? (jobPost.applyAtUrl ?? "/") : "/" } 
+        <Link href={jobPost.applyAtExt === 'Y' ? (jobPost.applyAtUrl ?? "/") : `/jobSeeker/apply/${jobPost?.id}` } 
         target="_blank"><div className={`flex rounded-2xl px-4 text-gray-100 bg-${jobPost.applyAtExt === 'Y' ? 'orange' : 'blue'}-500 
         w-${jobPost.applyAtExt === 'Y' ? '96' :'48'} text-center py-1`}>
-        {jobPost.applyAtExt==='Y' ? <><GoLinkExternal className="ml-14 w-5 h-5 mr-1 mt-1"/>Apply At External Site</> : <><BsLightningCharge className="ml-2 w-5 h-5 mr-1 mt-1"/>Easy Apply</>}</div></Link> : <></>);
+        {jobPost.applyAtExt==='Y' ? <><GoLinkExternal className="ml-14 w-5 h-5 mr-1 mt-1"/>Apply At External Site</> : 
+        <><BsLightningCharge className="ml-2 w-5 h-5 mr-1 mt-1"/>Easy Apply</>}</div></Link> : <></>);
     }
 
     return <div className="mt-2 border border-gray-300 rounded p-2 lg:w-3/5 w-11/12 mx-auto lg:mb-2 mb-20 shadow-xl">
