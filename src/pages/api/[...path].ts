@@ -1,7 +1,9 @@
 // pages/api/[...path].ts
 import { NextApiRequest, NextApiResponse } from 'next';
-import { AuthType, isAllowedUser, isValidJwtToken } from '@/utils/jwt';
+import { AuthType, isAllowedUser } from '@/utils/jwt';
 import { getToken } from "next-auth/jwt";
+import getConfig from 'next/config';
+
 
 function checkAllowed  (req: NextApiRequest) {
 
@@ -30,24 +32,32 @@ const isPathToSkipCheckAuth = (req: NextApiRequest) =>{
 }
 
 
-const verifyToken = async (req : NextApiRequest, res: NextApiResponse, _next: (userId? : string , providerAccountId? : string) => void) =>{
+
+
+const isApiKeyValid = async (req : NextApiRequest, res: NextApiResponse) : Promise<boolean>=>{
 
 
     if (req.headers) {
         
         
-        const token = req.headers['token'];
-        const aTok = Array.isArray(token) ? token[0] : token;
-
-        const v = await isValidJwtToken(aTok);
-
-        if (v.valid) {
-            _next(v.userId, v.providerAccountId);
-            return true;
-        } else {
-            res.status(401).json({ error: "Unauthorized!", message: "Unauthroized Access", version: process.env.VERSION });
+        const authHeader = req.headers.authorization;
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            res.status(401).json({ message: 'Unauthorized', reason: "Invalid API KEY"});
             return false; 
         }
+
+        const token = authHeader.split(' ')[1];
+
+        const {  publicRuntimeConfig } = getConfig();
+
+        //console.log("tok::", token, "stored.Api.key::", publicRuntimeConfig.RestApiKey, new Date());
+        
+        if ( token !== publicRuntimeConfig.RestApiKey){
+            res.status(401).json({ message: 'Unauthorized' , reason: "Invalid API KEY"});
+            return false; 
+        }
+
+        return true;
 
     }else {
         
@@ -61,7 +71,6 @@ const verifyToken = async (req : NextApiRequest, res: NextApiResponse, _next: (u
     }
 }
 
-
 const verifyToken2 = async (req : NextApiRequest, res: NextApiResponse, _next: (userId? : string , providerAccountId? : string) => void) =>{
 
 
@@ -70,8 +79,7 @@ const verifyToken2 = async (req : NextApiRequest, res: NextApiResponse, _next: (
         if ( _token !== null) {
 
             const v = await isAllowedUser({id : _token.userId, authType: AuthType.GOOGLE, accountId : _token.accountId });
-            //console.log("jwt.checked::", v);
-
+          
             if (v.valid) {
                 _next(v.userId, v.providerAccountId);
                 return true;
@@ -92,6 +100,12 @@ const verifyToken2 = async (req : NextApiRequest, res: NextApiResponse, _next: (
 }
 
 const checkAccess = async (req: NextApiRequest, res: NextApiResponse, _next: (userId? : string , providerAccountId? : string) => void, byPassCheck? : boolean) => {
+    
+    if ( !isApiKeyValid(req, res)){
+        return;
+    }
+    
+    
     if ( byPassCheck){
         _next(); return; 
     }

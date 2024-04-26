@@ -1,8 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { AuthType, getJwtToken, isValidJwtToken } from '@/utils/jwt';
+import { AuthType, getJwtToken} from '@/utils/jwt';
 import bodyParser from "body-parser";
 import {  getUser, signInByGid, signOutUserByGid, updateUserProfile } from '../dbs/user';
-
+import { getToken } from 'next-auth/jwt';
+import { isAllowedUser } from '@/utils/jwt';
 
 
 const jsonParser = bodyParser.json();
@@ -128,17 +129,15 @@ async function handleSignOutByGid (res: NextApiResponse, userId? : string, accou
 
 async function handleVerify(req: NextApiRequest, res : NextApiResponse) {
 
-    const token = req.headers['token'];
-    const aTok = Array.isArray(token) ? token[0] : token;
+    const _token : any = await getToken({ req });
 
-    let valid = await isValidJwtToken(aTok);
-    if ( !valid.valid ) {
+    const v = await isAllowedUser({id : _token.userId, authType: AuthType.GOOGLE, accountId : _token.accountId });
+          
+    if ( !v.valid ) {
 
         res.status(401).json({ error: "Unauthorized!", message: "Verifying User: Unauthroized Access", status:-1, version: process.env.VERSION});
     }else {
-   
         res.status(200).json({  message: "Valid User", status:1, version: process.env.VERSION });
-   
     }
 
 }

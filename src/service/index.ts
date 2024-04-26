@@ -19,15 +19,15 @@ export const isErrorUnathorized = (data : any) : boolean =>{
 
 
 
-const obtainHeaderWithJWT = async  () =>{
+const obtainHeaderWithApiKey = async  () =>{
 
       try {
   
-          let jwt = JWTStorage.get();
+          const {  publicRuntimeConfig } = getConfig();
 
-          let hdrs = ( jwt !== null ) ? {           
+          let hdrs = (publicRuntimeConfig.RestApiKey ) ? {           
               'Content-Type': 'application/json',
-              'token': jwt, 
+              'Authorization': `Bearer ${publicRuntimeConfig.RestApiKey}`, 
           } : undefined;
   
           return hdrs;
@@ -44,10 +44,8 @@ export async function fetchRemote(module : string, param1? : string, param2? : s
       param5? : string , param6? : string, param7? : string ) {
   try {
     
-      const { serverRuntimeConfig, publicRuntimeConfig } = getConfig()
-
-        //console.log("print.for.testing.RestApiKey:", publicRuntimeConfig.restApiKey);
-
+     
+     
         let uri = `${process.env.NEXT_PUBLIC_API_URL}/${module}${param1 ? 
             `/${encodeURIComponent(param1)}` : ""}${param2 
             ? `/${encodeURIComponent(param2)}` : ""}${param3 
@@ -58,7 +56,7 @@ export async function fetchRemote(module : string, param1? : string, param2? : s
             ? `/${encodeURIComponent(param7)}` : ""}`; 
         
         let getHdr =  {
-            headers : await obtainHeaderWithJWT(),
+            headers : await obtainHeaderWithApiKey(),
         };
 
       
@@ -85,7 +83,7 @@ param1? : string, param2? : string, param3? : string , param4? : string  ) {
             ? `/${encodeURIComponent(param3)}` : ""}${param4 
             ? `/${encodeURIComponent(param4)}` : ""}`; 
         
-            let headers =  await obtainHeaderWithJWT();
+            let headers =  await obtainHeaderWithApiKey();
 
             const response = await axios.post(uri,{data},{headers});
             
@@ -178,7 +176,7 @@ export async function deleteRemote(module: string, param1?: string, param2?: str
               ? `/${encodeURIComponent(param3)}` : ""}${param4 
               ? `/${encodeURIComponent(param4)}` : ""}`;
   
-          let headers = await obtainHeaderWithJWT();
+          let headers = await obtainHeaderWithApiKey();
   
           let response = await axios.delete(uri, { headers });
           const data = response.data;
