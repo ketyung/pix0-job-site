@@ -32,7 +32,7 @@ export default function NonAuthLayout({title, description}:props) {
     <main className="flex flex-row min-h-screen text-gray-800 bg-gray-200 dark:bg-gray-700">
        {isOpen && <Image alt="Look For Remote Jobs?" src={image3.src} className="w-full h-full" sizes='100vw' width={100} height={100}/>}
        <Modal withoutCloseButton isOpen={isOpen} title={<div className="flex"><Logo className="mr-2 h-6 w-auto mb-1"/>
-            <div className="mt-0.5">{currentUrl.indexOf("/apply/") !== -1 ? <div className="text-sm">Please Sign Before 
+            <div className="mt-0.5">{currentUrl.indexOf("/apply/") !== -1 ? <div className="text-sm">Please Sign In Before 
             Applying For This Job</div> : 'Sign In'}</div></div>}>
             <SignInForm callbackUrl={currentUrl !== JOBSEEKER_SIGN_IN_CALLBACK_URL ? currentUrl : JOBSEEKER_SIGN_IN_CALLBACK_URL}/>   
        </Modal>
