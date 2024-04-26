@@ -382,7 +382,7 @@ export async function getJobPost(id : string, onError? : (e : Error)=>void ) : P
 
 
 
-export async function getPubJobPost(id : string, onError? : (e : Error)=>void ) : Promise<JobPost|undefined>{
+export async function getPubJobPost(id : string, onError? : (e : Error)=>void ) : Promise<JobPost|null>{
 
       try {
 
@@ -392,9 +392,9 @@ export async function getPubJobPost(id : string, onError? : (e : Error)=>void ) 
                   return res.data;
             }else {
                   if ( onError) {
-                        onError(new Error('Contact NOT found!'));
+                        onError(new Error('Job Post NOT found!'));
                   }
-                  return undefined;
+                  return null;
             }
 
       }catch(err : any) {
@@ -406,7 +406,7 @@ export async function getPubJobPost(id : string, onError? : (e : Error)=>void ) 
                   }
             }
 
-            return undefined; 
+            return null; 
 
       }
 }
