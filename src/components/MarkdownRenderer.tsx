@@ -8,9 +8,9 @@ interface MarkdownRendererProps {
 }
 
 const customComponents: { [key: string]: React.ComponentType<any> } = {
-  h1: ({ children }) => <h1 style={{ color: 'red' }}>{children}</h1>,
-  h2: ({ children }) => <h2 style={{ color: 'blue' }}>{children}</h2>,
-  h3: ({ children }) => <h2 style={{ color: '#900' }}>{children}</h2>,
+  h1: ({ children }) => <h1 style={{ color: '#333',fontSize:"22px", fontWeight:"bolder" }}>{children}</h1>,
+  h2: ({ children }) => <h2 style={{ color: '#222',fontSize:"18px", fontWeight:"bold" }}>{children}</h2>,
+  h3: ({ children }) => <h3 style={{ color: '#223',fontSize:"14px" }}>{children}</h3>,
 };
 
 const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ markdownContent }) => {
