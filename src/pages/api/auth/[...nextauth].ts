@@ -25,7 +25,7 @@ const obtainSignInType = (req? : NextRequest) =>{
         if (  url.indexOf(EMPLOYER_SIGN_IN_CALLBACK_URL)!== -1) 
             return UserType.HiringManager;
 
-        else if (url.indexOf(JOBSEEKER_SIGN_IN_CALLBACK_URL)!== -1 )
+        else if (url.indexOf("/jobSeeker/")!== -1 )
             return UserType.JobSeeker;
         else 
             return undefined;
