@@ -135,7 +135,7 @@ async function createGC(profile : any , account : any, userType? :UserType) : Pr
 
     try {
 
-        console.log("signIn.type::", userType);
+        //console.log("signIn.type::", userType);
         return await createGoogleCredential(profile, account, userType);
 
     }
