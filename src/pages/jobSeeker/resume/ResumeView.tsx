@@ -12,9 +12,11 @@ import { IndexProps } from ".";
 type props = IndexProps & {
 
     title? : string|ReactNode, 
+
+    setHasValidResume?: (validResume : boolean) => void,
 }
 
-export default function ResumeView ({openForm, title }: props){
+export default function ResumeView ({openForm, title , setHasValidResume}: props){
 
     const [resumDrawerOpen, setResumeDrawerOpen] = useState(false);
 
@@ -31,7 +33,16 @@ export default function ResumeView ({openForm, title }: props){
         setLoading(true);
         let r = await getOwnResume();
         setResumeInfo(r);
-    //    console.log("r::",r );
+    
+        if ( setHasValidResume) {
+
+            if ( r!== undefined && r!== null){
+                setHasValidResume(true);
+            }else {
+                setHasValidResume(false);
+            }
+        }
+        
         setLoading(false);
 
     }, []);
@@ -84,6 +95,8 @@ export default function ResumeView ({openForm, title }: props){
                     </Button>
                         
                 </div> :
+                <div>
+                    <div className="my-2 text-xs">You do NOT have a CV/Resume yet, create one below:</div>
                     <Button className="mx-2 w-64 justify-center flex border pt-1 border-gray-400 rounded p-1"
                     onClick={async (e)=>{
                         e.preventDefault();
@@ -92,6 +105,7 @@ export default function ResumeView ({openForm, title }: props){
                         <FiPlusCircle className="mr-2 w-5 w-5 inline"/>
                         <span className="mt-2 text-xs pt-2">Create Resume With AI</span>
                     </Button>
+                </div>
                 )}
             </div>
         

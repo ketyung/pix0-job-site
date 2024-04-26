@@ -59,6 +59,8 @@ export async function getUserResume(userId : string) :Promise<Resume|null> {
             }
         });
     
+        if ( resume === null) return null;
+        
         return {id: resume?.id, data: JSON.parse(resume?.resumeData ?? ""), text: resume?.resumeText };
     } 
     catch (error) {
