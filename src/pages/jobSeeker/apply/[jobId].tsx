@@ -6,7 +6,7 @@ import { getPubJobPost } from "@/service";
 
 export default function JobPostApplication({job}: PageProps) {
 
-    return <MainIndex title={`${job?.title ?? 'Application For Job Post'} - Pix0 Job Site`}>
+    return <MainIndex title={`${`Apply For ${job?.title}` ?? 'Application For Job Post'} at Pix0 Job Site`}>
         <View jobPost={job}/>
     </MainIndex>
 }
