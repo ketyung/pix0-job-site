@@ -16,7 +16,8 @@ export default function View({ jobPost } :props) {
 
         return (jobPost?.jobStatus === JobStatus.Published ?
         <Link href={jobPost.applyAtExt === 'Y' ? (jobPost.applyAtUrl ?? "/") : `/jobSeeker/apply/${jobPost?.id}` } 
-        target="_blank"><div className={`flex rounded-2xl px-4 text-gray-100 bg-${jobPost.applyAtExt === 'Y' ? 'orange' : 'blue'}-500 
+        target={jobPost.applyAtExt === 'Y' ? '_blank' : undefined}>
+        <div className={`flex rounded-2xl px-4 text-gray-100 bg-${jobPost.applyAtExt === 'Y' ? 'orange' : 'blue'}-500 
         w-${jobPost.applyAtExt === 'Y' ? '96' :'48'} text-center py-1`}>
         {jobPost.applyAtExt==='Y' ? <><GoLinkExternal className="ml-14 w-5 h-5 mr-1 mt-1"/>Apply At External Site</> : 
         <><BsLightningCharge className="ml-2 w-5 h-5 mr-1 mt-1"/>Easy Apply</>}</div></Link> : <></>);

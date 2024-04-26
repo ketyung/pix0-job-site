@@ -213,18 +213,21 @@ async function generateResume(data : ResumeData,  res: NextApiResponse, userId? 
         let user = await getUser(userId, true);
 
         let userInfo = {firstName : user?.firstName, lastName : user?.lastName, phoneNumber : user?.phoneNumber,
-            email : user?.email, 
+            email : user?.email, photoUrl: user?.photoUrl, 
         }
 
         const model = genAI.getGenerativeModel({ model: "gemini-pro"});
 
-        const prompt = `Please generate a resume based on the following data in JSON:
+        const prompt = `Please generate a resume in Markdown format based on the following data in JSON:
 
         Resume's JSON:
         ${JSON.stringify(data, null, 2)}
         
         Personal Info's JSON:
         ${JSON.stringify(userInfo, null, 2)}
+
+        Please also insert the photo of the person on top of the personal info as an image with a 
+        max size of 100x100 contained in the photoUrl in the Personal's Info JSON
         `;
         
         
