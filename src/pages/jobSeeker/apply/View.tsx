@@ -4,9 +4,10 @@ import { ntb } from "@/utils";
 import ResumeView from "../resume/ResumeView";
 import { FaArrowDown } from "react-icons/fa";
 import { useState } from "react";
-import { hasJobApplication } from "@/service";
+import { hasJobApplication, createJobApplication} from "@/service";
 import { useMemo, useEffect } from "react";
 import { BeatLoader } from "react-spinners";
+import { FaCheck } from "react-icons/fa";
 
 type props = {
     jobPost?: any, 
@@ -19,6 +20,8 @@ export default function View({ jobPost } :props) {
     const [selectedResumeId, setSelectedResumeId] = useState<string>("");
 
     const [loading, setLoading] = useState(false);
+
+    const [processing, setProcessing] = useState(false);
 
     const [hasApplied, setHasApplied] = useState(false);
 
@@ -33,6 +36,18 @@ export default function View({ jobPost } :props) {
         fetchHasApplied()
     },[fetchHasApplied]);
 
+    const createJobAppl = async () =>{
+
+        setProcessing(true);
+        let jobApp : any = {
+            jobId : jobPost.id,
+            resumeId : selectedResumeId,
+        };
+        await createJobApplication(jobApp);
+        setProcessing(false);
+
+        await fetchHasApplied();
+    }
 
 
     return <div className="mt-2 border border-gray-300 rounded p-2 lg:w-4/5 w-11/12 mx-auto lg:mb-2 mb-20 shadow-xl">
@@ -49,12 +64,17 @@ export default function View({ jobPost } :props) {
             </h2>
 
             {loading ? <BeatLoader size={8} color="#888"/> :
-            (hasApplied ? <div className="bg-green-800 rounded w-32 p-1 text-gray-100">Applied</div> :
+            (hasApplied ? <div className="bg-green-800 rounded w-32 p-1 text-gray-100 text-center">
+            <FaCheck className="w-5 h-5 mr-2 inline"/>Applied</div> :
             <><ResumeView setHasValidResume={setHasValidResume} setSelectedResume={setSelectedResumeId}
             title={<div className="flex bg-gray-300 dark:bg-gray-700 dark:text-gray-100 rounded p-1 pl-2">Apply With Your CV/Resume Below:
             <FaArrowDown className="ml-2 w-5 h-5 mt-0.5"/></div>}/>
-            <Button disabled={!hasValidResume} 
-            className="bg-cyan-800 disabled:bg-gray-300 text-gray-100 rounded p-1 w-48 mt-4 ml-4">Proceed To Apply</Button></>
+            <Button disabled={!hasValidResume || processing} onClick={async (e)=>{
+                e.preventDefault();
+                await createJobAppl();
+            }} 
+            className="bg-cyan-800 disabled:bg-gray-300 text-gray-100 rounded p-1 w-48 mt-4 ml-4">
+            {processing ? <BeatLoader size={6} color="#999"/> : <>Proceed To Apply</>}</Button></>
             )}
         </div>
         </> }

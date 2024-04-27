@@ -6,7 +6,7 @@ import { isBlank} from '@/utils';
 
 export async function createJobApplication(userId: string,jobApplication : JobApplication) {
 
-    if ( isBlank(jobApplication.jobid)) {
+    if ( isBlank(jobApplication.jobId)) {
         throw new Error("The application must be linked to a job!");
     }
 
@@ -32,7 +32,7 @@ export async function updateJobApplication(userId: string,jobApplication : JobAp
 
 
    
-    if ( isBlank(jobApplication.jobid)) {
+    if ( isBlank(jobApplication.jobId)) {
         throw new Error("The application must be linked to a job!");
     }
     try {
@@ -156,7 +156,7 @@ export async function hasJobApplication(jobId : string, userId: string) :Promise
     };
 
 
-    const JobApplication = await prisma.jobApplication.findUnique({
+    const JobApplication = await prisma.jobApplication.findFirst({
         ...whereClause
     });
 

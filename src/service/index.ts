@@ -1,6 +1,6 @@
 import { JWTStorage } from "@/utils/local-storage";
 import { SignInData, SearchResult, CloudParam, Resume , ResumeData} from "@/models";
-import { JobPost, User, UserCompany, UserResume } from "@prisma/client";
+import { JobApplication, JobPost, User, UserCompany, UserResume } from "@prisma/client";
 import getConfig from 'next/config';
 
 const axios = require('axios');
@@ -839,4 +839,31 @@ export async function hasJobApplication(jobId : string, onError? : (e : Error)=>
 
       }
 
+}
+
+
+
+export async function createJobApplication (jobAppl : JobApplication, onError? : (e : Error)=>void ){
+
+      try {
+
+            let data = await postToRemote(jobAppl, "jobApplication", "create");
+
+            return ( data.status === 1);
+
+      }catch(err : any) {
+
+            if(err.response && err.response.status === 401){
+
+                  if ( onError) {
+                        onError(new Error(`${UNAUTHORIZED_MESSAGE} ${err.response.data.error}`));
+                  }
+            }
+
+            if ( onError) {
+                  onError(new Error(`${err.response.data.error}`));
+            }
+            return false; 
+
+      }
 }

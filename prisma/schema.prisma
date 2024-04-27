@@ -138,7 +138,7 @@ model JobApplication{
 
     id             String   @db.VarChar(30)  @default(cuid()) @unique
     userId         String   @db.VarChar(30)
-    jobid          String   @db.VarChar(30)
+    jobId          String   @db.VarChar(30)
     status         JobApplStatus @default(Pending)
     resumeId       String   @db.VarChar(30)
     resumeUrl      String?  @db.Text 
