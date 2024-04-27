@@ -808,3 +808,35 @@ export async function getUserProfile(onError? : (e : Error)=>void ) : Promise<Us
       }
 
 }
+
+
+export async function hasJobApplication(jobId : string, onError? : (e : Error)=>void ) : Promise<boolean>{
+
+      try {
+
+            let res = await fetchRemote("jobApplication","hasApplication", jobId);
+
+            if( res.status === 1){
+                  return res.hasJobApplication ;
+            }else {
+                  if ( onError) {
+                        onError(new Error('Job Application NOT found!'));
+                  }
+                  return false;
+            }
+
+      }catch(err : any) {
+
+            if(err.response && err.response.status === 401){
+
+                  if ( onError) {
+                        onError(new Error(`${UNAUTHORIZED_MESSAGE} ${err.message}`));
+                  }
+            }
+
+            //console.log("err::", err.response.data);
+            return false; 
+
+      }
+
+}

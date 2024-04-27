@@ -14,9 +14,11 @@ type props = IndexProps & {
     title? : string|ReactNode, 
 
     setHasValidResume?: (validResume : boolean) => void,
+
+    setSelectedResume?: ( resumeId : string) => void, 
 }
 
-export default function ResumeView ({openForm, title , setHasValidResume}: props){
+export default function ResumeView ({openForm, title , setHasValidResume, setSelectedResume}: props){
 
     const [resumDrawerOpen, setResumeDrawerOpen] = useState(false);
 
@@ -33,6 +35,9 @@ export default function ResumeView ({openForm, title , setHasValidResume}: props
         setLoading(true);
         let r = await getOwnResume();
         setResumeInfo(r);
+
+        if ( setSelectedResume && r)
+            setSelectedResume(r?.id);
     
         if ( setHasValidResume) {
 

@@ -146,6 +146,26 @@ export async function getJobApplication(id : string, userId: string) :Promise<Jo
 
 
 
+export async function hasJobApplication(jobId : string, userId: string) :Promise<JobApplication|undefined> {
+    
+    let whereClause: any = {
+        where: {
+            jobId,
+            userId
+        },
+    };
+
+
+    const JobApplication = await prisma.jobApplication.findUnique({
+        ...whereClause
+    });
+
+    return JobApplication!== null ? JobApplication : undefined;
+}
+
+
+
+
 export async function deleteJobApplication(userId: string, id : string ) :Promise<boolean> {
 
     try {

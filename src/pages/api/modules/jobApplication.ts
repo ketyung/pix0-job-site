@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import bodyParser from "body-parser";
 import { getPageOffsetAndLimit, toTotalPages } from '@/utils';
-import { createJobApplication, getJobApplication, getJobApplications } from '../dbs/jobApplication';
+import { hasJobApplication, createJobApplication, getJobApplication, getJobApplications } from '../dbs/jobApplication';
 import { updateJobApplication, deleteJobApplication } from '../dbs/jobApplication';
 
 const jsonParser = bodyParser.json();
@@ -26,7 +26,7 @@ async function handleGet (req: NextApiRequest,  res: NextApiResponse, userId? : 
     if (Array.isArray(path) && path.length > 1) {   
 
         const param1 = path[1];
-
+        const param2 = path[2];
         if (param1!== undefined && param1 !== null ){
         
             if ( param1 === 'search'){
@@ -42,6 +42,9 @@ async function handleGet (req: NextApiRequest,  res: NextApiResponse, userId? : 
                     isNaN(pageNum) ? 1 : pageNum, isNaN(rowsPerPage) ? 10 : rowsPerPage);
 
             } 
+            else if(param1 === 'hasApplication') {
+                await handleHasJobApplication(res,  param2, userId);
+            }
             else {
                 await handleGetJobApplication(res,  param1, userId);
             }
@@ -96,7 +99,7 @@ async function handleGetJobApplication ( res: NextApiResponse, id : string,  use
         if ( ndata !== undefined){
             res.status(200).json({  data : ndata, status : 1});   
         }else {
-            res.status(404).json({  message : "Job Post NOT found", status : -1});      
+            res.status(404).json({  message : "Job Application NOT found", status : -1});      
         }
     }
     catch(e: any){
@@ -105,6 +108,26 @@ async function handleGetJobApplication ( res: NextApiResponse, id : string,  use
     }
 }
 
+
+
+
+async function handleHasJobApplication ( res: NextApiResponse, jobId : string,  userId? : string  ){
+
+    try {
+
+        let ndata = await hasJobApplication(jobId, userId ?? "");
+
+        if ( ndata !== undefined){
+            res.status(200).json({  hasJobApplication : true, status : 1});   
+        }else {
+            res.status(200).json({  hasJobApplication : false , status : 1});   
+        }
+    }
+    catch(e: any){
+        console.log("e::",e);
+        res.status(422).send({error: e.message, status: -1});
+    }
+}
 
 
 
