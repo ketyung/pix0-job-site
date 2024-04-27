@@ -35,3 +35,18 @@ CREATE TABLE UserResume (
 
 ALTER TABLE UserResume
 ADD CONSTRAINT user_resume_fk_1 FOREIGN KEY (userId) REFERENCES User(id);
+
+
+CREATE TABLE JobApplication (
+    id VARCHAR(30) NOT NULL,
+    userId VARCHAR(30),
+    jobId VARCHAR(30),
+    status ENUM('Pending', 'Approved', 'Rejected') DEFAULT 'Pending',
+    resumeId VARCHAR(30),
+    resumeUrl TEXT,
+    coverLetter TEXT,
+    dateCreated DATETIME DEFAULT CURRENT_TIMESTAMP,
+    dateUpdated DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id,userId),
+    FOREIGN KEY (userId) REFERENCES User(id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

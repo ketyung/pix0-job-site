@@ -52,6 +52,7 @@ model User {
     GoogleCredential   GoogleCredential[]
     UserCompany        UserCompany[]
     Resume             UserResume[]  
+    JobApplication     JobApplication[]
 }
 
 
@@ -125,3 +126,26 @@ model JobPost {
     @@id([id, companyId])
 }
 
+
+enum JobApplStatus {
+
+    Pending
+    Accepted 
+    Rejected 
+}
+
+model JobApplication{
+
+    id             String   @db.VarChar(30)  @default(cuid()) @unique
+    userId         String   @db.VarChar(30)
+    jobid          String   @db.VarChar(30)
+    status         JobApplStatus @default(Pending)
+    resumeId       String   @db.VarChar(30)
+    resumeUrl      String?  @db.Text 
+    coverLetter    String?   
+    dateCreated    DateTime    @default(now())
+    dateUpdated    DateTime    @updatedAt
+    user        User      @relation(fields: [userId], references: [id])
+    @@id([id, userId])
+
+}
