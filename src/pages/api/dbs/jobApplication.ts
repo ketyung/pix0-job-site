@@ -2,6 +2,7 @@ import prisma from '../db';
 import { SearchResult } from '@/models';
 import { JobApplication } from '@prisma/client';
 import { isBlank} from '@/utils';
+import JobPost from '@/pages/jobPost/[jobId]';
 
 
 export async function createJobApplication(userId: string,jobApplication : JobApplication) {
@@ -85,8 +86,8 @@ export async function getJobApplications(userId: string, keyword?: string, order
             where: {
                 userId,
                 OR: [
-                    { code: { contains: keyword } },
-                    { title: { contains: keyword } },
+                    { job: { code: { contains: keyword } } }, // Nested query for job's code
+                    { job: { title: { contains: keyword } } },
                 ],
             },
         };
@@ -103,14 +104,30 @@ export async function getJobApplications(userId: string, keyword?: string, order
         };
     }
 
-    const JobApplications = await prisma.jobApplication.findMany({
+    const JobApps = await prisma.jobApplication.findMany({
         ...whereClause,
         skip: offset,
         take: limit,
         orderBy: ordBy,
 
         select: {
-            job: true,
+            job: {
+                select: {
+                    // Specify the fields of the job relation you want to include
+                    id: true,
+                    code: true,
+                    title: true,
+                    // Add company and specify its fields
+                    company: {
+                        select: {
+                            // Specify the fields of the company relation you want to include
+                            id: true,
+                            name: true, 
+                            logoUrl: true, 
+                        }
+                    }
+                }
+            },
             dateCreated: true,
             resumeId: true,
             id: true,
@@ -121,7 +138,7 @@ export async function getJobApplications(userId: string, keyword?: string, order
    
     let total = await getCount(whereClause);
 
-    return {results : JobApplications, total};
+    return {results : JobApps, total};
 }
 
 
