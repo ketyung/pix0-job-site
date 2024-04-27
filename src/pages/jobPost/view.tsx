@@ -3,6 +3,10 @@ import { JobStatus } from "@/models";
 import Link from "next/link";
 import { BsLightningCharge } from "react-icons/bs";
 import { GoLinkExternal } from "react-icons/go";
+import { useMemo, useEffect, useState } from "react";
+import { hasJobApplication} from "@/service";
+import { FaCheck } from "react-icons/fa";
+import { BeatLoader } from "react-spinners";
 
 type props = {
     jobPost?: any, 
@@ -10,6 +14,20 @@ type props = {
 
 export default function View({ jobPost } :props) {
 
+    const [hasApplied, setHasApplied] = useState(false);
+
+    const [loading, setLoading] = useState(false);
+
+    const fetchHasApplied =  useMemo(() => async () => {
+        setLoading(true);
+        let hasAppl = await hasJobApplication(jobPost.id);
+        setHasApplied(hasAppl);
+        setLoading(false);
+    }, []);
+
+    useEffect(()=>{
+        fetchHasApplied()
+    },[fetchHasApplied]);
 
 
     const applyView = () =>{
@@ -29,7 +47,9 @@ export default function View({ jobPost } :props) {
         <div className="mt-2 mb-2 text-left p-1 font-bold">
             <h1 className="text-xl dark:bg-gray-700 dark:text-gray-200 bg-gray-300 p-2 rounded flex">
                 <div className="w-10/12">{jobPost?.title}</div>
-                {applyView()}
+                {loading ? <BeatLoader size={6} color="#bbb"/> :
+                (hasApplied ? <div className="bg-green-700 rounded w-32 p-1 text-gray-100 text-center">
+                <FaCheck className="w-5 h-5 mr-2 inline"/>Applied</div> : applyView())}
             </h1>
             {jobPost.description && <MarkdownRenderer markdownContent={jobPost.description}/>}
         </div>

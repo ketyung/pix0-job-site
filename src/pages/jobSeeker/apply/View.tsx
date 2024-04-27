@@ -64,7 +64,7 @@ export default function View({ jobPost } :props) {
             </h2>
 
             {loading ? <BeatLoader size={8} color="#888"/> :
-            (hasApplied ? <div className="bg-green-800 rounded w-32 p-1 text-gray-100 text-center">
+            (hasApplied ? <div className="bg-green-700 rounded w-32 p-1 text-gray-100 text-center">
             <FaCheck className="w-5 h-5 mr-2 inline"/>Applied</div> :
             <><ResumeView setHasValidResume={setHasValidResume} setSelectedResume={setSelectedResumeId}
             title={<div className="flex bg-gray-300 dark:bg-gray-700 dark:text-gray-100 rounded p-1 pl-2">Apply With Your CV/Resume Below:
