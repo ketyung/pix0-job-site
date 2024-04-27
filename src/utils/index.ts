@@ -272,3 +272,22 @@ export async function blobUrlToBase64(blobUrl: string): Promise<string> {
         reader.readAsDataURL(blob);
     });
 }
+
+export function formatRelativeDate(date: Date): string {
+    const now = new Date();
+    const diffMilliseconds = now.getTime() - date.getTime();
+    const diffSeconds = Math.floor(diffMilliseconds / 1000);
+    const diffMinutes = Math.floor(diffSeconds / 60);
+    const diffHours = Math.floor(diffMinutes / 60);
+    const diffDays = Math.floor(diffHours / 24);
+
+    if (diffDays > 0) {
+        return `${diffDays} Day${diffDays > 1 ? 's' : ''} ago`;
+    } else if (diffHours > 0) {
+        return `${diffHours} Hr${diffHours > 1 ? 's' : ''} ago`;
+    } else if (diffMinutes > 0) {
+        return `${diffMinutes} Min${diffMinutes > 1 ? 's' : ''} ago`;
+    } else {
+        return `${diffSeconds} Sec${diffSeconds !== 1 ? 's' : ''} ago`;
+    }
+}

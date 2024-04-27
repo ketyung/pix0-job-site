@@ -108,6 +108,14 @@ export async function getJobApplications(userId: string, keyword?: string, order
         skip: offset,
         take: limit,
         orderBy: ordBy,
+
+        select: {
+            job: true,
+            dateCreated: true,
+            resumeId: true,
+            id: true,
+            status: true,  
+        }
     });
 
    

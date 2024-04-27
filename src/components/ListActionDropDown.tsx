@@ -14,7 +14,7 @@ type props = {
     onEdit? : () => void, 
 }
 
-const ListActionDropDown = ({className, onDelete, onEdit} :props) => {
+const ListActionDropDown = ({ onDelete, onEdit} :props) => {
 
    
     const {theme} = useThemeContext();
@@ -26,23 +26,22 @@ const ListActionDropDown = ({className, onDelete, onEdit} :props) => {
     hover:text-blue-200 rounded-2xl">
     <CiCircleMore className='w-5 h-5'/></button>} position="left center">
         
-        <div className="rounded hover:bg-gray-500 dark:hover:bg-gray-700 hover:cursor-pointer hover:text-gray-100
+        {onEdit && <div className="rounded hover:bg-gray-500 dark:hover:bg-gray-700 hover:cursor-pointer hover:text-gray-100
          dark:bg-gray-800 bg-gray-300 text-gray-900 dark:text-gray-200 p-2 text-sm"
         onClick={(e)=>{
             e.preventDefault();
-            if (onEdit) onEdit();
+            onEdit();
         }}>
         <CiEdit className="mr-2 inline mb-1"/> Edit
-        </div>
+        </div>}
         
-        <div className="rounded hover:bg-gray-500 dark:hover:bg-gray-700 hover:cursor-pointer hover:text-gray-100
+        {onDelete && <div className="rounded hover:bg-gray-500 dark:hover:bg-gray-700 hover:cursor-pointer hover:text-gray-100
         dark:bg-gray-800 bg-gray-300 text-gray-900 dark:text-gray-200 p-2 text-sm" onClick={async (e)=>{
             e.preventDefault();
-            if ( onDelete) onDelete();
            
         }}>
         <CiTrash className="mr-2 inline mb-1"/> Delete 
-        </div>
+        </div>}
     </Popup>;
     
 }

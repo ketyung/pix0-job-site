@@ -3,7 +3,7 @@ import { Button, Drawer, Modal } from "pix0-core-ui";
 import { FiPlusCircle } from "react-icons/fi";
 import { useState , useEffect, useMemo} from "react";
 import Form from "./form";
-import List, { handleUnauthorizedError } from "./list";
+import List from "./list";
 import { hasCompany } from '@/service';
 import CompanyForm from "../company/mForm";
 
