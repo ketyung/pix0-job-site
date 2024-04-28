@@ -1,6 +1,6 @@
 import { SearchResult } from "@/models"
 import { useEffect, useState, useCallback, useMemo} from "react"
-import { getJobPostsWithAppls} from "@/service";
+import { getCompanyJobApps} from "@/service";
 import { Pagination, Input } from "pix0-core-ui";
 import { STANDARD_RES_ROWS_PER_PAGE } from "@/models";
 import { CiSearch } from "react-icons/ci";
@@ -29,7 +29,7 @@ export default function List({reloadCount, onEdit} :props) {
 
     const refreshResult =  useMemo(() => async (searchString? : string, pageNum? : number ) => {
         setLoading(true);
-        let s = await getJobPostsWithAppls(searchString ?? searchStr, '-', '-', pageNum ?? page , rowsPerPage, (e)=>{
+        let s = await getCompanyJobApps(searchString ?? searchStr, '-', '-', pageNum ?? page , rowsPerPage, (e)=>{
             handleUnauthorizedError(e);
         });
         setSearchResult(s);
@@ -65,8 +65,9 @@ export default function List({reloadCount, onEdit} :props) {
         <tr className="dark:bg-gray-800 bg-gray-100 border-b border-gray-300 text-xs font-bold dark:text-gray-100 text-gray-500 uppercase">
           <th className="hidden lg:inline-block text-center py-2 px-2">No.</th>
           <th className="px-1 text-left py-2">Job</th>
-          <th className="px-1 text-left py-2">No Of Applicants</th>
-          <th className="px-4 py-2">Date Published</th>
+          <th className="px-1 text-left py-2">Applicant</th>
+          <th className="pl-6 py-2">Status</th>
+          <th className="px-4 py-2">Date Applied</th>
           <th className="px-1 text-left py-2 text-center">Action</th>
         </tr>
       </thead>
@@ -78,14 +79,14 @@ export default function List({reloadCount, onEdit} :props) {
       }
       { (searchResult.results.length ?? 0) === 0 &&
       <tr>
-        <td colSpan={5} className="text-center">
+        <td colSpan={6} className="text-center">
           <div className="mt-2 text-gray-400 p-2">NO Job Applications For The Jobs You've Posted</div>
         </td>
       </tr>
       }
       { (searchResult.results.length ?? 0) > 0 &&
       <tr>
-          <td colSpan={5}>
+          <td colSpan={6}>
             <Pagination currentPage={page} totalPages={searchResult.totalPages ?? 0}
             onPageChange={async (p)=>{
                 setPage(p);

@@ -218,6 +218,91 @@ export async function getPubJobPosts(keyword?: string, orderBy? : string,
     return {results : JobPosts, total};
 }
 
+
+
+export async function getJobPostsWithAppls(userId: string, keyword?: string, orderBy? : string, 
+    ascOrDesc? : string, offset: number = 0, limit: number = 10) :Promise<SearchResult> {
+    
+    let userCompany = await getUserCompany(userId);
+
+    if ( userCompany === null) {
+        return {results:[], total:0};
+    }
+
+    let whereClause: any = {
+        where: {
+            companyId: userCompany?.id,
+            /*application: {
+                id: { not: null } 
+            },*/
+        },
+    };
+
+    if (keyword && keyword.trim()!== '-') {
+        whereClause = {
+            where: {
+                companyId: userCompany?.id,
+                /*application: {
+                    id: { not: null } 
+                },*/
+                OR: [
+                    { code: { contains: keyword } },
+                    { title: { contains: keyword } },
+                ],
+            },
+        };
+    }
+
+
+    let ordBy : any =  {
+        dateCreated : 'desc'
+    };
+
+    if ( orderBy ){
+        ordBy = {
+            [`${orderBy}`]: ascOrDesc ?? 'asc'
+        };
+    }
+
+    const JobPosts = await prisma.jobPost.findMany({
+        ...whereClause,
+        skip: offset,
+        take: limit,
+        orderBy: ordBy,
+
+        select: {
+            id: true,
+            code: true,
+            title: true,
+            dateCreated: true,
+            jobStatus: true,
+            datePub: true, 
+          
+            application: {
+                select: {
+                    id: true,
+                    status: true,
+                    userId: true,
+                    resumeId: true, 
+                },
+            }
+        },
+        // Include company information
+        /*include: {
+            company: true
+        }*/
+    });
+
+   // console.log("orderBy::", ordBy);
+
+    let total = await getCount(whereClause);
+
+    return {results : JobPosts, total};
+}
+
+
+
+
 export async function getJobPost(id : string, userId: string) :Promise<JobPost|undefined> {
     
     let userCompany = await getUserCompany(userId);

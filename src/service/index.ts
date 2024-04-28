@@ -381,6 +381,39 @@ export async function getJobPost(id : string, onError? : (e : Error)=>void ) : P
 
 
 
+export async function getJobPostsWithAppls(
+      searchStr? : string,
+      orderBy? : string,
+      ascOrDesc? : string, 
+      page? : number, 
+      rowsPerPage? : number,
+      onError? : (e : Error)=>void ) : Promise<SearchResult> {
+
+      try {
+
+            let searchString = searchStr === '' ? '-' : searchStr;
+            let data = await fetchRemote("jobPost","jobsWithAppls", searchString,
+            orderBy, ascOrDesc, 
+            page ? `${page}` : undefined, 
+            rowsPerPage ? `${rowsPerPage}` : undefined);
+
+            return data.data;
+
+      }catch(err : any) {
+
+            if(err.response && err.response.status === 401){
+
+                  if ( onError) {
+                        onError(new Error(`${UNAUTHORIZED_MESSAGE} ${err.message}`));
+                  }
+            }
+
+            return {results:[]}; 
+
+      }
+
+}
+
 
 export async function getPubJobPost(id : string, onError? : (e : Error)=>void ) : Promise<JobPost|null>{
 

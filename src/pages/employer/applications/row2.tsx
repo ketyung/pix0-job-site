@@ -38,9 +38,10 @@ export default function Row({row, refresh, onEdit, index} :props) {
          <td className="hidden lg:inline-block text-center py-2">{<Checkbox checked={false}
         lightBgColor="#ed8" groupId="invCb">{index && <span className="ml-1">{index}</span>}</Checkbox>}</td>
         <td className="px-1 whitespace-nowrap py-2"><Link title="Click To Preview Job Post" 
-        href={`/jobPost/${row?.id}`} target="_blank">{ntb(row?.title)}</Link></td>
-        <td className="px-1 py-2">{row?.application?.length}</td>
-        <td className="px-6 py-2" title={new Date(row?.datePub).toLocaleString()}>{formatRelativeDate(new Date(row?.datePub))}</td>
+        href={`/jobPost/${row?.job?.id}`} target="_blank">{ntb(row?.job?.title)}</Link></td>
+         <td className="px-1 py-2">{`${row?.user?.firstName} ${row?.user?.lastName}`}</td>
+        <td className="px-6 py-2">{ntb(row?.status)}</td>
+        <td className="px-6 py-2" title={new Date(row?.dateCreated).toLocaleString()}>{formatRelativeDate(new Date(row?.dateCreated))}</td>
         <td className="px-1 whitespace-nowrap text-center py-2"><ListActionDropDown onDelete={deleteRow}/></td>
     </tr>
     
