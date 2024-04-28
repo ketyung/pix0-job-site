@@ -232,9 +232,7 @@ export async function getJobPostsWithAppls(userId: string, keyword?: string, ord
     let whereClause: any = {
         where: {
             companyId: userCompany?.id,
-            /*application: {
-                id: { not: null } 
-            },*/
+            application: { some: {} }
         },
     };
 
@@ -242,9 +240,7 @@ export async function getJobPostsWithAppls(userId: string, keyword?: string, ord
         whereClause = {
             where: {
                 companyId: userCompany?.id,
-                /*application: {
-                    id: { not: null } 
-                },*/
+                application: { some: {} },
                 OR: [
                     { code: { contains: keyword } },
                     { title: { contains: keyword } },
@@ -279,6 +275,7 @@ export async function getJobPostsWithAppls(userId: string, keyword?: string, ord
             datePub: true, 
           
             application: {
+            
                 select: {
                     id: true,
                     status: true,
