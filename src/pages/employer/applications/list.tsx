@@ -1,30 +1,18 @@
 import { SearchResult } from "@/models"
 import { useEffect, useState, useCallback, useMemo} from "react"
-import { getJobPosts, isErrorUnathorized } from "@/service";
+import { getCompanyJobApps} from "@/service";
 import { Pagination, Input } from "pix0-core-ui";
 import { STANDARD_RES_ROWS_PER_PAGE } from "@/models";
 import { CiSearch } from "react-icons/ci";
 import Row from "./row";
 import BeatLoader from "react-spinners/BeatLoader";
-import { toast } from "react-toastify";
+import { handleUnauthorizedError } from "@/pages/employer/jobPosts/list";
 
 
 type props = {
     reloadCount? : number,
 
     onEdit?: (id? : string) => void, 
-}
-
-export const handleUnauthorizedError =(e: any)=>{
-
-    if ( isErrorUnathorized(e)){
-        //toast.error("Unauthorized!");
-        setTimeout(()=>{
-            document.location.href="/employer/";
-        },300);
-    }else {
-        toast.error(e.message);
-    }
 }
 
 export default function List({reloadCount, onEdit} :props) {
@@ -37,12 +25,11 @@ export default function List({reloadCount, onEdit} :props) {
 
     const [loading, setLoading] = useState(false);
 
-    
     const rowsPerPage = STANDARD_RES_ROWS_PER_PAGE;
 
     const refreshResult =  useMemo(() => async (searchString? : string, pageNum? : number ) => {
         setLoading(true);
-        let s = await getJobPosts(searchString ?? searchStr, '-', '-', pageNum ?? page , rowsPerPage, (e)=>{
+        let s = await getCompanyJobApps(searchString ?? searchStr, '-', '-', pageNum ?? page , rowsPerPage, (e)=>{
             handleUnauthorizedError(e);
         });
         setSearchResult(s);
@@ -77,10 +64,10 @@ export default function List({reloadCount, onEdit} :props) {
        
         <tr className="dark:bg-gray-800 bg-gray-100 border-b border-gray-300 text-xs font-bold dark:text-gray-100 text-gray-500 uppercase">
           <th className="hidden lg:inline-block text-center py-2 px-2">No.</th>
-          <th className="hidden lg:inline-block px-1 text-left py-2">Code</th>
-          <th className="px-1 text-left py-2">Title</th>
-          <th className="hidden lg:inline-block text-left py-2">Category</th>
-          <th className="inline-block pl-10 text-left py-2">Status</th>
+          <th className="px-1 text-left py-2">Job</th>
+          <th className="px-1 text-left py-2">Applicant</th>
+          <th className="pl-6 py-2">Status</th>
+          <th className="px-4 py-2">Date Applied</th>
           <th className="px-1 text-left py-2 text-center">Action</th>
         </tr>
       </thead>
@@ -93,7 +80,7 @@ export default function List({reloadCount, onEdit} :props) {
       { (searchResult.results.length ?? 0) === 0 &&
       <tr>
         <td colSpan={6} className="text-center">
-          <div className="mt-2 text-gray-400 p-2">You Have NOT Posted Any Job Yet</div>
+          <div className="mt-2 text-gray-400 p-2">NO Job Applications For The Jobs You've Posted</div>
         </td>
       </tr>
       }

@@ -5,8 +5,7 @@ import { MenuItem } from "@/components/Sidebar";
 import { MdPeopleAlt } from "react-icons/md";
 import React from "react";
 import { SessionProvider } from "next-auth/react";
-import { GetServerSidePropsContext } from "next";
-import { NextRequest } from "next/server";
+
 
 export default function Index({
     children, title, isLoggedIn }: PageProps) {
@@ -15,6 +14,12 @@ export default function Index({
         title :<MenuItemView title="Job Posts" />, 
         icon : <MdPeopleAlt className="ml-0.5 w-4 h-4 mt-0.5"/>,
         link : "/employer/jobPosts",
+        withHoverEffect : true, 
+    },
+    {
+        title :<MenuItemView title="Job Applications" />, 
+        icon : <MdPeopleAlt className="ml-0.5 w-4 h-4 mt-0.5"/>,
+        link : "/employer/applications",
         withHoverEffect : true, 
     }]
 

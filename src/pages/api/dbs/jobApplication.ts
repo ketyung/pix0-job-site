@@ -2,7 +2,7 @@ import prisma from '../db';
 import { SearchResult } from '@/models';
 import { JobApplication } from '@prisma/client';
 import { isBlank} from '@/utils';
-import JobPost from '@/pages/jobPost/[jobId]';
+import { getUserCompany } from './userCompany';
 
 
 export async function createJobApplication(userId: string,jobApplication : JobApplication) {
@@ -69,6 +69,82 @@ export async function updateJobApplication(userId: string,jobApplication : JobAp
     }
    
 }
+
+
+
+export async function getJobAppsOfCompany(userId: string, keyword?: string, orderBy? : string, 
+    ascOrDesc? : string, offset: number = 0, limit: number = 10) :Promise<SearchResult> {
+    
+    let userCompany = await getUserCompany(userId);
+
+    if ( userCompany === null) {
+        return {results:[], total:0};
+    }
+
+    let whereClause: any = {
+        where: {
+            job: { companyId: userCompany.id } 
+        },
+    };
+
+    if (keyword && keyword.trim()!== '-') {
+        whereClause = {
+            where: {
+                    job: { companyId: userCompany.id },
+                OR: [
+                    { job: { code: { contains: keyword } } }, // Nested query for job's code
+                    { job: { title: { contains: keyword } } },
+                ],
+            },
+        };
+    }
+
+    //console.log("w.cl::", whereClause);
+
+    let ordBy : any =  {
+        dateCreated : 'desc'
+    };
+
+    if ( orderBy ){
+        ordBy = {
+            [`${orderBy}`]: ascOrDesc ?? 'asc'
+        };
+    }
+
+    const JobApps = await prisma.jobApplication.findMany({
+        ...whereClause,
+        skip: offset,
+        take: limit,
+        orderBy: ordBy,
+
+        select: {
+            job: {
+                select: {
+                    id: true,
+                    code: true,
+                    title: true,
+                    companyId: true, 
+                }
+            },
+            dateCreated: true,
+            resumeId: true,
+            id: true,
+            status: true,  
+            user: {
+                select :{
+                    firstName: true,
+                    lastName : true,
+                }
+            }
+        }
+    });
+
+   
+    let total = await getCount(whereClause);
+
+    return {results : JobApps, total};
+}
+
 
 
 export async function getJobApplications(userId: string, keyword?: string, orderBy? : string, 

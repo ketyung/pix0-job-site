@@ -49,8 +49,6 @@ const isApiKeyValid = async (req : NextApiRequest, res: NextApiResponse) : Promi
         const token = authHeader.split(' ')[1];
 
         const {  publicRuntimeConfig } = getConfig();
-
-        //console.log("tok::", token, "stored.Api.key::", publicRuntimeConfig.RestApiKey, new Date());
         
         if ( token !== publicRuntimeConfig.RestApiKey){
             res.status(401).json({ message: 'Unauthorized' , reason: "Invalid API KEY"});
@@ -101,21 +99,20 @@ const verifyToken2 = async (req : NextApiRequest, res: NextApiResponse, _next: (
 
 const checkAccess = async (req: NextApiRequest, res: NextApiResponse, _next: (userId? : string , providerAccountId? : string) => void, byPassCheck? : boolean) => {
     
-    if ( !isApiKeyValid(req, res)){
-        return;
-    }
-    
-    
+ 
     if ( byPassCheck){
         _next(); return; 
     }
-
        
     if ( !checkAllowed(req)){
         res.status(401).json({ message : "Unathorized!" });
         return;
     }
 
+    if ( !isApiKeyValid(req, res)){
+        return;
+    }
+   
     if ( isPathToSkipCheckAuth(req)){
         _next(); return; 
     }

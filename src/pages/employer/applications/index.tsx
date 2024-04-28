@@ -20,9 +20,7 @@ export default function Index({openForm }:IndexProps ) {
 
     const [drawerOpen, setDrawerOpen] = useState(false);
 
-    const [reloadCount, setReloadCount] = useState(0);
- 
-    const [viewType, setViewType] = useState<ViewType>(ViewType.LIST);
+    const [viewType] = useState<ViewType>(ViewType.LIST);
 
 
     const switchView = () =>{
@@ -30,9 +28,7 @@ export default function Index({openForm }:IndexProps ) {
         switch(+viewType) {
             
             default :
-                return   <List reloadCount={reloadCount} onEdit={(id)=>{
-                    setDrawerOpen(true);
-                }} />
+                return   <List />
         }
     }
 
