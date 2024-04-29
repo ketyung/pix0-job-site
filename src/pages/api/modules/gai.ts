@@ -7,6 +7,7 @@ import { isBlank } from '@/utils';
 import { JobPost } from '@prisma/client';
 import { ResumeData } from '@/models';
 import { getUser } from '../dbs/user';
+import { getJobPostWithAppls } from '../dbs/jobPost';
 
 const jsonParser = bodyParser.json();
 const fs = require('fs');
@@ -239,6 +240,59 @@ async function generateResume(data : ResumeData,  res: NextApiResponse, userId? 
 
         Please also insert the photo of the person on top of the personal info as an image with a 
         max size of 100x100 contained in the photoUrl in the Personal's Info JSON
+        `;
+        
+        
+
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        const text = response.text();
+
+        //console.log("return.x.text::", text);
+
+        res.status(200).json({  text : text, status : 1});  
+
+
+    }
+    catch (e : any ){
+
+        console.log("detectJobPostInfo.error::", e.message?.substring(0,550));
+        res.status(422).json({error: e.message, status:-1});
+    }
+    
+}
+
+
+
+async function generateScoresForJobAppls(jobId : string ,  res: NextApiResponse, userId? : string ) {
+
+    try {
+
+        if ( userId === undefined) {
+            res.status(404).json({  text : "Not Found", status : -1});
+            return;  
+        }
+
+        let job : any = await getJobPostWithAppls(userId , jobId);
+
+        const model = genAI.getGenerativeModel({ model: "gemini-pro"});
+
+
+        let appls :any = job?.application?.map((a : any )=>{
+            return { userId : a.user.id, resumeId : a.resume.id, resumeContext: a.resume.resumeText, score: a.score, reason : a.scoreReason}
+        })
+
+
+        const prompt = `Below is the list of Job Applications in JSON:
+
+        Job Applications JSON:
+        ${JSON.stringify(appls , null, 2)}
+        
+        Job Post's JSON:
+        ${JSON.stringify({title : job.title, desciption : job.desciption}, null, 2)}
+
+        Please check the list of applications for each that has best match with the job
+        and return the score and reason for each in the Job Application List in JSON format too
         `;
         
         

@@ -312,7 +312,6 @@ export async function getJobPostWithAppls(userId: string, jobPostId: string) :Pr
     };
 
 
-
     const JobPost = await prisma.jobPost.findFirst({
         ...whereClause,
 
@@ -323,6 +322,7 @@ export async function getJobPostWithAppls(userId: string, jobPostId: string) :Pr
             dateCreated: true,
             jobStatus: true,
             datePub: true, 
+            description : true, 
             application: {
                 select: {
                     id: true,

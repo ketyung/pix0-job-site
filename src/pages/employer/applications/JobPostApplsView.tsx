@@ -40,9 +40,9 @@ export default function JobPostApplsView({jobId}: props) {
         <th className="px-1 py-2">Date Applied</th>
       </tr>
       {
-            jobPost?.application?.map((a: any,i : number )=>{
+            jobPost?.application?.map((a: any, i : number )=>{
 
-                return    <tr className="hover:bg-gray-300 dark:hover:bg-gray-700 dark:bg-gray-800 bg-gray-100 border-b border-gray-300 text-xs dark:text-gray-100 text-gray-500 uppercase">
+                return    <tr id={`JobApplicant_${i}`} className="hover:bg-gray-300 dark:hover:bg-gray-700 dark:bg-gray-800 bg-gray-100 border-b border-gray-300 text-xs dark:text-gray-100 text-gray-500 uppercase">
                 <td className="hidden lg:inline-block text-center py-2 px-2">{(i+1)}.</td>
                 <td className="px-1 text-left py-2">{`${a.user?.firstName} ${a.user?.lastName}`}</td>
                 <td className="px-1 text-left py-2">{a.score?.toFixed(2)}</td>
