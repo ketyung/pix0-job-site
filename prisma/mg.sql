@@ -50,3 +50,8 @@ CREATE TABLE JobApplication (
     PRIMARY KEY (id,userId),
     FOREIGN KEY (userId) REFERENCES User(id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+alter table JobApplication add score float(10,2) after coverLetter;
+alter table JobApplication add scoreReason text after score;
+

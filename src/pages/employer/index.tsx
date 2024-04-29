@@ -3,6 +3,7 @@ import { ThemeProvider} from "pix0-core-ui";
 import { MenuItemView } from '@/components/MenuItemView';
 import { MenuItem } from "@/components/Sidebar";
 import { MdPeopleAlt } from "react-icons/md";
+import { IoDocumentsOutline } from "react-icons/io5";
 import React from "react";
 import { SessionProvider } from "next-auth/react";
 
@@ -18,7 +19,7 @@ export default function Index({
     },
     {
         title :<MenuItemView title="Job Applications" />, 
-        icon : <MdPeopleAlt className="ml-0.5 w-4 h-4 mt-0.5"/>,
+        icon : <IoDocumentsOutline className="ml-0.5 w-4 h-4 mt-0.5"/>,
         link : "/employer/applications",
         withHoverEffect : true, 
     }]

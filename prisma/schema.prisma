@@ -97,6 +97,7 @@ model UserResume {
     resumeData  String    
     resumeText  String    @db.Text 
     user        User      @relation(fields: [userId], references: [id])
+    application JobApplication[]
     @@id([id, userId])
 }
 
@@ -143,10 +144,13 @@ model JobApplication{
     resumeId       String   @db.VarChar(30)
     resumeUrl      String?  @db.Text 
     coverLetter    String?   
+    score          Float?      @db.Float
+    scoreReason    String?  @db.Text 
     dateCreated    DateTime    @default(now())
     dateUpdated    DateTime    @updatedAt
     user        User      @relation(fields: [userId], references: [id])
     job         JobPost   @relation(fields: [jobId], references: [id])
+    resume      UserResume @relation(fields: [resumeId], references: [id])
 
     @@id([id, userId])
 

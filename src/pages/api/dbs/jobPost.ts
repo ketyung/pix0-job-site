@@ -284,10 +284,60 @@ export async function getJobPostsWithAppls(userId: string, keyword?: string, ord
                 },
             }
         },
-        // Include company information
-        /*include: {
-            company: true
-        }*/
+     
+    });
+
+   // console.log("orderBy::", ordBy);
+
+    let total = await getCount(whereClause);
+
+    return {results : JobPosts, total};
+}
+
+
+export async function getJobPostWithAppls(userId: string, jobPostId: string) :Promise<SearchResult> {
+    
+    let userCompany = await getUserCompany(userId);
+
+    if ( userCompany === null) {
+        return {results:[], total:0};
+    }
+
+    let whereClause: any = {
+        where: {
+            id : jobPostId,
+            companyId: userCompany?.id,
+            application: { some: {} }
+        },
+    };
+
+
+
+    const JobPosts = await prisma.jobPost.findMany({
+        ...whereClause,
+
+        select: {
+            id: true,
+            code: true,
+            title: true,
+            dateCreated: true,
+            jobStatus: true,
+            datePub: true, 
+            application: {
+                select: {
+                    id: true,
+                    status: true,
+                    userId: true,
+                    resume: {
+
+                        select : {
+                            id: true,
+                            resumeText : true,
+                        }
+                    }, 
+                },
+            }
+        },
     });
 
    // console.log("orderBy::", ordBy);
