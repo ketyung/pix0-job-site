@@ -33,7 +33,11 @@ async function handleGet (req: NextApiRequest,  res: NextApiResponse, _userId? :
         const param2 = path[2];
         if ( param1 === 'genJobDesc') {
             await genJobDesc(res, _userId ?? "", param2);
-        }else {
+        }
+        else if ( param1 === 'analyzeApplicants') {
+            await generateScoresForJobAppls(param2, res, _userId);
+        }
+        else {
             res.status(400).json({text: "Invalid action!", status:-1});
         }
     }
@@ -93,6 +97,7 @@ async function handlePost (req: NextApiRequest,  res: NextApiResponse, _userId? 
                 else if ( param1 === 'generateResume') {
                     await generateResume(data, res, _userId);
                 }
+              
                 else {
                     res.status(400).json({text: "Invalid action!", status:-1});
                 }
