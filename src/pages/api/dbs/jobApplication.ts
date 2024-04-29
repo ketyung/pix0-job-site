@@ -72,6 +72,47 @@ export async function updateJobApplication(userId: string,jobApplication : JobAp
 
 
 
+
+export async function updateJobApplForScore(userId: string,id : string, score : number, reason : string ) {
+
+
+    try {
+
+       
+        let wh =  {
+            id: id,
+            userId 
+        };
+                
+        const existingJobApplication = await prisma.jobApplication.findUnique({
+            where: wh 
+        });
+
+        if (existingJobApplication) {
+            const updatedJobApplication = await prisma.jobApplication.update({
+                where: wh,
+                data: {...existingJobApplication, score: score, scoreReason :reason}
+            });
+
+            // 'updatedContact' contains the updated contact record
+            return (updatedJobApplication.id === id && updatedJobApplication.userId === userId);
+        } else {
+  
+            throw Error('JobApplication NOT found!');
+        }
+  
+  
+
+    }
+    catch(e : any){
+        throw e ;
+    }
+   
+}
+
+
+
+
 export async function getJobAppsOfCompany(userId: string, keyword?: string, orderBy? : string, 
     ascOrDesc? : string, offset: number = 0, limit: number = 10) :Promise<SearchResult> {
     

@@ -131,6 +131,31 @@ export async function verifyLogin(onError? : (e : Error)=>void ) {
 
 
 
+export async function analyzeAppls(jobId : string, onError? : (e : Error)=>void ) {
+
+      try {
+
+            let data = await fetchRemote("gai","analyzeAppls", jobId);
+
+            return ( data.status === 1);
+
+      }catch(err : any) {
+
+            if(err.response && err.response.status === 401){
+
+                  if ( onError) {
+                        onError(new Error(`${UNAUTHORIZED_MESSAGE} ${err.message}`));
+                  }
+            }
+
+            return false; 
+
+      }
+
+}
+
+
+
 
 export async function userSignInByGid (signInData : SignInData, 
       onError? : (e : Error)=>void, onMessage? : (message : string) => void  ){

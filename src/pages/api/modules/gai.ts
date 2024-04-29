@@ -8,6 +8,7 @@ import { JobPost } from '@prisma/client';
 import { ResumeData } from '@/models';
 import { getUser } from '../dbs/user';
 import { getJobPostWithAppls } from '../dbs/jobPost';
+import { updateJobApplForScore } from '../dbs/jobApplication';
 
 const jsonParser = bodyParser.json();
 const fs = require('fs');
@@ -34,7 +35,7 @@ async function handleGet (req: NextApiRequest,  res: NextApiResponse, _userId? :
         if ( param1 === 'genJobDesc') {
             await genJobDesc(res, _userId ?? "", param2);
         }
-        else if ( param1 === 'analyzeApplicants') {
+        else if ( param1 === 'analyzeAppls') {
             await generateScoresForJobAppls(param2, res, _userId);
         }
         else {
@@ -284,7 +285,7 @@ async function generateScoresForJobAppls(jobId : string ,  res: NextApiResponse,
 
 
         let appls :any = job?.application?.map((a : any )=>{
-            return { userId : a.user.id, resumeId : a.resume.id, resumeContext: a.resume.resumeText, score: a.score, reason : a.scoreReason}
+            return {id: a.id, userId : a.user.id, resumeId : a.resume.id, resumeContent: a.resume.resumeText, score: a.score, reason : a.scoreReason}
         })
 
 
@@ -294,27 +295,37 @@ async function generateScoresForJobAppls(jobId : string ,  res: NextApiResponse,
         ${JSON.stringify(appls , null, 2)}
         
         Job Post's JSON:
-        ${JSON.stringify({title : job.title, desciption : job.desciption}, null, 2)}
+        ${JSON.stringify({title : job.title, description : job.description}, null, 2)}
 
         Please check the list of applications for each that has best match with the job
-        and return the score and reason for each in the Job Application List in JSON format too
+        and return the score (1 is lowest and 10 is highest) and reason for each in the Job Application List in JSON format too
         `;
         
+
+        //console.log("prompt:::", prompt);
         
 
         const result = await model.generateContent(prompt);
         const response = await result.response;
         const text = response.text();
 
-        //console.log("return.x.text::", text);
+        const jsonStartIndex = text.indexOf('[');
+        const jsonEndIndex = text.lastIndexOf(']') + 1;
+        const jsonPart = text.substring(jsonStartIndex, jsonEndIndex);
 
-        res.status(200).json({  text : text, status : 1});  
+        const jsonArray = JSON.parse(jsonPart);
+
+        jsonArray.forEach(async (a : any,i : any)=>{
+            await updateJobApplForScore(a.userId, a.id, a.score, a.reason);
+        })
+    
+        res.status(200).json({  text : "Updated score and reason for Job Applications", status : 1});  
 
 
     }
     catch (e : any ){
 
-        console.log("detectJobPostInfo.error::", e.message?.substring(0,550));
+        console.log("generateScoresForJobAppls::", e.message?.substring(0,550));
         res.status(422).json({error: e.message, status:-1});
     }
     

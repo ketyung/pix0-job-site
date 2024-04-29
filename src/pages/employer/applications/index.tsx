@@ -46,7 +46,7 @@ export default function Index({openForm }:IndexProps ) {
         setOpenFormIfNeeded();
     },[setOpenFormIfNeeded]);
     
-    return <MainIndex title="Job Posts - Pix0 Application">
+    return <MainIndex title="Job Applications - Pix0 Application">
         <div className="text-left">
             <h2 className="ml-2 mb-10 font-bold">Job Applications</h2>
             {switchView()}
