@@ -116,6 +116,6 @@ export default function List({reloadCount, onEdit} :props) {
             { (drawerOpen && selectedJobId) && <>
              <JobPostApplsView jobId={selectedJobId}/>   
             </>}
-        </Drawer>
+    </Drawer>
     </div>
 }

@@ -41,7 +41,7 @@ export default function Row({row, refresh, onEdit, index, openSelectedJob} :prop
         lightBgColor="#ed8" groupId="invCb">{index && <span className="ml-1">{index}</span>}</Checkbox>}</td>
         <td className="px-1 whitespace-nowrap py-2"><Link title="Click To Preview Job Post" 
         href={`/jobPost/${row?.id}`} target="_blank">{ntb(row?.title)}</Link></td>
-        <td className="px-1 py-2">{row?.application?.length}{openSelectedJob && <Button className="ml-2 px-1 rounded border border-gray-400"
+        <td className="px-1 py-2">{row?.application?.length}{openSelectedJob && <Button className="ml-2 px-1 rounded border border-gray-400 text-xs"
         onClick={(e)=>{
             e.preventDefault();
             openSelectedJob(row?.id);  
