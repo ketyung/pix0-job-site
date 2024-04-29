@@ -327,7 +327,17 @@ export async function getJobPostWithAppls(userId: string, jobPostId: string) :Pr
                 select: {
                     id: true,
                     status: true,
-                    userId: true,
+                    score: true,
+                    scoreReason : true, 
+                    dateCreated : true, 
+                    user: {
+                        select :{
+                            id : true,
+                            firstName : true,
+                            lastName : true,
+                            title : true, 
+                        }
+                    },
                     resume: {
 
                         select : {

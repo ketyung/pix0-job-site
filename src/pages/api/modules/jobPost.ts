@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import bodyParser from "body-parser";
 import { getPageOffsetAndLimit, toTotalPages } from '@/utils';
-import { createJobPost, getJobPost, getJobPosts, getPubJobPosts, getPubJobPost, getJobPostsWithAppls } from '../dbs/jobPost';
+import { createJobPost, getJobPost, getJobPosts, getPubJobPosts, getPubJobPost, getJobPostsWithAppls, getJobPostWithAppls } from '../dbs/jobPost';
 import { updateJobPost, deleteJobPost } from '../dbs/jobPost';
 
 const jsonParser = bodyParser.json();
@@ -71,6 +71,10 @@ async function handleGet (req: NextApiRequest,  res: NextApiResponse, userId? : 
                 let id = path[2];
                 await handleGetPubJobPost(res, id);
             }
+            else if ( param1 === 'jobWithAppls'){
+                let id = path[2];
+                await handleGetJobPostWithAppl(res, id, userId);
+            }
             else {
                 await handleGetJobPost(res,  param1, userId);
             }
@@ -113,6 +117,25 @@ async function handleGetJobPosts (
     }
 }
 
+
+
+async function handleGetJobPostWithAppl ( res: NextApiResponse, id : string,  userId? : string  ){
+
+    try {
+
+        let ndata = await getJobPostWithAppls(userId ?? "", id);
+
+        if ( ndata !== undefined){
+            res.status(200).json({  data : ndata, status : 1});   
+        }else {
+            res.status(404).json({  message : "Job Post NOT found", status : -1});      
+        }
+    }
+    catch(e: any){
+        console.log("e::",e);
+        res.status(422).send({error: e.message, status: -1});
+    }
+}
 
 
 async function handleGetPubJobsWithAppls ( 
