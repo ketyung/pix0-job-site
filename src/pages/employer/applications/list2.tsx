@@ -80,7 +80,7 @@ export default function List({reloadCount, onEdit} :props) {
       { (searchResult.results.length ?? 0) === 0 &&
       <tr>
         <td colSpan={6} className="text-center">
-          <div className="mt-2 text-gray-400 p-2">NO Job Applications For The Jobs You've Posted</div>
+          <div className="mt-2 text-gray-400 p-2">NO Job Applications For The Jobs You&apos;ve Posted</div>
         </td>
       </tr>
       }

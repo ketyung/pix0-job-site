@@ -23,7 +23,7 @@ export default function View({ jobPost } :props) {
         let hasAppl = await hasJobApplication(jobPost.id);
         setHasApplied(hasAppl);
         setLoading(false);
-    }, []);
+    }, [jobPost.id]);
 
     useEffect(()=>{
         fetchHasApplied()

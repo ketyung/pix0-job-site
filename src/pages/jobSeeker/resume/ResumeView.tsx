@@ -50,7 +50,7 @@ export default function ResumeView ({openForm, title , setHasValidResume, setSel
         
         setLoading(false);
 
-    }, []);
+    }, [setSelectedResume,setHasValidResume]);
 
 
     useEffect(()=>{
