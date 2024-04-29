@@ -27,10 +27,10 @@ export default function View({ jobPost } :props) {
 
     const fetchHasApplied =  useMemo(() => async () => {
         setLoading(true);
-        let hasAppl = await hasJobApplication(jobPost.id);
+        let hasAppl = await hasJobApplication(jobPost?.id);
         setHasApplied(hasAppl);
         setLoading(false);
-    }, [jobPost.id]);
+    }, [jobPost?.id]);
 
     useEffect(()=>{
         fetchHasApplied()
@@ -40,7 +40,7 @@ export default function View({ jobPost } :props) {
 
         setProcessing(true);
         let jobApp : any = {
-            jobId : jobPost.id,
+            jobId : jobPost?.id,
             resumeId : selectedResumeId,
         };
         await createJobApplication(jobApp);
