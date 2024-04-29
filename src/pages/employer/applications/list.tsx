@@ -1,12 +1,13 @@
 import { SearchResult } from "@/models"
 import { useEffect, useState, useCallback, useMemo} from "react"
 import { getJobPostsWithAppls} from "@/service";
-import { Pagination, Input } from "pix0-core-ui";
+import { Pagination, Input, Drawer } from "pix0-core-ui";
 import { STANDARD_RES_ROWS_PER_PAGE } from "@/models";
 import { CiSearch } from "react-icons/ci";
 import Row from "./row";
 import BeatLoader from "react-spinners/BeatLoader";
 import { handleUnauthorizedError } from "@/pages/employer/jobPosts/list";
+import JobPostApplsView from "./JobPostApplsView";
 
 
 type props = {
@@ -26,6 +27,17 @@ export default function List({reloadCount, onEdit} :props) {
     const [loading, setLoading] = useState(false);
 
     const rowsPerPage = STANDARD_RES_ROWS_PER_PAGE;
+
+    const [drawerOpen, setDrawerOpen] = useState(false);
+
+    const [selectedJobId, setSelectedJobId] = useState<string>();
+
+
+    const openSelectedJob = (jobId: string)=> {
+
+        setSelectedJobId(jobId);
+        setDrawerOpen(true);
+    }
 
     const refreshResult =  useMemo(() => async (searchString? : string, pageNum? : number ) => {
         setLoading(true);
@@ -73,7 +85,8 @@ export default function List({reloadCount, onEdit} :props) {
       <tbody className="dark:bg-gray-800 bg-white divide-y dark:divide-gray-600 divide-gray-200">
       {
             searchResult.results?.map((r,i)=>{
-                    return <Row row={r} key={`ItemRow_${i}`} index={(i+1) + ((page -1) * rowsPerPage) } refresh={refreshResult} onEdit={onEdit}/>
+                    return <Row row={r} key={`ItemRow_${i}`} index={(i+1) + ((page -1) * rowsPerPage) } refresh={refreshResult} onEdit={onEdit}
+                    openSelectedJob={openSelectedJob}/>
             })
       }
       { (searchResult.results.length ?? 0) === 0 &&
@@ -95,5 +108,14 @@ export default function List({reloadCount, onEdit} :props) {
       </tr>}
       </tbody>
     </table>
+    <Drawer zIndex={3000} width='80%' groupId="AnalyizeAiDrawer01" 
+        darkBgColor='#245' lightBgColor='#eee' withCloseButton onClose={()=>{
+            setDrawerOpen(false);
+        }}
+        atRight open={drawerOpen}>
+            { (drawerOpen && selectedJobId) && <>
+             <JobPostApplsView jobId={selectedJobId}/>   
+            </>}
+        </Drawer>
     </div>
 }

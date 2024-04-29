@@ -295,12 +295,12 @@ export async function getJobPostsWithAppls(userId: string, keyword?: string, ord
 }
 
 
-export async function getJobPostWithAppls(userId: string, jobPostId: string) :Promise<SearchResult> {
+export async function getJobPostWithAppls(userId: string, jobPostId: string) :Promise<JobPost|null> {
     
     let userCompany = await getUserCompany(userId);
 
     if ( userCompany === null) {
-        return {results:[], total:0};
+        return null;
     }
 
     let whereClause: any = {
@@ -313,7 +313,7 @@ export async function getJobPostWithAppls(userId: string, jobPostId: string) :Pr
 
 
 
-    const JobPosts = await prisma.jobPost.findMany({
+    const JobPost = await prisma.jobPost.findFirst({
         ...whereClause,
 
         select: {
@@ -339,7 +339,6 @@ export async function getJobPostWithAppls(userId: string, jobPostId: string) :Pr
                         }
                     },
                     resume: {
-
                         select : {
                             id: true,
                             resumeText : true,
@@ -348,13 +347,17 @@ export async function getJobPostWithAppls(userId: string, jobPostId: string) :Pr
                 },
             }
         },
+        /*
+        orderBy: {
+            application : {
+                score : true 
+            }
+        },*/
     });
 
    // console.log("orderBy::", ordBy);
 
-    let total = await getCount(whereClause);
-
-    return {results : JobPosts, total};
+    return JobPost;
 }
 
 

@@ -2,7 +2,7 @@ import ListActionDropDown from "@/components/ListActionDropDown";
 import { deleteJobPost } from "@/service";
 import { ntb } from "@/utils";
 import { toast } from "react-toastify";
-import { Checkbox} from 'pix0-core-ui';
+import { Button, Checkbox} from 'pix0-core-ui';
 import Link from "next/link";
 import { formatRelativeDate } from "@/utils";
 
@@ -14,9 +14,11 @@ type props ={
     onEdit?: (id? : string) => void, 
 
     index? : number,
+
+    openSelectedJob? : (id : string) => void,
 }
 
-export default function Row({row, refresh, onEdit, index} :props) {
+export default function Row({row, refresh, onEdit, index, openSelectedJob} :props) {
 
     const deleteRow = async () =>{
 
@@ -39,7 +41,12 @@ export default function Row({row, refresh, onEdit, index} :props) {
         lightBgColor="#ed8" groupId="invCb">{index && <span className="ml-1">{index}</span>}</Checkbox>}</td>
         <td className="px-1 whitespace-nowrap py-2"><Link title="Click To Preview Job Post" 
         href={`/jobPost/${row?.id}`} target="_blank">{ntb(row?.title)}</Link></td>
-        <td className="px-1 py-2">{row?.application?.length}</td>
+        <td className="px-1 py-2">{row?.application?.length}{openSelectedJob && <Button className="ml-2 p-1 rounded border border-gray-400"
+        onClick={(e)=>{
+            e.preventDefault();
+            openSelectedJob(row?.id);  
+        }}>
+        Analyze By AI</Button>}</td>
         <td className="px-6 py-2" title={new Date(row?.datePub).toLocaleString()}>{formatRelativeDate(new Date(row?.datePub))}</td>
         <td className="px-1 whitespace-nowrap text-center py-2"><ListActionDropDown onDelete={deleteRow}/></td>
     </tr>
