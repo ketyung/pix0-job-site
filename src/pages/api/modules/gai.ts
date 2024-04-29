@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+const { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } = require("@google/generative-ai");
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 import bodyParser from "body-parser";
 import { getUserCompany } from '../dbs/userCompany';
@@ -111,7 +111,18 @@ async function checkIfJobPostInfoProper(jobPost : JobPost,  res: NextApiResponse
 
     try {
 
-        const model = genAI.getGenerativeModel({ model: "gemini-pro"});
+        const safetySettings = [
+            {
+                category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+                threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
+            },
+            {
+                category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+                threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+            },
+        ];
+
+        const model = genAI.getGenerativeModel({ model: "gemini-pro", safetySettings});
 
         const prompt = `Please review the following job post and determine if it is appropriate:
 
