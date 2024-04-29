@@ -8,7 +8,7 @@ type props = {
 
 export default function View({ resumeText } :props) {
    
-    return <div className="mt-2 border border-gray-300 rounded p-2 w-11/12 mx-auto lg:mb-2 mb-20 shadow-xl">
+    return <div className="mt-2 border border-gray-300 rounded p-2 w-11/12 mx-auto lg:mb-2 mb-20 shadow-xl overflow-y-auto">
         <div className="mt-2 mb-2 text-left p-1 font-bold">
             <h1 className="text-xl dark:bg-gray-700 dark:text-gray-200 bg-gray-300 p-2 rounded flex">
             Preview Of Your Resume  <Button className="ml-20 w-48 justify-center pb-1 flex border border-gray-400 rounded "

@@ -75,7 +75,11 @@ export default function JobPostApplsView({jobId}: props) {
                 return    <tr id={`JobApplicant_${i}`} className="hover:bg-gray-300 dark:hover:bg-gray-700 dark:bg-gray-800 bg-gray-100 border-b border-gray-300 text-xs dark:text-gray-100 text-gray-500 uppercase">
                 <td valign="top"className="hidden lg:inline-block text-center py-2 px-2">{(i+1)}.</td>
                 <td valign="top"className="px-1 text-left py-2">{`${a.user?.title} ${a.user?.firstName} ${a.user?.lastName}`}</td>
-                <td valign="top"><Button className="mt-1 rounded p-1 border border-gray-300 flex">
+                <td valign="top"><Button className="mt-1 rounded p-1 border border-gray-300 flex" onClick={(e)=>{
+                    e.preventDefault();
+                    setSelectedResume(a.resume?.resumeText);
+                    setDrawerOpen(true);
+                }}>
                   <GrDocument className="w-4 h-4"/></Button></td>
                 <td valign="top"className="px-6 py-2" title={new Date(a.dateCreated).toLocaleString()}>{formatRelativeDate(new Date(a.dateCreated))}</td>
                 <td valign="top"className="px-1 text-left py-2">{a.score?.toFixed(2)}</td>
@@ -85,7 +89,7 @@ export default function JobPostApplsView({jobId}: props) {
       }
     </thead>
     </table>
-    <Drawer zIndex={3000} width='80%' groupId="AnalyizeAiDrawer01" 
+    <Drawer zIndex={3000} width='70%' groupId="ResumeDrawer01" 
         darkBgColor='#245' lightBgColor='#eee' withCloseButton onClose={()=>{
             setDrawerOpen(false);
         }}
