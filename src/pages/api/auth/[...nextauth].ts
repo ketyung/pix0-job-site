@@ -6,7 +6,7 @@ import { encrypt } from "@/utils/enc";
 //import { NextApiRequest, NextApiResponse } from 'next';
 import { NextRequest } from "next/server";
 import { EMPLOYER_SIGN_IN_CALLBACK_URL } from "@/pages/employer/NonAuthLayout";
-import { JOBSEEKER_SIGN_IN_CALLBACK_URL } from "@/pages/jobSeeker/NonAuthLayout";
+//import { JOBSEEKER_SIGN_IN_CALLBACK_URL } from "@/pages/jobSeeker/NonAuthLayout";
 import { UserType } from "@prisma/client";
 //const jwt = require('jsonwebtoken');
 // refer here for Google Sign In
@@ -23,7 +23,7 @@ const obtainSignInType = (req? : NextRequest) =>{
         const url = cookies['__Secure-next-auth.callback-url'] ?? cookies['next-auth.callback-url'] ;
 
         //console.log("next.cookies::", cookies);
-        console.log("url.is::", url);
+        //console.log("url.is::", url);
         
         if (  url?.indexOf(EMPLOYER_SIGN_IN_CALLBACK_URL)!== -1) 
             return UserType.HiringManager;

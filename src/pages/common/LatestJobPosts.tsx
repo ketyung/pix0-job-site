@@ -43,7 +43,7 @@ export default function LatestJobPosts ({jobPosts }: props){
 
     }
 
-    return <div className="mt-10 lg:w-3/5 w-4/5 mx-auto bg-gray-200 rounded dark:bg-gray-800">
+    return <div className="mt-10 lg:w-3/5 w-11/12 mx-auto bg-gray-200 rounded dark:bg-gray-800">
         <div className="text-2xl my-2 ml-2">Latest Job Posts</div>      
         {jobPosts?.results?.map((j:any)=>{
 
