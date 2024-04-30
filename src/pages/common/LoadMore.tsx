@@ -19,7 +19,7 @@ function hasMorePages(result: SearchResult): boolean {
 
 export default function LoadMore ({result, setNextPage}:props){
 
-    return hasMorePages(result) && <Button className="rounded bg-orange-600 text-gray-200 p-1 w-48"
+    return hasMorePages(result) && <Button title="Load More Jobs..." className="rounded bg-orange-600 text-gray-200 p-1 w-48"
     onClick={(e)=>{
         e.preventDefault();
         if ( setNextPage) setNextPage((result.page ?? 0) + 1);

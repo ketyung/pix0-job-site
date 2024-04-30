@@ -48,7 +48,7 @@ export default function LatestJobPosts ({jobPosts, setNextPage }: props){
 
     return <div className="mt-10 lg:w-3/5 w-11/12 mx-auto bg-gray-200 rounded dark:bg-gray-800">
         <div className="text-2xl my-2 ml-2">Latest Job Posts</div>      
-        {jobPosts?.results?.map((j:any)=>{
+        {jobPosts?.results?.map((j:any, idx: number )=>{
 
             //console.log("catClas::",catCls);
 
@@ -56,7 +56,7 @@ export default function LatestJobPosts ({jobPosts, setNextPage }: props){
             className="mb-4 border-b border-gray-300 dark:border-gray-600 py-2 hover:bg-gray-300 hover:dark:bg-gray-700 p-2 rounded">
                 <Link href={`/jobPost/${j?.id}`} target="_blank">
                     <div className="flex">
-                        <div className="w-9/12 text-xl">{j?.title}</div>
+                        <div className="w-9/12 text-xl" title={`${idx+1}. ${j?.title}`}>{j?.title}</div>
                         <div className='lg:w-32 w-24 text-center lg:text-base text-xs ml-2 lg:h-8 h-6 text-gray-100 p-1 rounded'
                         style={{backgroundColor:jobCatBgColor(j?.jobCategory)}}>{j?.jobCategory}</div>
                     </div>

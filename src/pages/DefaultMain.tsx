@@ -17,12 +17,12 @@ const DefaultMain = (data?: any ) =>{
     const searchJobPosts =  useMemo(() => async () => {
         let res = await getPubJobPosts(searchStr,"-","-",pageNum);
 
-        console.log("res::",res);
-        if ( (jobPosts.page ?? 0) < pageNum){
-            setJobPosts({...jobPosts, page: res.page, results : [...jobPosts.results, ...res.results]});
-        }else {
+        if (pageNum === 1){
             setJobPosts(res);
+        }else {
+            setJobPosts({...jobPosts, page: res.page, results : [...jobPosts.results, ...res.results]});
         }
+       
     }, [searchStr, pageNum]);
 
     useEffect(()=>{
@@ -41,6 +41,7 @@ const DefaultMain = (data?: any ) =>{
                 <FieldLabel title="Job Search">
                     <Input className='lg:w-3/5 w-full' value={searchStr} onChange={async (e)=>{
                         setSearchStr(e.target.value);
+                        setPageNum(1);
                     }} placeholder="Search By Job Title or Job Code"/>
                 </FieldLabel>
             </div>
