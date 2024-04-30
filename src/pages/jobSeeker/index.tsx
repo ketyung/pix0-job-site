@@ -6,7 +6,6 @@ import React from "react";
 import { SessionProvider } from "next-auth/react";
 import { LuFiles } from "react-icons/lu";
 import { CiPen } from "react-icons/ci";
-import { GetServerSidePropsContext } from "next";
 
 export default function Index({
     children, title, isLoggedIn }: PageProps) {

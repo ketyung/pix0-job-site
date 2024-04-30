@@ -30,9 +30,10 @@ const DefaultMain = () =>{
 
    
     return <div className="mt-10 text-lg lg:w-3/5 w-4/5 mx-auto text-left border border-gray-300 rounded p-2">
-        <h2 className='text-xl'>Applications</h2>
-        <h3 className='mt-10'>Click the left menu to access each application</h3>
+        <h2 className='m-2 font-bold'>Welcome Back</h2>
+        <h3 className='m-2'>Click the left menu to start with</h3>
     </div>;
+;
 
 }
 
