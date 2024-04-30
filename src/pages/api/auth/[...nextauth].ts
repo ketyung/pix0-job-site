@@ -20,7 +20,7 @@ const obtainSignInType = (req? : NextRequest) =>{
     if ( req?.cookies ) {
 
         const cookies :any = req.cookies;
-        const url = cookies['next-auth.callback-url'] ?? cookies['__Secure-next-auth.callback-url'];
+        const url = cookies['__Secure-next-auth.callback-url'] ?? cookies['next-auth.callback-url'] ;
 
         //console.log("next.cookies::", cookies);
         console.log("url.is::", url);
