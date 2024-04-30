@@ -50,17 +50,21 @@ export default function AuthLayout({children, title, description, menuItems}: pr
 
     const [processing, setProcessing] = useState(false);
 
-    const isAllowedUserType = async () =>{
-
-        const session = await getSession();
-        const sessionUser : any = session?.user;
-
-        return (sessionUser?.userType === UserType.JobSeeker  || sessionUser?.userType === UserType.Both);
-    }
+   
 
     const checkIsAlloweduserType = useMemo(() => async () =>{
+
+        const isAllowedUserType = async () =>{
+
+            const session = await getSession();
+            const sessionUser : any = session?.user;
+    
+            return (sessionUser?.userType === UserType.JobSeeker  || sessionUser?.userType === UserType.Both);
+        }
         setIsUserTypeAllowed(await isAllowedUserType());
-    },[setIsUserTypeAllowed, isAllowedUserType]);
+
+
+    },[setIsUserTypeAllowed]);
 
    
 
@@ -153,7 +157,7 @@ export default function AuthLayout({children, title, description, menuItems}: pr
             
         }}>
             <div className='p-2 h-64 w-4/5 mx-4'>
-                <h2 className='font-bold'>You Have An Account But It's NOT a Job Seeker Account</h2> 
+                <h2 className='font-bold'>You Have An Account But It Is NOT A Job Seeker Account</h2> 
                 <h3>So, would you like to use your existing account as a Job Seeker account too?</h3>
                 <div className='flex mt-4'>
                     <Button disabled={processing} className='w-24 bg-green-800 rounded p-1 text-gray-100 mr-2 h-8'
