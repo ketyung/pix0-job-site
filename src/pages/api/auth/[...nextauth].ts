@@ -20,9 +20,10 @@ const obtainSignInType = (req? : NextRequest) =>{
     if ( req?.cookies ) {
 
         const cookies :any = req.cookies;
-        const url = cookies['next-auth.callback-url'];
+        const url = cookies['next-auth.callback-url'] ?? cookies['__Secure-next-auth.callback-url'];
 
-        console.log("next.cookies::", cookies);
+        //console.log("next.cookies::", cookies);
+        console.log("url.is::", url);
         
         if (  url?.indexOf(EMPLOYER_SIGN_IN_CALLBACK_URL)!== -1) 
             return UserType.HiringManager;
