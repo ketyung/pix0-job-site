@@ -2,7 +2,7 @@ import FieldLabel from "@/components/FieldLabel";
 import { Input } from "pix0-core-ui";
 import LatestJobPosts from "./common/LatestJobPosts";
 import { getPubJobPosts } from "@/service";
-import { useState } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { SearchResult } from "@/models";
 
 const DefaultMain = (data?: any ) =>{
@@ -10,6 +10,24 @@ const DefaultMain = (data?: any ) =>{
 
     const [jobPosts, setJobPosts] = useState<SearchResult>(data);
 
+    const [searchStr, setSearchStr] = useState("");
+
+    const [pageNum, setPageNum] = useState(1);
+
+    const searchJobPosts =  useMemo(() => async () => {
+        let res = await getPubJobPosts(searchStr,"-","-",pageNum);
+
+        console.log("res::",res);
+        if ( (jobPosts.page ?? 0) < pageNum){
+            setJobPosts({...jobPosts, page: res.page, results : [...jobPosts.results, ...res.results]});
+        }else {
+            setJobPosts(res);
+        }
+    }, [searchStr, pageNum]);
+
+    useEffect(()=>{
+        searchJobPosts();
+    },[searchJobPosts])
 
     return <div className="dark:bg-gray-900 bg-gray-100 dark:text-gray-100 text-gray-900 h-full pt-4 pb-4">
         <section id="home">
@@ -21,13 +39,12 @@ const DefaultMain = (data?: any ) =>{
             </div>
             <div className='rounded bg-gray-300 mx-auto lg:w-3/5 w-11/12 dark:bg-gray-800 my-4 p-2'>
                 <FieldLabel title="Job Search">
-                    <Input className='lg:w-3/5 w-full' onChange={async (e)=>{
-                        let res = await getPubJobPosts(e.target.value);
-                        setJobPosts(res);
+                    <Input className='lg:w-3/5 w-full' value={searchStr} onChange={async (e)=>{
+                        setSearchStr(e.target.value);
                     }} placeholder="Search By Job Title or Job Code"/>
                 </FieldLabel>
             </div>
-            {data && <LatestJobPosts jobPosts={jobPosts}/>}
+            {data && <LatestJobPosts jobPosts={jobPosts} setNextPage={setPageNum}/>}
         </section>
 
     </div>;
