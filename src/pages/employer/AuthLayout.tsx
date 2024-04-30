@@ -181,7 +181,7 @@ export default function AuthLayout({children, title, description, menuItems}: pr
        <Modal isOpen={!isUserTypeAllowed} maxWidth='800px' withoutCloseButton maxHeight='800px' onClose={()=>{
             
         }}>
-            <div className='p-2 h-64 w-4/5 mx-4'>
+            <div className='p-2 h-64 w-4/5 mx-4 dark:bg-gray-800 dark:text-gray-300'>
                 <h2 className='font-bold'>You Have An Account But It Is NOT A Employer Account</h2> 
                 <h3>So, would you like to upgrade your existing account to n Employer account too?</h3>
                 <div className='flex mt-4'>
