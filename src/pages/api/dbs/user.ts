@@ -185,6 +185,38 @@ export async function updateUser (user : User) {
 }
 
 
+export async function upgradeUserType (userId : string, asUserType : UserType = UserType.Both) {
+    try {
+
+        let wh =  {
+            id: userId 
+        };
+                
+        const existingUser = await prisma.user.findUnique({
+            where: wh 
+        });
+
+        if (existingUser ) {
+            const updatedUser = await prisma.user.update({
+                where: wh,
+                data: {...existingUser, dateUpdated : new Date(), userType : asUserType} 
+            });
+
+            // 'updatedContact' contains the updated contact record
+            return (updatedUser.id === userId );
+        } 
+        else {
+            throw Error('User NOT found!');
+        }
+  }
+  catch(e : any){
+
+       console.log("u.e::",e);
+      throw e ;
+  }
+}
+
+
 export async function getUser(userId : string, toDecryptInfo?: boolean ) :Promise<User|null> {
   try {
 
@@ -308,12 +340,12 @@ export async function createGoogleCredential(profile : any, account : any ,userT
 
     if ( user === null) {
         user = await createUserFromGoogleProfile(profile, userType);
-    } else {
+    } /*else {
 
         if ( user.userType !== userType && user.userType !== UserType.Both) {
               await updateUser({...user, userType : UserType.Both, GoogleCredential : undefined});
         }
-    }
+    }*/
 
     //console.log("acc.expiresAt::", account.expires_at);
     let ecTokenId = encrypt(account.access_token, process.env.GC_ENCRYPT_KEY ?? "xxxxxx90x");

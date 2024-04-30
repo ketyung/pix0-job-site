@@ -22,16 +22,18 @@ const obtainSignInType = (req? : NextRequest) =>{
         const cookies :any = req.cookies;
         const url = cookies['next-auth.callback-url'];
 
-        if (  url.indexOf(EMPLOYER_SIGN_IN_CALLBACK_URL)!== -1) 
+        console.log("next.cookies::", cookies);
+        
+        if (  url?.indexOf(EMPLOYER_SIGN_IN_CALLBACK_URL)!== -1) 
             return UserType.HiringManager;
 
-        else if (url.indexOf("/jobSeeker/")!== -1 )
+        else if (url?.indexOf("/jobSeeker/")!== -1 )
             return UserType.JobSeeker;
         else 
-            return undefined;
+            return UserType.HiringManager;
    }
 
-   return undefined;
+   return UserType.HiringManager;
 }
 
 const Options : any = (req? : NextRequest) => (

@@ -2,12 +2,17 @@ import Sidebar, { MenuItem } from '@/components/Sidebar';
 import '../globals.css'
 import '../fonts.css';
 import Head from 'next/head';
-import { ReactNode, useState, useEffect} from "react";
+import { ReactNode, useState, useEffect, useMemo} from "react";
 import {AiOutlineMenu} from 'react-icons/ai';
 import { ThemeProvider, ThemeToggle} from 'pix0-core-ui';
 import Logo from '@/components/Logo';
-import {Button, Drawer} from 'pix0-core-ui';
+import {Button, Drawer, Modal} from 'pix0-core-ui';
 import ProfileDropdownMenu from '@/components/ProfileDropDownMenu';
+import { getSession } from "next-auth/react";
+import { UserType } from '@prisma/client';
+import { upgradeUserType } from '@/service';
+import { BeatLoader } from 'react-spinners';
+
 
 export type props = {
 
@@ -41,6 +46,23 @@ export default function AuthLayout({children, title, description, menuItems}: pr
    
     const [drawerOpen, setDrawerOpen] = useState(false);
 
+    const [isUserTypeAllowed, setIsUserTypeAllowed] = useState(false);
+
+    const [processing, setProcessing] = useState(false);
+
+    const isAllowedUserType = async () =>{
+
+        const session = await getSession();
+        const sessionUser : any = session?.user;
+
+        return (sessionUser?.userType === UserType.JobSeeker  || sessionUser?.userType === UserType.Both);
+    }
+
+    const checkIsAlloweduserType = useMemo(() => async () =>{
+        setIsUserTypeAllowed(await isAllowedUserType());
+    },[setIsUserTypeAllowed, isAllowedUserType]);
+
+   
 
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
@@ -59,14 +81,26 @@ export default function AuthLayout({children, title, description, menuItems}: pr
         // Attach resize event listener
         window.addEventListener('resize', handleResize);
     
+        checkIsAlloweduserType();
         // Clean up the event listener when the component unmounts
         return () => {
             window.removeEventListener('resize', handleResize);
         };
 
      
-    }, []);
+    }, [checkIsAlloweduserType]);
 
+    const upgradeUserTypeNow = async () =>{
+        setProcessing(true);
+        if(await upgradeUserType()){
+            setProcessing(false);
+            document.location.reload();
+        }else {
+
+            setProcessing(false);
+        }
+
+    }
 
     return (<><Head><title>{title ?? "Job Seeker at Pix0 Job Site"}</title>
       <meta name="description" content={ description ?? "An easy to use applications by Pix0 Inc"} />
@@ -115,7 +149,30 @@ export default function AuthLayout({children, title, description, menuItems}: pr
                 <Sidebar menuItems={menuItems ?? []} isClose={!drawerOpen}/>
             </>}
         </Drawer>
-    
+        <Modal isOpen={!isUserTypeAllowed} maxWidth='800px' withoutCloseButton maxHeight='800px' onClose={()=>{
+            
+        }}>
+            <div className='p-2 h-64 w-4/5 mx-4'>
+                <h2 className='font-bold'>You Have An Account But It's NOT a Job Seeker Account</h2> 
+                <h3>So, would you like to use your existing account as a Job Seeker account too?</h3>
+                <div className='flex mt-4'>
+                    <Button disabled={processing} className='w-24 bg-green-800 rounded p-1 text-gray-100 mr-2 h-8'
+                    onClick={async (e)=>{
+                        e.preventDefault();
+                        await upgradeUserTypeNow();
+                    }}>
+                    {processing ? <BeatLoader size={6} color="#aaa"/> : <>Yes</>}
+                    </Button>
+                    <Button disabled={processing} className='w-24 bg-red-800 rounded p-1 text-gray-100 ml-2 h-8'
+                    onClick={(e)=>{
+                        e.preventDefault();
+                        document.location.href="/employer/jobPosts";
+                    }}>
+                    No
+                    </Button>
+                </div>
+            </div>
+        </Modal>
        
     </main>
     </ThemeProvider>

@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { AuthType, getJwtToken} from '@/utils/jwt';
 import bodyParser from "body-parser";
-import {  getUser, signInByGid, signOutUserByGid, updateUserProfile } from '../dbs/user';
+import {  getUser, signInByGid, signOutUserByGid, updateUserProfile, upgradeUserType } from '../dbs/user';
 import { getToken } from 'next-auth/jwt';
 import { isAllowedUser } from '@/utils/jwt';
 
@@ -33,6 +33,8 @@ async function handleGet (req: NextApiRequest,  res: NextApiResponse, userId? : 
             await handleSignOutByGid(res, userId, providerAccountId);
         } else if ( param1 === 'userProfile'){
             await handleFetchUserProfile(userId ?? "", res);
+        } else if ( param1 === 'upgradeUserType'){
+            await handleUpgradeUserType(userId ?? "", res);
         }
     }
 
@@ -56,7 +58,6 @@ async function handlePost (req: NextApiRequest,  res: NextApiResponse, userId? :
                 }else if ( param1 === 'updateProfile'){
                     await handleUpdateUserProfile(userId ?? "", data , res);
                 }
-                
                 else {
                     res.status(422).send({error:"Invalid Module", status: -1});
                 }
@@ -64,7 +65,7 @@ async function handlePost (req: NextApiRequest,  res: NextApiResponse, userId? :
             else {
              
                 res.status(400).json({message: "NO proper body data provided!"});
-              
+               
             }
         });
 
@@ -168,6 +169,27 @@ async function handleUpdateUserProfile (userId: string, data : any,  res: NextAp
       
         if ( updated ) {
             res.status(200).json({ message: "Successfully Updated", status : 1});   
+        }else {
+            res.status(200).json({ message: "Failed Updating Profile", status : -1});   
+        }
+       
+    }
+    catch(e: any){
+        res.status(422).send({error: e.message, status: -1});
+    }
+}
+
+
+
+
+async function handleUpgradeUserType (userId: string, res: NextApiResponse ){
+
+    try {
+      
+        let updated = await upgradeUserType(userId);
+      
+        if ( updated ) {
+            res.status(200).json({ message: "Successfully Upgraded User Type", status : 1});   
         }else {
             res.status(200).json({ message: "Failed Updating Profile", status : -1});   
         }

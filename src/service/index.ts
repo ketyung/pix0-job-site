@@ -867,6 +867,22 @@ export async function updateProfile (user : User, onError? : (e : Error)=>void )
 
 
 
+export async function upgradeUserType() : Promise<boolean>{
+
+      try {
+            
+            let res = await fetchRemote("user", "upgradeUserType");
+
+            return res.status === 1;
+
+      }catch(err : any) {
+
+            console.log("err@upgradingUserType::",err);
+            return false; 
+
+      }
+
+}
 
 export async function getUserProfile(onError? : (e : Error)=>void ) : Promise<User|undefined>{
 
@@ -899,6 +915,9 @@ export async function getUserProfile(onError? : (e : Error)=>void ) : Promise<Us
       }
 
 }
+
+
+
 
 
 export async function hasJobApplication(jobId : string, onError? : (e : Error)=>void ) : Promise<boolean>{

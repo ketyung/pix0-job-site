@@ -6,7 +6,6 @@ import { getSession } from "next-auth/react";
 import { userSignInByGid, verifyLogin } from "@/service";
 import CommonToastContainer  from "../common/CommonToastContainer";
 import Cover from "@/components/Cover";
-import { UserType } from "@prisma/client";
 
 export default function Layout({children, title, description, menuItems}: props) {
         
@@ -16,19 +15,14 @@ export default function Layout({children, title, description, menuItems}: props)
 
     const [verifying, setVerifying] = useState(false);
 
-
-  
+    
     const verifySess = useMemo(() => async () =>{
 
         setVerifying(true);
         const session = await getSession();
-
+  
         const hasSignedIn = () =>{
-
-            let sessionUser : any = session?.user;
-
-            return (session !== undefined && session?.user !== undefined && 
-                (sessionUser.userType === UserType.JobSeeker  || sessionUser.userType === UserType.Both));
+            return (session !== undefined && session?.user !== undefined );
         }
  
 
