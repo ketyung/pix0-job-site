@@ -75,7 +75,7 @@ const ProfileDropdownMenu = ({className, excludeCompanyProfile, signOutCallbackU
 
             if (session!== null && session !== undefined /*&& status === 'authenticated'*/ && session.user !== undefined ) {
                 
-                signOut( { callbackUrl: signOutCallbackUrl });
+                await signOut( { callbackUrl: signOutCallbackUrl });
                 
                 document.location.reload();
             }
