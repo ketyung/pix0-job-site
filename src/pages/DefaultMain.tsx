@@ -14,7 +14,7 @@ const DefaultMain = (data?: any ) =>{
 
     const [pageNum, setPageNum] = useState(1);
 
-    const searchJobPosts =  useMemo(() => async () => {
+    const fetchJobPosts = async () =>{
         let res = await getPubJobPosts(searchStr,"-","-",pageNum);
 
         if (pageNum === 1){
@@ -22,8 +22,11 @@ const DefaultMain = (data?: any ) =>{
         }else {
             setJobPosts({...jobPosts, page: res.page, results : [...jobPosts.results, ...res.results]});
         }
-       
-    }, [searchStr, pageNum, jobPosts]);
+    }
+
+    const searchJobPosts =  useMemo(() => async () => {
+        await fetchJobPosts();
+    }, [searchStr, pageNum]);
 
     useEffect(()=>{
         searchJobPosts();
