@@ -10,6 +10,11 @@ import {Button, Drawer, Modal} from 'pix0-core-ui';
 import ProfileDropdownMenu from '@/components/ProfileDropDownMenu';
 import CompanyForm from "./company/mForm";
 import { hasCompany } from '@/service';
+import { getSession } from "next-auth/react";
+import { UserType } from '@prisma/client';
+import { upgradeUserType } from '@/service';
+import { BeatLoader } from 'react-spinners';
+
 
 export type props = {
 
@@ -60,12 +65,49 @@ export default function AuthLayout({children, title, description, menuItems}: pr
         setIsSidebarOpen(!isSidebarOpen);
     };
 
+    const [isUserTypeAllowed, setIsUserTypeAllowed] = useState(false);
+
+    const [processing, setProcessing] = useState(false);
+
+   
+
+    const checkIsAlloweduserType = useMemo(() => async () =>{
+
+        const isAllowedUserType = async () =>{
+
+            const session = await getSession();
+            const sessionUser : any = session?.user;
+    
+            return (sessionUser?.userType === UserType.HiringManager  || sessionUser?.userType === UserType.Both);
+        }
+        const isAllowed = await isAllowedUserType();
+        setIsUserTypeAllowed(isAllowed);
+        return isAllowed;
+
+    },[setIsUserTypeAllowed]);
+
+    const upgradeUserTypeNow = async () =>{
+        setProcessing(true);
+        if(await upgradeUserType()){
+            setProcessing(false);
+            document.location.reload();
+        }else {
+
+            setProcessing(false);
+        }
+
+    }
 
     useEffect(() => {
 
-        setTimeout(()=>{
-            verifyingHasCompany();
-        },300);
+        checkIsAlloweduserType().then (allowed=>{
+            if ( allowed) {
+                setTimeout(()=>{
+                    verifyingHasCompany();
+                },300);
+            }
+        });
+
 
         const handleResize = () => {
           setIsSidebarOpen(window.innerWidth >= 1024);
@@ -83,7 +125,7 @@ export default function AuthLayout({children, title, description, menuItems}: pr
         };
 
      
-    }, [verifyingHasCompany]);
+    }, [verifyingHasCompany,checkIsAlloweduserType]);
 
 
     return (<><Head><title>{title ?? "Pix0 Application Suite"}</title>
@@ -133,9 +175,33 @@ export default function AuthLayout({children, title, description, menuItems}: pr
                 <Sidebar menuItems={menuItems ?? []} isClose={!drawerOpen}/>
             </>}
         </Drawer>
-        <Modal maxHeight="600px" maxWidth="800px" isOpen={!hasCreatedCompany} onClose={()=>{
+        { isUserTypeAllowed &&<Modal maxHeight="600px" maxWidth="800px" isOpen={!hasCreatedCompany} onClose={()=>{
             setHasCreatedCompany(true);
-        }}><CompanyForm title="Please Create A Company Profile First" minWidth="720px"/></Modal>
+        }}><CompanyForm title="Please Create A Company Profile First" minWidth="720px"/></Modal>}
+       <Modal isOpen={!isUserTypeAllowed} maxWidth='800px' withoutCloseButton maxHeight='800px' onClose={()=>{
+            
+        }}>
+            <div className='p-2 h-64 w-4/5 mx-4'>
+                <h2 className='font-bold'>You Have An Account But It Is NOT A Employer Account</h2> 
+                <h3>So, would you like to upgrade your existing account to n Employer account too?</h3>
+                <div className='flex mt-4'>
+                    <Button disabled={processing} className='w-24 bg-green-800 rounded p-1 text-gray-100 mr-2 h-8'
+                    onClick={async (e)=>{
+                        e.preventDefault();
+                        await upgradeUserTypeNow();
+                    }}>
+                    {processing ? <BeatLoader size={6} color="#aaa"/> : <>Yes</>}
+                    </Button>
+                    <Button disabled={processing} className='w-24 bg-red-800 rounded p-1 text-gray-100 ml-2 h-8'
+                    onClick={(e)=>{
+                        e.preventDefault();
+                        document.location.href="/jobSeeker/applications";
+                    }}>
+                    No
+                    </Button>
+                </div>
+            </div>
+        </Modal>
        
     </main>
     </ThemeProvider>
