@@ -12,9 +12,11 @@ type props ={
     jobPosts?: SearchResult , 
 
     setNextPage? : (nextPage: number)=>void, 
+
+    linkTarget? : string ,
 }
 
-export default function LatestJobPosts ({jobPosts, setNextPage }: props){
+export default function LatestJobPosts ({jobPosts, setNextPage, linkTarget }: props){
 
 
     const jobCatBgColor = (jCat : any ) =>{
@@ -54,7 +56,7 @@ export default function LatestJobPosts ({jobPosts, setNextPage }: props){
 
             return <div key={`Job_${j?.id}`} 
             className="mb-4 border-b border-gray-300 dark:border-gray-600 py-2 hover:bg-gray-300 hover:dark:bg-gray-700 p-2 rounded">
-                <Link href={`/jobPost/${j?.id}`} target="_blank">
+                <Link href={`/jobPost/${j?.id}`} target={linkTarget}>
                     <div className="flex">
                         <div className="w-9/12 text-xl" title={`${idx+1}. ${j?.title}`}>{j?.title}</div>
                         <div className='lg:w-32 w-24 text-center lg:text-base text-xs ml-2 lg:h-8 h-6 text-gray-100 p-1 rounded'

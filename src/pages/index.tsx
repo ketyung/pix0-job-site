@@ -6,7 +6,7 @@ import { getPubJobPosts } from "@/service";
 export default function Index({
     children, title, data }: PageProps) {
 
-    return (<ThemeProvider defaultTheme={{mode : "light"}}><Layout title={title} data={data}>{children}</Layout></ThemeProvider>)
+    return (<ThemeProvider><Layout title={title} data={data}>{children}</Layout></ThemeProvider>)
 }
 
 

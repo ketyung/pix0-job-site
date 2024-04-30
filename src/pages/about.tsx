@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function About() {
 
-    return (<ThemeProvider defaultTheme={{mode : "light"}}><Layout title="About Us - Pix0 Job Site">
+    return (<ThemeProvider><Layout title="About Us - Pix0 Job Site">
     <div className="bg-gray-100 dark:bg-gray-800 py-12">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">

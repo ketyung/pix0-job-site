@@ -16,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ThemeProvider defaultTheme={{mode : "light"}}><html lang="en">
+    <ThemeProvider><html lang="en">
       <body className={inter.className}>
         <div className="mt-2">
           <Input/>

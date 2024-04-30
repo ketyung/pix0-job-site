@@ -27,7 +27,7 @@ export default function Index({
    
     return <SessionProvider>
             <React.StrictMode>
-                <ThemeProvider defaultTheme={{mode : "dark"}}><Layout title={title}
+                <ThemeProvider><Layout title={title}
                 menuItems={menuItems} isSignedIn={isLoggedIn}>{children}</Layout></ThemeProvider>
             </React.StrictMode>
     </SessionProvider>
