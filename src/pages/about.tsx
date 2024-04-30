@@ -13,7 +13,7 @@ export default function About() {
             </h2>
             <p className="mt-4 text-lg text-gray-600 dark:text-gray-300 text-left">
                 At Pix0 Job Site, we believe in revolutionizing the way people connect with employment opportunities. 
-                Our platform is not just another job board; it's a dynamic ecosystem powered by cutting-edge AI technology.
+                Our platform is not just another job board; it is a dynamic ecosystem powered by cutting-edge AI technology.
             </p>
         </div>
         <div className="mt-20 grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-x-8 lg:gap-y-12">

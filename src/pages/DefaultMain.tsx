@@ -23,7 +23,7 @@ const DefaultMain = (data?: any ) =>{
             setJobPosts({...jobPosts, page: res.page, results : [...jobPosts.results, ...res.results]});
         }
        
-    }, [searchStr, pageNum]);
+    }, [searchStr, pageNum, jobPosts]);
 
     useEffect(()=>{
         searchJobPosts();
