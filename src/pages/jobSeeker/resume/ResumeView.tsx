@@ -78,7 +78,7 @@ export default function ResumeView ({openForm, title , setHasValidResume, setSel
     },[setOpenFormIfNeeded]);
 
     return <><div className="text-left mt-2">
-            <h2 className="font-bold">{title ?? 'Your CV/Resume'}</h2>
+            <h2 className="font-bold ml-2">{title ?? 'Your CV/Resume'}</h2>
             <div className="mb-4 flex">
 
                 {loading ? <BeatLoader size={8} color="#999"/> : 

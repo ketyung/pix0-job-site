@@ -1,8 +1,6 @@
 import MainIndex  from "..";
-import { useState , useEffect, useMemo} from "react";
-import { getOwnResume } from "@/service";
-import { Resume } from "@/models";
 import ResumeView from "./ResumeView";
+import YouTubeEmbed from "@/components/YoutubeEmbed";
 
 export enum ViewType {
 
@@ -22,6 +20,10 @@ export default function Index({openForm }:IndexProps ) {
 
     return <MainIndex title="Job Seeker's Section - Pix0 Application">
         <ResumeView openForm={openForm}/>
-    </MainIndex>
+        <div className="mt-4 p-2 text-left">
+            <h2 className="font-bold">Watch A Tutorial Video Below On How To Create Your Resume With AI</h2>
+            <YouTubeEmbed videoId="j8hrqh3vI18" width="640" height="320"/>
+        </div>
+       </MainIndex>
 
 }
