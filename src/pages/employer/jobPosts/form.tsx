@@ -293,7 +293,7 @@ export default function Form({ title, isEditMode, refresh, editRowId} :props) {
                 await saveJobPostNow();
 
             }}>
-             {processing ? <BeatLoader size={8} color="#ddd"/> :  <>{!isEditMode ? "Create JobPost" : "Update JobPost"}</>}
+             {processing ? <BeatLoader size={8} color="#aaa"/> :  <>{!isEditMode ? "Create JobPost" : "Update JobPost"}</>}
             </Button>
         </div>
     </div>
