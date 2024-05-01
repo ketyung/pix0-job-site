@@ -1,5 +1,5 @@
 import FieldLabel from "@/components/FieldLabel"
-import { Input, TextArea, Button, Drawer } from "pix0-core-ui"
+import { Input, TextArea, Button, Drawer, Select } from "pix0-core-ui"
 import { CiCircleInfo } from "react-icons/ci";
 import { useState, useEffect, useMemo } from "react";
 import { User } from "@prisma/client";
@@ -29,7 +29,7 @@ type props = {
 
 const DEFAULT_USER : User = {id:"", firstName : "", lastName: "", email: "", phoneNumber: "",
     hEmail:"", hPhoneNumber :"",dateCreated: new Date(), dateUpdated: new Date(),
-    title :"Mr", googleId : null, userType: null, country: null, about : null, photoUrl: null, photoUrlPubId: null, 
+    title :"", googleId : null, userType: null, country: null, about : null, photoUrl: null, photoUrlPubId: null, 
 }
 
 
@@ -55,12 +55,16 @@ export default function ProfileForm({ title, refresh, minWidth} :props) {
             toast.error(`First Name Must NOT be blank!`);
             return ;
         }
+
+        if (isBlank(user?.phoneNumber) ){
+            toast.error(`Phone Number Must NOT be blank!`);
+            return ;
+        }
         
         if ( user) {
 
             setProcessing(true);
 
-     
             let newUser = {...user};
           
             if ( user.photoUrl !== null) {
@@ -146,12 +150,19 @@ export default function ProfileForm({ title, refresh, minWidth} :props) {
             </FieldLabel>
         </div>
         <div className="mt-2 mb-2 lg:flex text-left">
-            <FieldLabel title="First Name" className="lg:w-6/12 w-full mt-2">
+            <FieldLabel title="title" className="lg:w-2/12 w-full mt-2 mr-2">
+                <Select options={[{value:"Mr", label:"Mr"},{value:"Ms", label:"Ms"},{value:"Mrs", label:"Mrs"}]}
+                defaultValue={user?.title} onChange={(e)=>{
+                    let newUser: User = {...user, title : e.target.value};
+                    setUser(newUser);
+                }}/>
+            </FieldLabel>
+            <FieldLabel title="First Name" className="lg:w-4/12 w-full mt-2">
                 <Input placeholder="First Name" onChange={(e)=>{
                     setUser({...user, firstName : e.target.value});
                 }} value={ntb(user?.firstName)} className="w-full" icon={<CiCircleInfo className="mb-2"/>}/>
             </FieldLabel>
-            <FieldLabel title="Last Name" className="lg:w-6/12 w-full lg:mt-2 lg:ml-2">
+            <FieldLabel title="Last Name" className="lg:w-4/12 w-full lg:mt-2 lg:ml-2">
                 <Input placeholder="Last Name" onChange={(e)=>{
                     setUser({...user, lastName: e.target.value});
                 }} value={ntb(user.lastName)} className="w-full" icon={<CiCircleInfo className="mb-2"/>}/>
