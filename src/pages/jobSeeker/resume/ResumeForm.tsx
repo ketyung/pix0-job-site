@@ -83,7 +83,7 @@ export default function ResumeForm({resume, reload}:props) {
             await generateResume();
         }}
         disabled={processing}>{processing ? <BeatLoader size={6} color="#aaa"/> : <>Re-generate With AI</>}</Button> </div>}>
-        <MdEditor value={genResumeText ?? resume?.text} style={{ height: '400px' }} 
+        <MdEditor defaultValue={genResumeText ?? resume?.text} style={{ height: '400px' }} 
                 renderHTML={text => mdParser.render(text)} onChange={(e)=>{
                     setResumeInfo({...resumeInfo, text: e.text});
                 }} view={{

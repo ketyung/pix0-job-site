@@ -124,6 +124,7 @@ export default function Form({ title, isEditMode, refresh, editRowId} :props) {
         setGenerating(true);
         let text = await genJobPostDesc(jobpost.title ?? "My First Job Post Description");
         setJobPost({...jobpost, description : text});
+        setViewMarkDown(true);
         setGenerating(false);
     }
 
@@ -136,6 +137,7 @@ export default function Form({ title, isEditMode, refresh, editRowId} :props) {
             } ).then (i=>{
                 if ( i ){
                     setJobPost(i);
+                    setViewMarkDown(true);
                 }
             });
         }else {
@@ -178,7 +180,7 @@ export default function Form({ title, isEditMode, refresh, editRowId} :props) {
             : <BsMarkdown title="Edit In Mark Down Editor" className="w-5 h-5"/>}</Button>
             
             </div>} className="w-full">
-                { viewMarkDown ? <MdEditor value={ntb(jobpost.description)} style={{ height: '400px' }} 
+                { viewMarkDown ? <MdEditor defaultValue={ntb(jobpost.description)} style={{ height: '400px' }} 
                 renderHTML={text => mdParser.render(text)} onChange={(e)=>{
                     setJobPost({...jobpost, description : e.text});
                 }} view={{
@@ -285,7 +287,7 @@ export default function Form({ title, isEditMode, refresh, editRowId} :props) {
         </div>
         </div>
         <div className="mt-2 mb-2 lg:flex">
-            <Button disabled={processing} className="border border-gray-300 w-48 flex rounded justify-center bg-gray-300 dark:bg-gray-600 py-1"
+            <Button disabled={processing || generating} className="border border-gray-300 w-48 flex rounded justify-center bg-gray-300 dark:bg-gray-600 py-1"
             onClick={async (e)=>{
                 e.preventDefault();
                 await saveJobPostNow();
