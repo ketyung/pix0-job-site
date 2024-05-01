@@ -45,7 +45,7 @@ export default function Form ({resume, reload} : props){
                     return;
                 }
 
-                if ( (resume?.data?.about?.length ?? 0) > 250) {
+                if ( (resumeInfo?.data?.about?.length ?? 0) > 250) {
                     toast.error('Error! Your Description Has Exceeded 250 Max Characters');
                     return;
                     
@@ -54,7 +54,7 @@ export default function Form ({resume, reload} : props){
 
             if ( stage === 1 ){
 
-                if ( (resume?.data?.skillsets?.length ?? 0)< 3 ){
+                if ( (resumeInfo?.data?.skillsets?.length ?? 0)< 3 ){
 
                     toast.error('Please enter at least 3 skillsets');
                     return; 
