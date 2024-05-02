@@ -7,8 +7,6 @@ import { isBlank } from "@/utils";
 import { toast } from "react-toastify";
 import { ntb } from "@/utils";
 import { BeatLoader } from "react-spinners";
-import 'react-markdown-editor-lite/lib/index.css';
-import MarkdownIt from 'markdown-it';
 import { updateProfile, getUserProfile, checkIfImageIsSFW  } from "@/service";
 import ProfileImage from "@/components/ProfileImage";
 import DndUploader from "@/components/DndUploader";
@@ -35,7 +33,6 @@ const DEFAULT_USER : User = {id:"", firstName : "", lastName: "", email: "", pho
 
 export default function ProfileForm({ title, refresh, minWidth} :props) {
 
-    const mdParser = new MarkdownIt(/* Markdown-it options */);
    
     const [processing, setProcessing] = useState(false);
 
@@ -66,8 +63,8 @@ export default function ProfileForm({ title, refresh, minWidth} :props) {
             setProcessing(true);
 
             let newUser = {...user};
-          
-            if ( user.photoUrl !== null) {
+
+            if ( user.photoUrl !== null && profileImageChanged) {
                 if (!await checkIfImageIsSFW(user.photoUrl)){
                     toast.error("Profile image is an image that is NSFW");
                     setProcessing(false);
@@ -150,11 +147,10 @@ export default function ProfileForm({ title, refresh, minWidth} :props) {
             </FieldLabel>
         </div>
         <div className="mt-2 mb-2 lg:flex text-left">
-            <FieldLabel title="title" className="lg:w-2/12 w-full mt-2 mr-2">
+            <FieldLabel title="Title" className="lg:w-2/12 w-full mt-2 mr-2">
                 <Select options={[{value:"Mr", label:"Mr"},{value:"Ms", label:"Ms"},{value:"Mrs", label:"Mrs"}]}
-                defaultValue={user?.title} onChange={(e)=>{
-                    let newUser: User = {...user, title : e.target.value};
-                    setUser(newUser);
+                value={user?.title} onChange={(e)=>{
+                    setUser({...user, title : e.target.value});
                 }}/>
             </FieldLabel>
             <FieldLabel title="First Name" className="lg:w-4/12 w-full mt-2">

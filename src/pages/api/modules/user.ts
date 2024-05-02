@@ -164,7 +164,6 @@ async function handleUpdateUserProfile (userId: string, data : any,  res: NextAp
 
     try {
       
-        
         let updated = await updateUserProfile(userId, data);
       
         if ( updated ) {

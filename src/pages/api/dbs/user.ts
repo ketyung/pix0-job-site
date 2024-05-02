@@ -234,7 +234,8 @@ export async function getUser(userId : string, toDecryptInfo?: boolean ) :Promis
           user = {...user, email: email, phoneNumber : phone};
 
       }
-  
+
+      
       return user ;
   } 
   catch (error) {
@@ -252,10 +253,11 @@ export async function updateUserProfile ( userId: string, newUserProfile : User)
         let phone = encrypt( newUserProfile.phoneNumber, process.env.TEL_ENCRYPT_KEY ?? DEFAULT_ENC_KEY);
         let hEmail = sha256(newUserProfile.email);
         let hPhone = sha256(newUserProfile.phoneNumber);
+
         
         storedUser = { ...storedUser, firstName : newUserProfile.firstName, lastName : newUserProfile.lastName,
             email : email, phoneNumber : phone, hEmail: hEmail, hPhoneNumber: hPhone, about : newUserProfile.about,
-            photoUrl : newUserProfile.photoUrl, photoUrlPubId : newUserProfile.photoUrlPubId,
+            photoUrl : newUserProfile.photoUrl, photoUrlPubId : newUserProfile.photoUrlPubId, title : newUserProfile.title,
         };
 
         return await updateUser(storedUser);
