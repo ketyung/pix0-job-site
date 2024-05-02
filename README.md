@@ -20,7 +20,13 @@ Welcome to Pix0 AI Job Site! This repository contains the source code for a dyna
 ## Online Demo Version
 https://jobs.pix0.xyz
 
+Demo Video :point_down:
 [![Demo Video](https://img.youtube.com/vi/PGfsemT04po/0.jpg)](https://www.youtube.com/watch?v=PGfsemT04po)
+
+Submission For Devpost Google AI Hackathon
+https://devpost.com/software/pix0-ai-job-site
+
+Implementation of the Google Gemini AI can be found in the REST API code in src/pages/modules/gai.ts
 
 ## Getting Started
 
