@@ -27,7 +27,7 @@ Demo Video :point_down:
 Submission For Devpost Google AI Hackathon
 https://devpost.com/software/pix0-ai-job-site
 
-Implementation of the Google Gemini AI can be found in the REST API code in src/pages/modules/gai.ts
+Implementation of the Google Gemini AI can be found in the REST API code in ```src/pages/api/modules/gai.ts```
 
 ## Getting Started
 
