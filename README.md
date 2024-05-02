@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Pix0 AI Job Site
+
+Welcome to Pix0 AI Job Site! This repository contains the source code for a dynamic job site powered by AI technology.
+
+## Features
+
+- **AI-Powered Job Posting**: Generate job descriptions instantly by providing a job title.
+- **AI-Based Applicant Scoring**: Evaluate job applicants and resumes using AI algorithms.
+- **Resume Builder**: Job seekers can create professional resumes quickly and easily.
+- **Content Filtering**: Ensure job posts, resumes, and user-generated content are suitable and safe.
+- **Future Features**: Personalized job matching and more enhancements in development.
+
+## Technologies Used
+
+- Next.js: Frontend framework for building the user interface.
+- Google Gemini Generative AI API: AI capabilities for job description generation and applicant scoring.
+- Tailwind CSS: Utility-first CSS framework for styling.
+- Other technologies and libraries used (if applicable).
+
+## Online Demo Version
+https://jobs.pix0.xyz
 
 ## Getting Started
 
-First, run the development server:
+1. Clone the repository: `git clone https://github.com/ketyung/pix0-ai-job-site.git`
+2. Install dependencies: `yarn`
+3. Set up environment variables (if any).
+4. Start the development server: `yarn dev`
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Environment Variables
+
+Create a `.env` file in the project folder and add in the following parameters:
+
+```plaintext
+DATABASE_URL="...."   # The database URL to your MySQL host
+
+GOOGLE_CLIENT_ID=".....apps.googleusercontent.com" # Google Credential Needed for NextAuth
+GOOGLE_CLIENT_SECRET="xxxxxxx"
+
+# Parameters for Image Upload To Cloudinary
+CLOUDINARY_PARAMS=[{"name":"ababababa","api_key":"xxxxx","secret":"xxxx", "upload_folder":"xxxxx"}]
+# Cloudinary Image Upload URL
+NEXT_PUBLIC_CLOUD_UPLOAD_URL="https://api.cloudinary.com/v1_1/:cloud_name/image/"
+
+GEMINI_API_KEY="...."  # API Key For GOOGLE Gemini AI 
+
+REST_API_KEY="........xxx" # The REST API KEY of the project backend REST API
+
+SERVER_HOST=""          # Specify a server host here if you intend to host on a host rather than the localhost
+
+NEXTAUTH_SECRET="....."  
+NEXTAUTH_URL="http://localhost:3000"
+NEXT_PUBLIC_API_URL='http://localhost:3000/api/'
+
+# Optional Encryption Keys for AES 256 Encryption with Random IV and Salt for sensitive user's info
+# In The Future We'll Migrate To Use Google Key Manager, These Will NOT Be Needed Anymore
+UID_ENCRYPT_KEY="...."
+EM_ENCRYPT_KEY="..."
+TEL_ENCRYPT_KEY="..."
+PW_ENCRYPT_KEY="..."
+GC_ENCRYPT_KEY="...."
+GID_ENCRYPT_KEY="...."
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Usage
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Provide instructions on how to use the Pix0 AI Job Site, including:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- How to post a job.
+- How to apply for a job.
+- How to use the resume builder.
+- Any other relevant usage instructions.
 
-## Learn More
+## License
 
-To learn more about Next.js, take a look at the following resources:
+Include information about the license under which your project is distributed. For example:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Acknowledgements
 
-## Deploy on Vercel
+- Mention any individuals, organizations, or resources that you'd like to acknowledge for their contributions or inspiration.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Contact
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Provide contact information for users to reach out with questions, feedback, or inquiries.
