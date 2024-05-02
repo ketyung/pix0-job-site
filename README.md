@@ -15,7 +15,7 @@ Welcome to Pix0 AI Job Site! This repository contains the source code for a dyna
 - Next.js: Frontend framework for building the user interface.
 - Google Gemini Generative AI API: AI capabilities for job description generation and applicant scoring.
 - Tailwind CSS: Utility-first CSS framework for styling.
-- Other libraries used: pix0-core-ui, React Icon, and other 3rd party React UI and NodeJS libs.
+- Other libraries used: pix0-core-ui (https://pix0.xyz/docs/ui/react), React Icon, and other 3rd party React UI and NodeJS libs.
 
 ## Online Demo Version
 https://jobs.pix0.xyz
