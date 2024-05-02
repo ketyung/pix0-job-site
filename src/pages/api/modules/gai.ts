@@ -318,13 +318,20 @@ async function generateScoresForJobAppls(jobId : string ,  res: NextApiResponse,
     
             const jsonArray = JSON.parse(jsonPart);
 
-            jsonArray.forEach(async (a : any,i : any)=>{
-                await updateJobApplForScore(a.userId, a.id, a.score, a.reason);
+            jsonArray.forEach(async (a : any)=>{
+
+                try {
+                    await updateJobApplForScore(a.userId, a.id, a.score || 1, a.reason);
+                }catch(e:any){
+                    //ignore the error if failed to update
+                    console.log("error@updateJobApplForScore::", e.message?.substring(0,550));
+                }
             })
        
             res.status(200).json({  text : "Updated score and reason for Job Applications", status : 1});  
 
         }catch(e : any){
+            console.log("generateScoresForJobAppls::", e.message?.substring(0,550));
             res.status(422).json({  error: e.message, status:-1});  
         }
        
