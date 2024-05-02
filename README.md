@@ -20,6 +20,8 @@ Welcome to Pix0 AI Job Site! This repository contains the source code for a dyna
 ## Online Demo Version
 https://jobs.pix0.xyz
 
+[![Demo Video](https://img.youtube.com/vi/PGfsemT04po/0.jpg)](https://www.youtube.com/watch?v=PGfsemT04po)
+
 ## Getting Started
 
 1. Clone the repository: `git clone https://github.com/ketyung/pix0-ai-job-site.git`
