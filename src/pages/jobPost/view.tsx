@@ -36,7 +36,7 @@ export default function View({ jobPost } :props) {
         <Link href={jobPost?.applyAtExt === 'Y' ? (jobPost?.applyAtUrl ?? "/") : `/jobSeeker/apply/${jobPost?.id}` } 
         target={jobPost?.applyAtExt === 'Y' ? '_blank' : undefined}>
         <div className={`flex rounded-2xl px-4 text-gray-100 ${jobPost?.applyAtExt === 'Y' ? 'bg-green-700' : 'bg-blue-500'} 
-        w-${jobPost?.applyAtExt === 'Y' ? '96' :'48'} text-center py-1`}>
+        w-${jobPost?.applyAtExt === 'Y' ? '96' :'48'} text-center py-1 lg:my-0 my-2`}>
         {jobPost?.applyAtExt==='Y' ? <><GoLinkExternal className="ml-14 w-5 h-5 mr-1 mt-1"/>Apply At External Site</> : 
         <><BsLightningCharge className="ml-2 w-5 h-5 mr-1 mt-1"/>Easy Apply</>}</div></Link> : <></>);
     }
@@ -45,7 +45,7 @@ export default function View({ jobPost } :props) {
       
         {jobPost && <>
         <div className="mt-2 mb-2 text-left p-1 font-bold">
-            <h1 className="text-xl dark:bg-gray-700 dark:text-gray-200 bg-gray-300 p-2 rounded flex">
+            <h1 className="text-xl dark:bg-gray-700 dark:text-gray-200 bg-gray-300 p-2 rounded lg:flex">
                 <div className="w-10/12">{jobPost?.title}</div>
                 {loading ? <BeatLoader size={6} color="#bbb"/> :
                 (hasApplied ? <div className="bg-green-700 rounded w-32 p-1 text-gray-100 text-center">
