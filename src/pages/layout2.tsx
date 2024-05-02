@@ -8,6 +8,7 @@ import Head from 'next/head';
 import DefaultMain from './DefaultMain';
 import { IoHomeOutline } from "react-icons/io5";
 import HomeDropDown from '@/components/HomeDropDown';
+import Footer from '@/components/Footer';
 
 type props = {
 
@@ -43,6 +44,8 @@ export default function Layout({ title, description, children, data} : props) {
         </header>
         { children ? <div className="dark:bg-gray-900 bg-gray-100 dark:text-gray-100 text-gray-900 h-full pt-4 pb-4">
             {children}</div> : DefaultMain(data )}
+
+        <Footer/>
        </>
 
 }
