@@ -345,14 +345,11 @@ export async function getJobPostWithAppls(userId: string, jobPostId: string) :Pr
                         }
                     }, 
                 },
+                orderBy: {
+                    score : 'desc'
+                },
             }
         },
-        /*
-        orderBy: {
-            application : {
-                score : true 
-            }
-        },*/
     });
 
    // console.log("orderBy::", ordBy);

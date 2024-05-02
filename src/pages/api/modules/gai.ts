@@ -309,18 +309,25 @@ async function generateScoresForJobAppls(jobId : string ,  res: NextApiResponse,
         const response = await result.response;
         const text = response.text();
 
-        const jsonStartIndex = text.indexOf('[');
-        const jsonEndIndex = text.lastIndexOf(']') + 1;
-        const jsonPart = text.substring(jsonStartIndex, jsonEndIndex);
+      
+        try {
 
-        const jsonArray = JSON.parse(jsonPart);
-
-        jsonArray.forEach(async (a : any,i : any)=>{
-            await updateJobApplForScore(a.userId, a.id, a.score, a.reason);
-        })
+            const jsonStartIndex = text.indexOf('[');
+            const jsonEndIndex = text.lastIndexOf(']') + 1;
+            const jsonPart = text.substring(jsonStartIndex, jsonEndIndex);
     
-        res.status(200).json({  text : "Updated score and reason for Job Applications", status : 1});  
+            const jsonArray = JSON.parse(jsonPart);
 
+            jsonArray.forEach(async (a : any,i : any)=>{
+                await updateJobApplForScore(a.userId, a.id, a.score, a.reason);
+            })
+       
+            res.status(200).json({  text : "Updated score and reason for Job Applications", status : 1});  
+
+        }catch(e : any){
+            res.status(422).json({  error: e.message, status:-1});  
+        }
+       
 
     }
     catch (e : any ){
