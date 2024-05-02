@@ -19,13 +19,13 @@ export default function About() {
                 </ul>
                 
                 <h2 className="mt-4 font-bold text-xl">Log Data</h2>
-                <p>Like many websites, we collect information that your browser sends whenever you visit our site ("Log Data"). This Log Data may include information such as your computer's Internet Protocol ("IP") address, browser type, browser version, the pages of our site that you visit, the time and date of your visit, the time spent on those pages, and other statistics.</p>
+                <p>Like many websites, we collect information that your browser sends whenever you visit our site (&quot;Log Data&quot;). This Log Data may include information such as your computer&apos;s Internet Protocol (&quot;IP&quot;) address, browser type, browser version, the pages of our site that you visit, the time and date of your visit, the time spent on those pages, and other statistics.</p>
                 
                 <h2 className="mt-4 font-bold text-xl">Cookies</h2>
-                <p>Our website may use "cookies" to enhance the user experience. Cookies are small text files that are stored on your computer or mobile device by your web browser. They are used to remember user preferences, store information for things like shopping carts, and provide anonymized tracking data to third-party applications like Google Analytics. You have the option to disable cookies in your browser settings, but this may affect the functionality of the website.</p>
+                <p>Our website may use &quot;cookies&quot; to enhance the user experience. Cookies are small text files that are stored on your computer or mobile device by your web browser. They are used to remember user preferences, store information for things like shopping carts, and provide anonymized tracking data to third-party applications like Google Analytics. You have the option to disable cookies in your browser settings, but this may affect the functionality of the website.</p>
                 
                 <h2 className="mt-4 font-bold text-xl">Service Providers</h2>
-                <p>We may employ third-party companies and individuals to facilitate our service ("Service Providers"), provide the service on our behalf, perform service-related services, or assist us in analyzing how our service is used.</p>
+                <p>We may employ third-party companies and individuals to facilitate our service (&quot;Service Providers&quot;), provide the service on our behalf, perform service-related services, or assist us in analyzing how our service is used.</p>
                 <p>These third parties have access to your personal information only to perform these tasks on our behalf and are obligated not to disclose or use it for any other purpose.</p>
                 
                 <h2 className="mt-4 font-bold text-xl">Security</h2>
