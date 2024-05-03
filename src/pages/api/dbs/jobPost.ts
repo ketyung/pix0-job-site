@@ -323,6 +323,7 @@ export async function getJobPostWithAppls(userId: string, jobPostId: string) :Pr
             jobStatus: true,
             datePub: true, 
             description : true, 
+            company: true,
             application: {
                 select: {
                     id: true,

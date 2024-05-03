@@ -307,7 +307,7 @@ async function generateScoresForJobAppls(jobId : string ,  res: NextApiResponse,
             ${JSON.stringify(appls , null, 2)}
             
             Job Post's JSON:
-            ${JSON.stringify({title : job.title, description : job.description}, null, 2)}
+            ${JSON.stringify({title : job.title, description : job.description, employer : job.company.name}, null, 2)}
     
             Please check the list of applications for each that has best match with the job
             and return the score (1 is lowest and 10 is highest) and reason for each in the Job Application List in JSON format too
