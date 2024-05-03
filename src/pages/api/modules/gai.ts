@@ -287,9 +287,9 @@ async function generateScoresForJobAppls(jobId : string ,  res: NextApiResponse,
 
         let job : any = await getJobPostWithAppls(userId , jobId);
 
-        const model = genAI.getGenerativeModel({ model: "gemini-pro", /*generationConfig: {
-            temperature: 1, // make it deterministic
-        }*/});
+        const model = genAI.getGenerativeModel({ model: "gemini-pro", generationConfig: {
+            temperature: 0.1, // make it deterministic
+        }});
 
 
         let allAppls = splitArrayIntoGroups(job?.application, 3); // split into each group having three applicants only
