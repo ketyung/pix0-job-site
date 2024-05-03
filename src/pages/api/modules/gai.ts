@@ -268,7 +268,13 @@ async function generateResume(data : ResumeData,  res: NextApiResponse, userId? 
     
 }
 
-
+function splitArrayIntoGroups(arr: any[], maxNumberInEach : number = 2): any[][] {
+    const result: any[][] = [];
+    for (let i = 0; i < arr.length; i += maxNumberInEach) {
+        result.push(arr.slice(i, i + maxNumberInEach));
+    }
+    return result;
+}
 
 async function generateScoresForJobAppls(jobId : string ,  res: NextApiResponse, userId? : string ) {
 
@@ -281,61 +287,76 @@ async function generateScoresForJobAppls(jobId : string ,  res: NextApiResponse,
 
         let job : any = await getJobPostWithAppls(userId , jobId);
 
-        const model = genAI.getGenerativeModel({ model: "gemini-pro"});
+        const model = genAI.getGenerativeModel({ model: "gemini-pro", /*generationConfig: {
+            temperature: 1, // make it deterministic
+        }*/});
 
 
-        let appls :any = job?.application?.map((a : any )=>{
-            return {id: a.id, userId : a.user.id, resumeId : a.resume.id, resumeContent: a.resume.resumeText, score: a.score, reason : a.scoreReason}
-        })
+        let allAppls = splitArrayIntoGroups(job?.application, 3); // split into each group having three applicants only
+                                                               // to reduce text prompt size
+        for (let g =0; g < allAppls.length; g++) {
 
-
-        const prompt = `Below is the list of Job Applications in JSON:
-
-        Job Applications JSON:
-        ${JSON.stringify(appls , null, 2)}
-        
-        Job Post's JSON:
-        ${JSON.stringify({title : job.title, description : job.description}, null, 2)}
-
-        Please check the list of applications for each that has best match with the job
-        and return the score (1 is lowest and 10 is highest) and reason for each in the Job Application List in JSON format too
-        `;
-        
-
-        //console.log("prompt:::", prompt);
-        
-
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
-        const text = response.text();
-
-      
-        try {
-
-            const jsonStartIndex = text.indexOf('[');
-            const jsonEndIndex = text.lastIndexOf(']') + 1;
-            const jsonPart = text.substring(jsonStartIndex, jsonEndIndex);
-    
-            const jsonArray = JSON.parse(jsonPart);
-
-            jsonArray.forEach(async (a : any)=>{
-
-                try {
-                    await updateJobApplForScore(a.userId, a.id, a.score || 1, a.reason);
-                }catch(e:any){
-                    //ignore the error if failed to update
-                    console.log("error@updateJobApplForScore::", e.message?.substring(0,550));
-                }
+            let appls :any = allAppls[g].map((a : any )=>{
+                return {id: a.id, userId : a.user.id, resumeId : a.resume.id, resumeContent: a.resume.resumeText, score: "", reason : ""}
             })
-       
-            res.status(200).json({  text : "Updated score and reason for Job Applications", status : 1});  
+    
+    
+            const prompt = `Below is the list of Job Applications in JSON:
+    
+            Job Applications JSON:
+            ${JSON.stringify(appls , null, 2)}
+            
+            Job Post's JSON:
+            ${JSON.stringify({title : job.title, description : job.description}, null, 2)}
+    
+            Please check the list of applications for each that has best match with the job
+            and return the score (1 is lowest and 10 is highest) and reason for each in the Job Application List in JSON format too
+            `;
+            
+    
+            //console.log("prompt:::", prompt);
+            
+            const result = await model.generateContent(prompt);
+            const response = await result.response;
+            const text = response.text();
+    
+            try {
+    
+                const jsonStartIndex = text.indexOf('[');
+                const jsonEndIndex = text.lastIndexOf(']') + 1;
+                const jsonPart = text.substring(jsonStartIndex, jsonEndIndex);
+        
+              
+                const jsonArray = JSON.parse(jsonPart);
+              
+                jsonArray.forEach(async (a : any, i :number)=>{
+    
+                    //console.log(i+1, ". ", a.id, a.score);
+                    try {
 
-        }catch(e : any){
-            console.log("generateScoresForJobAppls::", e.message?.substring(0,550));
-            res.status(422).json({  error: e.message, status:-1});  
+                        let aScore = parseFloat(a.score);
+                        aScore = isNaN(aScore) ? 1 : aScore;
+                        await updateJobApplForScore(a.userId, a.id, aScore, a.reason);
+                    }catch(e:any){
+                        //ignore the error if failed to update
+                        console.log("error@updateJobApplForScore::", e.message?.substring(0,550));
+                    }
+                })
+           
+          
+            }catch(e : any){
+                console.log("generateScoresForJobAppls::", e.message?.substring(0,550));
+                res.status(422).json({  error: e.message, status:-1}); 
+                return;  
+            }
+           
+    
+
         }
-       
 
+        res.status(200).json({  text : "Updated score and reason for Job Applications", status : 1});  
+    
+       
     }
     catch (e : any ){
 
@@ -344,4 +365,3 @@ async function generateScoresForJobAppls(jobId : string ,  res: NextApiResponse,
     }
     
 }
-

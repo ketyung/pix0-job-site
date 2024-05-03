@@ -6,6 +6,7 @@ import { getSession } from "next-auth/react";
 import { userSignInByGid, verifyLogin } from "@/service";
 import CommonToastContainer  from "../common/CommonToastContainer";
 import Cover from "@/components/Cover";
+import Footer from "@/components/Footer";
 
 export default function Layout({children, title, description, menuItems}: props) {
         
@@ -75,7 +76,7 @@ export default function Layout({children, title, description, menuItems}: props)
         <AuthLayout title={title} description={description} menuItems={menuItems}>{children}</AuthLayout>
         : <NonAuthLayout title={title} description={description}/>}
         <Cover visible={verifying}/>
-     
+        <Footer/>
     <CommonToastContainer/>
     </> ;
 };
